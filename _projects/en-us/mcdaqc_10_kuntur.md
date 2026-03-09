@@ -1,13 +1,13 @@
 ---
-page_id: mcdaqc_kuntur
+page_id: davidquicast_kuntur
 layout: page
 title: Kuntur
 description: Legal context LLM providing personalized legal advice in Spanish and Quechua based on Peruvian legal texts
 img: https://cdn-uploads.huggingface.co/production/uploads/64461026e1fd8d65b27e6187/L3eQBj1eJBB02B2V7fBex.jpeg
 importance: 6
 category: personal
-github: https://github.com/mcdaqc/kuntur
-huggingface: https://huggingface.co/daqc/kuntur-peru-legal-es-gemma-2b-it-merged
+github: https://github.com/davidquicast/kuntur
+huggingface: https://huggingface.co/davidquicast/kuntur-peru-legal-es-gemma-2b-it-merged
 related_publications: false
 tags: [ai, llm]
 year: 2024

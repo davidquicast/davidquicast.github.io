@@ -1,12 +1,12 @@
 github_users:
-  - mcdaqc
+  - davidquicast
 repo_description_lines_max: 2
 
 github_repos:
   - huggingface/smol-course
   - argilla-io/synthetic-data-generator
-  - mcdaqc/gpt2-offline-android-app
-  - mcdaqc/open-deep-research-vulnerability-intelligence
-  - mcdaqc/Iberotales
-  - mcdaqc/vulnerability-intelligence-diagrammatic-reasoning
+  - davidquicast/gpt2-offline-android-app
+  - davidquicast/open-deep-research-vulnerability-intelligence
+  - davidquicast/Iberotales
+  - davidquicast/vulnerability-intelligence-diagrammatic-reasoning
   

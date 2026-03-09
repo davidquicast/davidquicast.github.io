@@ -1,12 +1,12 @@
 ---
-page_id: mcdaqc_icecuy
+page_id: davidquicast_icecuy
 layout: page
 title: Icecuy
 description: Cross-platform NFT marketplace mobile app built with Flutter for Android and iOS, supporting Polygon and Ethereum blockchains
 img: https://github.com/user-attachments/assets/eac84f7a-6d3f-4978-a234-d94256f040be
 importance: 13
 category: personal
-github: https://github.com/mcdaqc/Icecuy
+github: https://github.com/davidquicast/Icecuy
 related_publications: false
 tags: [web, blockchain]
 year: 2023

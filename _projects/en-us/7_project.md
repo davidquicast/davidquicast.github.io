@@ -6,7 +6,7 @@ description: A comprehensive data analysis framework using modern ML techniques
 img: assets/img/9.jpg
 importance: 2
 category: work
-github: https://github.com/mcdaqc/ml-data-analysis
+github: https://github.com/davidquicast/ml-data-analysis
 related_publications: false
 tags: [machine learning, python, data science, tensorflow, analytics, AI]
 ---
