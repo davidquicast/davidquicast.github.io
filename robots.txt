@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://mcdaqc.github.io/sitemap.xml
+Sitemap: https://davidquicast.github.io/sitemap.xml
