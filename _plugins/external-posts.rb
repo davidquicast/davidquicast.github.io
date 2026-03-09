@@ -27,6 +27,8 @@ module ExternalPosts
       return if xml.nil?
       feed = Feedjira.parse(xml)
       process_entries(site, src, feed.entries)
+    rescue => e
+      puts "...skipping #{src['name']} RSS (#{e.class}: #{e.message})"
     end
 
     def process_entries(site, src, entries)
@@ -72,6 +74,8 @@ module ExternalPosts
         content[:published] = parse_published_date(post['published_date'])
         create_document(site, src['name'], post['url'], content)
       end
+    rescue => e
+      puts "...skipping #{src['name']} posts (#{e.class}: #{e.message})"
     end
 
     def parse_published_date(published_date)

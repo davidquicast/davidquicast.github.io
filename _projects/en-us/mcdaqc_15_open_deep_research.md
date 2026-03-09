@@ -1,13 +1,13 @@
 ---
-page_id: mcdaqc_open_deep_research
+page_id: davidquicast_open_deep_research
 layout: page
 title: Open Deep Research Vulnerability Intelligence
 description: AI-powered platform for automated vulnerability intelligence research using Hugging Face's Open Deep Research architecture
 img: https://the-decoder.com/wp-content/uploads/2025/02/open_deep_research_HF.png
 importance: 1
 category: personal
-github: https://github.com/mcdaqc/open-deep-research-vulnerability-intelligence
-huggingface: https://huggingface.co/spaces/daqc/open-deep-research-vulnerability-intelligence
+github: https://github.com/davidquicast/open-deep-research-vulnerability-intelligence
+huggingface: https://huggingface.co/spaces/davidquicast/open-deep-research-vulnerability-intelligence
 related_publications: false
 tags: [ai, cybersecurity]
 year: 2025

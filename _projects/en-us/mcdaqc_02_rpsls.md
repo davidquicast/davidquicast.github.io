@@ -1,12 +1,12 @@
 ---
-page_id: mcdaqc_rpsls
+page_id: davidquicast_rpsls
 layout: page
 title: RPSLS
 description: Multiplatform flutter game app of Rock, Paper, Scissors, Lizard, Spock, developed entirely by AI.
-img: https://raw.githubusercontent.com/mcdaqc/RPSLS/master/assets/ss/feature.png
+img: https://raw.githubusercontent.com/davidquicast/RPSLS/master/assets/ss/feature.png
 importance: 8
 category: personal
-github: https://github.com/mcdaqc/RPSLS
+github: https://github.com/davidquicast/RPSLS
 related_publications: false
 tags: [ai, web]
 year: 2024

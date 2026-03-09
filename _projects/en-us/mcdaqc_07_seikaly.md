@@ -1,12 +1,12 @@
 ---
-page_id: mcdaqc_seikaly
+page_id: davidquicast_seikaly
 layout: page
 title: Seikaly
 description: Web3 platform for blockchain-based badge and certificate issuance and validation system
-img: https://raw.githubusercontent.com/mcdaqc/Seikaly/refs/heads/main/landing/Mesa%20de%20trabajo%201seikaly.jpg
+img: https://raw.githubusercontent.com/davidquicast/Seikaly/refs/heads/main/landing/Mesa%20de%20trabajo%201seikaly.jpg
 importance: 12
 category: personal
-github: https://github.com/mcdaqc/Seikaly
+github: https://github.com/davidquicast/Seikaly
 related_publications: false
 tags: [web, blockchain]
 year: 2023

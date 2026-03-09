@@ -9,7 +9,7 @@ last_name: Quispe
 keywords: jekyll, jekyll-theme, academic-website, portfolio-website # add your own keywords or leave empty
 icon: icon2.ico # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
-url: https://mcdaqc.github.io # the base hostname & protocol for your site
+url: https://davidquicast.github.io # the base hostname & protocol for your site
 baseurl: #/multi-language-al-folio # the subpath of your site, e.g. /blog/. Leave blank for root
 last_updated: false # set to true if you want to display last updated in the footer
 impressum_path: # set to path to include impressum link in the footer, use the same path as permalink in a page, helps to conform with EU GDPR
@@ -113,14 +113,14 @@ disqus_shortname: multi-language-al-folio # put your disqus shortname
 # you can display them in your blog by adding a link to the RSS feed.
 external_sources:
   - name: medium.com
-    rss_url: https://medium.com/@mcdaqc/feed
+    rss_url: https://medium.com/@davidquicast/feed
   - name: github.com
     posts:
-      - url: https://gist.github.com/mcdaqc/563c7a92af8da9d911b4f358858d8504
+      - url: https://gist.github.com/davidquicast/563c7a92af8da9d911b4f358858d8504
         published_date: 2025-01-07
   - name: huggingface.co
     posts:
-      - url: https://huggingface.co/blog/daqc/private-synthetic-data-generation
+      - url: https://huggingface.co/blog/davidquicast/private-synthetic-data-generation
         published_date: 2025-03-05
 
 # -----------------------------------------------------------------------------
@@ -457,7 +457,7 @@ third_party_libraries:
     version: "5.5.0"
   google_fonts:
     url:
-      fonts: "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&display=swap"
+      fonts: "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
   highlightjs:
     integrity:
       css:
