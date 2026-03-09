@@ -4,6 +4,7 @@ layout: page
 title: Smol Course
 description: Spanish translations and example notebooks for fine-tuning and dataset creation tutorials
 img: https://raw.githubusercontent.com/huggingface/smol-course/refs/heads/main/banner.png
+year: 2024
 importance: -1
 category: collaborations
 github: https://github.com/huggingface/smol-course
