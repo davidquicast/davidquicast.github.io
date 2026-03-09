@@ -6,7 +6,7 @@ description: "Complete guide to reclaim disk space by optimizing WSL2 and Docker
 tags: [wsl2, docker, windows, virtualization, disk-management]
 categories: [tutorials, system-administration]
 featured: false
-github: https://gist.github.com/mcdaqc/563c7a92af8da9d911b4f358858d8504
+github: https://gist.github.com/davidquicast/563c7a92af8da9d911b4f358858d8504
 ---
 
 Over time, WSL2 distributions and Docker images can consume significant disk space on your Windows system. Even after deleting files, containers, or images, the allocated virtual disk (VHDX) files do not automatically shrink to reflect the freed space. This comprehensive guide explains how to manually reclaim disk space by optimizing these virtual disks.
@@ -178,6 +178,6 @@ The optimization process is safe and can be performed regularly without data los
 
 ---
 
-**📝 Original Gist:** This tutorial is based on my [original GitHub Gist](https://gist.github.com/mcdaqc/563c7a92af8da9d911b4f358858d8504) with expanded content and additional troubleshooting tips.
+**📝 Original Gist:** This tutorial is based on my [original GitHub Gist](https://gist.github.com/davidquicast/563c7a92af8da9d911b4f358858d8504) with expanded content and additional troubleshooting tips.
 
 **Pro Tip:** Consider creating a PowerShell script to automate this process for multiple VHDX files, making regular maintenance even easier! 
