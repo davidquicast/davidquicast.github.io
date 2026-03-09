@@ -21,9 +21,7 @@ social: true # includes social icons at the bottom of the page
 ---
 
 
-Hi 👋🙂
-
-I am a Systems Engineering graduate specialized in cybersecurity and artificial intelligence **frameworks**.
+Hi 👋🙂 I'm a Systems Engineering graduate specialized in cybersecurity and artificial intelligence **frameworks**.
 
 My cybersecurity background includes vulnerability intelligence, secure architecture design, and adversarial threat modeling, implemented across hybrid infrastructures under international frameworks such as `ISO/IEC 27001/22301`, `NIST CSF`, and `ENS`. I ensure compliance with data protection regulations like `GDPR`, integrating access control, traceability, and rapid response mechanisms in regulated environments.
 

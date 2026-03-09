@@ -1,57 +1,38 @@
-<div class="col">
-  <!-- Commented out to disable clicking on entire card - uncomment to re-enable individual project pages -->
-  <!-- <a href="{% if project.redirect %}{{ project.redirect }}{% else %}{{ project.url | relative_url }}{% endif %}"> -->
-    <div class="card h-100 hoverable">
-      {% if project.img %}
-        {%
-          include figure.liquid
-          loading="eager"
-          path=project.img
-          sizes = "250px"
-          alt="project thumbnail"
-          class="card-img-top"
-        %}
-      {% endif %}
-      <div class="card-body">
+<div class="col project-entry-col">
+  <div class="row no-gutters project-entry">
+    {% if project.img %}
+      <div class="col-auto project-entry-thumb">
+        <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" loading="eager">
+      </div>
+    {% endif %}
+    <div class="col project-entry-body">
+      <div class="project-entry-header">
+        <a href="{{ project.redirect | default: project.github | default: project.url | relative_url }}"
+          {% if project.redirect or project.github %}target="_blank" rel="noopener"{% endif %}
+          class="project-entry-title">{{ project.title }}</a>
+        {% if project.year %}<span class="project-entry-year">{{ project.year }}</span>{% endif %}
         {% if project.category == "collaborations" %}
-          <div class="mb-2">
-            <span class="badge badge-warning" style="font-size: 0.75em; background-color: #e55a2b; border-color: #e55a2b; color: white;">
-              🤝 Hugging Face
-            </span>
-          </div>
+          <span class="project-entry-badge">Hugging Face</span>
         {% endif %}
-        <h2 class="card-title">{{ project.title }} {% if project.year %}<small class="text-muted">({{ project.year }})</small>{% endif %}</h2>
-        <p class="card-text">{{ project.description }}</p>
-        {% if project.tags %}
-          <div class="tags mb-2">
-            {% for tag in project.tags %}
-              <span class="badge badge-primary mr-1 mb-1">#{{ tag }}</span>
-            {% endfor %}
-          </div>
-        {% endif %}
-        <div class="row ml-1 mr-1 p-0">
-          {% if project.github %}
-            <div class="github-icon">
-              <div class="icon" data-toggle="tooltip" title="Code Repository">
-                <a href="{{ project.github }}"><i class="fa-brands fa-github gh-icon"></i></a>
-              </div>
-              {% if project.github_stars %}
-                <span class="stars" data-toggle="tooltip" title="GitHub Stars">
-                  <i class="fa-solid fa-star"></i>
-                  <span id="{{ project.github_stars }}-stars"></span>
-                </span>
-              {% endif %}
-            </div>
-          {% endif %}
-          {% if project.huggingface %}
-            <div class="huggingface-icon ml-2">
-              <div class="icon" data-toggle="tooltip" title="Hugging Face">
-                <a href="{{ project.huggingface }}"><span style="font-size: 1.2em;">🤗</span></a>
-              </div>
-            </div>
-          {% endif %}
+      </div>
+      <p class="project-entry-desc">{{ project.description }}</p>
+      {% if project.tags %}
+        <div class="project-entry-tags">
+          {% for tag in project.tags %}<span class="project-entry-tag">{{ tag }}</span>{% endfor %}
         </div>
+      {% endif %}
+      <div class="project-entry-links">
+        {% if project.github %}
+          <a href="{{ project.github }}" target="_blank" rel="noopener" class="btn btn-sm z-depth-0">
+            <i class="fa-brands fa-github"></i> Code
+          </a>
+        {% endif %}
+        {% if project.huggingface %}
+          <a href="{{ project.huggingface }}" target="_blank" rel="noopener" class="btn btn-sm z-depth-0">
+            HF Space
+          </a>
+        {% endif %}
       </div>
     </div>
-  <!-- </a> -->
+  </div>
 </div>

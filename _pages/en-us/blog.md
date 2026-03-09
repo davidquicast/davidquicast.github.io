@@ -5,7 +5,7 @@ permalink: /blog/
 title: blog
 # blog_name: al-folio in english
 # description: a simple whitespace theme for academics
-# blog_name: MCDAQC Blog
+# blog_name: davidquicast Blog
 # description: Technical tutorials, system administration, and development insights
 nav: true # habilitado para mostrar posts de Medium
 nav_order: 1
@@ -36,29 +36,31 @@ pagination:
 
 {% if site.display_tags and site.display_tags.size > 0 or site.display_categories and site.display_categories.size > 0 %}
 
-  <div class="tag-category-list">
-    <ul class="p-0 m-0">
-      {% for tag in site.display_tags %}
-        <li>
-          <i class="fa-solid fa-hashtag fa-sm"></i> <a href="{{ tag | slugify | prepend: '/blog/tag/' | relative_url }}">{{ tag }}</a>
-        </li>
-        {% unless forloop.last %}
-          <p>&bull;</p>
-        {% endunless %}
-      {% endfor %}
-      {% if site.display_categories.size > 0 and site.display_tags.size > 0 %}
-        <p>&bull;</p>
+  <details class="tag-category-list">
+    <summary class="tag-category-summary">Browse by tag or category</summary>
+    <div class="tag-category-groups">
+      {% if site.display_tags and site.display_tags.size > 0 %}
+        <div class="tag-group">
+          <span class="tag-group-label"><i class="fa-solid fa-hashtag fa-sm"></i> Tags</span>
+          <ul class="p-0 m-0">
+            {% for tag in site.display_tags %}
+              <li><a href="{{ tag | slugify | prepend: '/blog/tag/' | relative_url }}">{{ tag }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
       {% endif %}
-      {% for category in site.display_categories %}
-        <li>
-          <i class="fa-solid fa-tag fa-sm"></i> <a href="{{ category | slugify | prepend: '/blog/category/' | relative_url }}">{{ category }}</a>
-        </li>
-        {% unless forloop.last %}
-          <p>&bull;</p>
-        {% endunless %}
-      {% endfor %}
-    </ul>
-  </div>
+      {% if site.display_categories and site.display_categories.size > 0 %}
+        <div class="tag-group">
+          <span class="tag-group-label"><i class="fa-solid fa-tag fa-sm"></i> Categories</span>
+          <ul class="p-0 m-0">
+            {% for category in site.display_categories %}
+              <li><a href="{{ category | slugify | prepend: '/blog/category/' | relative_url }}">{{ category }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    </div>
+  </details>
   {% endif %}
 
 {% assign featured_posts = site.posts | where: "featured", "true" %}
@@ -154,30 +156,22 @@ pagination:
       </p>
       <p class="post-tags">
         <a href="{{ year | prepend: '/blog/' | prepend: site.baseurl}}">
-          <i class="fa-solid fa-calendar fa-sm"></i> {{ year }} </a>
-
-          {% if tags != "" %}
+          <i class="fa-solid fa-calendar fa-sm"></i> {{ year }}
+        </a>
+        {% if tags != "" %}
           &nbsp; &middot; &nbsp;
-            {% for tag in post.tags %}
-            <a href="{{ tag | slugify | prepend: '/blog/tag/' | prepend: site.baseurl}}">
-              <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}</a>
-              {% unless forloop.last %}
-                &nbsp;
-              {% endunless %}
-              {% endfor %}
-          {% endif %}
-
-          {% if categories != "" %}
+          {% for tag in post.tags limit:3 %}
+            <a href="{{ tag | slugify | prepend: '/blog/tag/' | prepend: site.baseurl}}"><i class="fa-solid fa-hashtag fa-sm"></i>{{ tag }}</a>{% unless forloop.last %}&nbsp;{% endunless %}
+          {% endfor %}
+          {% if post.tags.size > 3 %}&nbsp;<span class="post-tags-more">+{{ post.tags.size | minus: 3 }}</span>{% endif %}
+        {% endif %}
+        {% if categories != "" %}
           &nbsp; &middot; &nbsp;
-            {% for category in post.categories %}
-            <a href="{{ category | slugify | prepend: '/blog/category/' | prepend: site.baseurl}}">
-              <i class="fa-solid fa-tag fa-sm"></i> {{ category }}</a>
-              {% unless forloop.last %}
-                &nbsp;
-              {% endunless %}
-              {% endfor %}
-          {% endif %}
-    </p>
+          {% for category in post.categories limit:2 %}
+            <a href="{{ category | slugify | prepend: '/blog/category/' | prepend: site.baseurl}}"><i class="fa-solid fa-hashtag fa-sm"></i>{{ category }}</a>{% unless forloop.last %}&nbsp;{% endunless %}
+          {% endfor %}
+        {% endif %}
+      </p>
 
 {% if post.thumbnail %}
 
