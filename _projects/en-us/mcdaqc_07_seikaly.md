@@ -2,7 +2,7 @@
 page_id: davidquicast_seikaly
 layout: page
 title: Seikaly
-description: Web3 platform for blockchain-based badge and certificate issuance and validation system
+description: Web3 badge and certificate issuance with on-chain validation.
 img: https://raw.githubusercontent.com/davidquicast/Seikaly/refs/heads/main/landing/Mesa%20de%20trabajo%201seikaly.jpg
 importance: 12
 category: personal
@@ -14,4 +14,4 @@ year: 2023
 
 Web3 platform designed for issuing and validating badges and certificates through blockchain technology, ensuring authenticity and immutable verification of digital credentials.
 
-*[Space for application interface screenshot]* 
+*[Space for application interface screenshot]*

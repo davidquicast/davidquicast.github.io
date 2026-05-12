@@ -2,7 +2,7 @@
 page_id: davidquicast_incident_db
 layout: page
 title: Incident Response Database
-description: Comprehensive database system for cybersecurity incident tracking and response
+description: Database system for tracking, triaging, and documenting security incidents.
 img: https://raw.githubusercontent.com/davidquicast/Incident-Response-DB/refs/heads/main/Diagrams/FinalProject-Page-5.jpg
 importance: 10
 category: personal
@@ -14,4 +14,4 @@ year: 2024
 
 Comprehensive database system for cybersecurity incident tracking, analysis, and response management.
 
-*[Space for database architecture diagram]* 
+*[Space for database architecture diagram]*

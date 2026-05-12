@@ -1,6 +1,7 @@
 ---
 page_id: project_3
 layout: page
+published: false
 title: project 3 with very long name
 description: a project that redirects to another website
 img: assets/img/7.jpg

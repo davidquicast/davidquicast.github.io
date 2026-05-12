@@ -2,7 +2,7 @@
 page_id: davidquicast_rpsls
 layout: page
 title: RPSLS
-description: Multiplatform flutter game app of Rock, Paper, Scissors, Lizard, Spock, developed entirely by AI.
+description: Flutter Rock, Paper, Scissors, Lizard, Spock game built completely and independently by AI.
 img: https://raw.githubusercontent.com/davidquicast/RPSLS/master/assets/ss/feature.png
 importance: 8
 category: personal
@@ -14,4 +14,4 @@ year: 2024
 
 Enhanced Rock Paper Scissors Lizard Spock game featuring advanced AI opponent and interactive gameplay.
 
-*[Space for game interface screenshot]* 
+*[Space for game interface screenshot]*
