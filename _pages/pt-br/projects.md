@@ -6,7 +6,7 @@ permalink: /projects/
 description: Uma crescente coleção de seus projetos interessantes.
 nav: true
 nav_order: 3
-display_categories: [work, fun]
+enable_project_categories: false
 horizontal: false
 ---
 
@@ -39,7 +39,7 @@ horizontal: false
     {% endfor %}
   {% else %}
     <!-- Display projects without categories -->
-    {% assign sorted_projects = site.projects | sort: "importance" %}
+    {% assign sorted_projects = site.projects | sort: "year" | reverse %}
     <!-- Generate cards for each project -->
     {% if page.horizontal %}
       <div class="container">
