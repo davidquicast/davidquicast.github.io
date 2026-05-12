@@ -7,7 +7,7 @@
 # bluesky_url: # your bluesky URL
 # dblp_url: # your DBLP profile url
 # discord_id: # your discord id (18-digit unique numerical identifier)
-email: da.qc@outlook.com # your email address
+email: davidq@personaxis.com # your email address
 # facebook_id: # your facebook id
 # flickr_id: # your flickr id
 github_username: davidquicast # your GitHub user name
@@ -29,7 +29,7 @@ linkedin_username: davidquicast # your LinkedIn user name
 # publons_id: # your ID on Publons
 # quora_username: # your Quora username
 # research_gate_profile: # your profile on ResearchGate
-rss_icon: true # set to true to show the RSS icon
+# rss_icon: false # set to true to show the RSS icon
 # scholar_userid: qc6CJjYAAAAJ # your Google Scholar ID
 # scopus_id: # your profile on Scopus
 # semanticscholar_id: # your Semantic Scholar ID

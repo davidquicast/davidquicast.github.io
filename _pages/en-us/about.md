@@ -8,7 +8,7 @@ subtitle: "" #<a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc.
 profile:
   align: right
   image: prof_pic.jpg
-  image_circular: false # crops the image to make it circular
+  image_circular: true # crops the image to make it circular
   #more_info: >
   #  <p>555 your office number</p>
   #  <p>123 your address street</p>
@@ -21,14 +21,10 @@ social: true # includes social icons at the bottom of the page
 ---
 
 
-Hi 👋🙂 I'm a Systems Engineering graduate specialized in cybersecurity and artificial intelligence **frameworks**.
+Hi, I'm a systems engineer working across cybersecurity and AI safety.
 
-My cybersecurity background includes vulnerability intelligence, secure architecture design, and adversarial threat modeling, implemented across hybrid infrastructures under international frameworks such as `ISO/IEC 27001/22301`, `NIST CSF`, and `ENS`. I ensure compliance with data protection regulations like `GDPR`, integrating access control, traceability, and rapid response mechanisms in regulated environments.
+I build practical AI systems with an emphasis on agent behavior: agentic workflows, synthetic data pipelines, LLM evaluation loops, and secure deployments with planning, tool use, and auditable execution. My work sits where model behavior, safety constraints, product judgment, and operational risk meet.
 
-In AI, I build modular systems around large language models, with emphasis on `prompt engineering`, behavioral control, and secure deployment. I develop agentic architectures with planning and tool-use capabilities, including `code-executing agents` operating in sandboxed, auditable environments. Data pipelines involve filtering, augmentation, and synthetic data generation via simulation and controlled sampling to support both supervised and reinforcement learning. Alignment strategies include `DPO` and `GRPO`, with robustness enhanced through adversarial evaluation.
+In cybersecurity, I focus on vulnerability intelligence, secure architecture, adversarial threat modeling, and compliance-aware controls across hybrid environments. I work with frameworks such as `ISO/IEC 27001/22301`, `NIST CSF`, `ENS`, `GDPR`, and the `EU AI Act`.
 
-My work integrates `AI safety` principles across the model lifecycle—aligned with the `AI Act` (EU), `GDPR`, the `OECD AI Principles`, and `ISO/IEC TR 24368`, which provides technical guidance on AI system risks, resilience, and trustworthiness. I aim to build systems that are trustworthy, compliant, and technically robust for real-world, high-stakes environments.
-
-
-
-
+Right now I am focused on [`PERSONA.md`](https://github.com/personaxis/persona.md) and [Personaxis](https://personaxis.com): an open behavioral specification and registry/deployment platform for AI agent personas. The goal is to make the full persona structure portable, versionable, auditable, and safer to govern across tools, teams, and model updates: identity is only one layer among character, personality, cognition, affect, drives and values, normative self-regulation, memory, metacognition, and presentation.
