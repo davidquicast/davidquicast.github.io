@@ -68,6 +68,12 @@ layout: default
     </p>
   </header>
 
+  <div class="post-reading-layout">
+    <aside class="post-live-toc" aria-label="Post sections">
+      <div class="post-live-toc-title">On this page</div>
+      <nav id="post-live-toc"></nav>
+    </aside>
+
   <article class="post-content">
     {% if page.toc and page.toc.beginning %}
       <div id="table-of-contents">
@@ -79,6 +85,46 @@ layout: default
       {{ content }}
     </div>
   </article>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const content = document.getElementById("markdown-content");
+      const toc = document.getElementById("post-live-toc");
+      if (!content || !toc) return;
+
+      const headings = Array.from(content.querySelectorAll("h2"));
+      if (headings.length < 2) {
+        const shell = document.querySelector(".post-live-toc");
+        if (shell) shell.hidden = true;
+        return;
+      }
+
+      headings.forEach((heading, index) => {
+        if (!heading.id) {
+          heading.id = heading.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || `section-${index + 1}`;
+        }
+        const link = document.createElement("a");
+        link.href = `#${heading.id}`;
+        link.textContent = heading.textContent;
+        toc.appendChild(link);
+      });
+
+      const links = Array.from(toc.querySelectorAll("a"));
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+          if (!visible) return;
+          links.forEach((link) => link.classList.toggle("active", link.getAttribute("href") === `#${visible.target.id}`));
+        },
+        { rootMargin: "-20% 0px -65% 0px", threshold: 0.01 }
+      );
+
+      headings.forEach((heading) => observer.observe(heading));
+    });
+  </script>
 
   {% if page.citation %}
     {% include citation.liquid %}

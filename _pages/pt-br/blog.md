@@ -32,30 +32,33 @@ pagination:
   </div>
   {% endif %}
 
-{% if site.display_tags or site.display_categories %}
+{% if site.display_tags and site.display_tags.size > 0 %}
 
-  <div class="tag-category-list">
-    <ul class="p-0 m-0">
+  <div class="blog-filter" aria-label="Filtros do blog">
+    <div class="blog-filter-topbar">
+      <label class="blog-search">
+        <i class="fa-solid fa-magnifying-glass fa-sm" aria-hidden="true"></i>
+        <input id="blog-search" type="search" placeholder="Pesquisar notas" autocomplete="off">
+      </label>
+      <div class="blog-filter-segment" aria-label="Filtrar por data">
+        <button type="button" class="blog-filter-pill blog-date-pill active" data-blog-year="all">Qualquer data</button>
+        {% assign blog_years = site.posts | map: "date" | compact %}
+        {% assign previous_year = "" %}
+        {% for post in site.posts %}
+          {% assign post_year = post.date | date: "%Y" %}
+          {% unless post_year == previous_year %}
+            <button type="button" class="blog-filter-pill blog-date-pill" data-blog-year="{{ post_year }}">{{ post_year }}</button>
+          {% endunless %}
+          {% assign previous_year = post_year %}
+        {% endfor %}
+      </div>
+    </div>
+    <div class="blog-topic-row" aria-label="Filtrar por tag">
+      <button type="button" class="blog-filter-pill blog-tag-pill active" data-blog-tag="all">Todas</button>
       {% for tag in site.display_tags %}
-        <li>
-          <i class="fa-solid fa-hashtag fa-sm"></i> <a href="{{ tag | slugify | prepend: '/blog/tag/' | relative_url }}">{{ tag }}</a>
-        </li>
-        {% unless forloop.last %}
-          <p>&bull;</p>
-        {% endunless %}
+        <button type="button" class="blog-filter-pill blog-tag-pill" data-blog-tag="{{ tag | downcase }}">{{ tag }}</button>
       {% endfor %}
-      {% if site.display_categories.size > 0 and site.display_tags.size > 0 %}
-        <p>&bull;</p>
-      {% endif %}
-      {% for category in site.display_categories %}
-        <li>
-          <i class="fa-solid fa-tag fa-sm"></i> <a href="{{ category | slugify | prepend: '/blog/category/' | relative_url }}">{{ category }}</a>
-        </li>
-        {% unless forloop.last %}
-          <p>&bull;</p>
-        {% endunless %}
-      {% endfor %}
-    </ul>
+    </div>
   </div>
   {% endif %}
 
@@ -76,6 +79,54 @@ pagination:
 <div class="float-right">
 <i class="fa-solid fa-thumbtack fa-xs"></i>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const posts = Array.from(document.querySelectorAll(".blog-post-item"));
+    const searchInput = document.getElementById("blog-search");
+    const tagButtons = Array.from(document.querySelectorAll(".blog-tag-pill"));
+    const yearButtons = Array.from(document.querySelectorAll(".blog-date-pill"));
+    let activeTag = "all";
+    let activeYear = "all";
+    let query = "";
+
+    function applyBlogFilters() {
+      posts.forEach((post) => {
+        const tags = (post.dataset.blogTags || "").split(" ");
+        const searchable = `${post.dataset.blogTitle || ""} ${post.dataset.blogDescription || ""} ${post.dataset.blogTags || ""}`;
+        const matchesTag = activeTag === "all" || tags.includes(activeTag);
+        const matchesYear = activeYear === "all" || post.dataset.blogYear === activeYear;
+        const matchesSearch = !query || searchable.includes(query);
+        post.hidden = !(matchesTag && matchesYear && matchesSearch);
+      });
+    }
+
+    tagButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeTag = button.dataset.blogTag;
+        tagButtons.forEach((pill) => pill.classList.remove("active"));
+        button.classList.add("active");
+        applyBlogFilters();
+      });
+    });
+
+    yearButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeYear = button.dataset.blogYear;
+        yearButtons.forEach((pill) => pill.classList.remove("active"));
+        button.classList.add("active");
+        applyBlogFilters();
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener("input", () => {
+        query = searchInput.value.trim().toLowerCase();
+        applyBlogFilters();
+      });
+    }
+  });
+</script>
 <h3 class="card-title text-lowercase">{{ post.title }}</h3>
 <p class="card-text">{{ post.description }}</p>
 

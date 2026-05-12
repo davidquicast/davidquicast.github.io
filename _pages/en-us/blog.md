@@ -13,7 +13,7 @@ pagination:
   enabled: true
   collection: posts
   permalink: /page/:num/
-  per_page: 5
+  per_page: 20
   sort_field: date
   sort_reverse: true
   trail:
@@ -34,54 +34,46 @@ pagination:
   </div>
   {% endif %}
 
-{% if site.display_tags and site.display_tags.size > 0 or site.display_categories and site.display_categories.size > 0 %}
+{% if site.display_tags and site.display_tags.size > 0 %}
 
-  <details class="tag-category-list">
-    <summary class="tag-category-summary">Browse by tag or category</summary>
-    <div class="tag-category-groups">
-      {% if site.display_tags and site.display_tags.size > 0 %}
-        <div class="tag-group">
-          <span class="tag-group-label"><i class="fa-solid fa-hashtag fa-sm"></i> Tags</span>
-          <ul class="p-0 m-0">
-            {% for tag in site.display_tags %}
-              <li><a href="{{ tag | slugify | prepend: '/blog/tag/' | relative_url }}">{{ tag }}</a></li>
-            {% endfor %}
-          </ul>
-        </div>
-      {% endif %}
-      {% if site.display_categories and site.display_categories.size > 0 %}
-        <div class="tag-group">
-          <span class="tag-group-label"><i class="fa-solid fa-tag fa-sm"></i> Categories</span>
-          <ul class="p-0 m-0">
-            {% for category in site.display_categories %}
-              <li><a href="{{ category | slugify | prepend: '/blog/category/' | relative_url }}">{{ category }}</a></li>
-            {% endfor %}
-          </ul>
-        </div>
-      {% endif %}
+  <div class="blog-filter" aria-label="Blog filters">
+    <div class="blog-filter-topbar">
+      <label class="blog-search">
+        <i class="fa-solid fa-magnifying-glass fa-sm" aria-hidden="true"></i>
+        <input id="blog-search" type="search" placeholder="Search notes" autocomplete="off">
+      </label>
+      <div class="blog-filter-segment" aria-label="Filter by date">
+        <button type="button" class="blog-filter-pill blog-date-pill active" data-blog-year="all">Any date</button>
+        {% assign blog_years = site.posts | map: "date" | compact %}
+        {% assign previous_year = "" %}
+        {% for post in site.posts %}
+          {% assign post_year = post.date | date: "%Y" %}
+          {% unless post_year == previous_year %}
+            <button type="button" class="blog-filter-pill blog-date-pill" data-blog-year="{{ post_year }}">{{ post_year }}</button>
+          {% endunless %}
+          {% assign previous_year = post_year %}
+        {% endfor %}
+      </div>
     </div>
-  </details>
+    <div class="blog-topic-row" aria-label="Filter by tag">
+      <button type="button" class="blog-filter-pill blog-tag-pill active" data-blog-tag="all">All</button>
+      {% for tag in site.display_tags %}
+        <button type="button" class="blog-filter-pill blog-tag-pill" data-blog-tag="{{ tag | downcase }}">{{ tag }}</button>
+      {% endfor %}
+    </div>
+  </div>
   {% endif %}
 
 {% assign featured_posts = site.posts | where: "featured", "true" %}
 {% if featured_posts.size > 0 %}
 <br>
 
-<div class="container featured-posts">
-{% assign is_even = featured_posts.size | modulo: 2 %}
-<div class="row row-cols-{% if featured_posts.size <= 2 or is_even == 0 %}2{% else %}3{% endif %}">
-{% for post in featured_posts %}
-<div class="col mb-4">
-<a href="{{ post.url | relative_url }}">
-<div class="card hoverable">
-<div class="row g-0">
-<div class="col-md-12">
-<div class="card-body">
-<div class="float-right">
-<i class="fa-solid fa-thumbtack fa-xs"></i>
-</div>
-<h3 class="card-title text-lowercase">{{ post.title }}</h3>
-<p class="card-text">{{ post.description }}</p>
+<div class="featured-posts">
+{% assign post = featured_posts | first %}
+<a href="{{ post.url | relative_url }}" class="featured-post">
+<span class="featured-pin"><i class="fa-solid fa-thumbtack fa-xs"></i> pinned</span>
+<span class="featured-title">{{ post.title }}</span>
+<span class="featured-desc">{{ post.description }}</span>
 
                     {% if post.external_source == blank %}
                       {% assign read_time = post.content | number_of_words | divided_by: 180 | plus: 1 %}
@@ -90,21 +82,12 @@ pagination:
                     {% endif %}
                     {% assign year = post.date | date: "%Y" %}
 
-                    <p class="post-meta">
+                    <span class="post-meta">
                       {{ read_time }} min read &nbsp; &middot; &nbsp;
-                      <a href="{{ year | prepend: '/blog/' | prepend: site.baseurl}}">
-                        <i class="fa-solid fa-calendar fa-sm"></i> {{ year }} </a>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-      {% endfor %}
-      </div>
-    </div>
-    <hr>
+                      <i class="fa-solid fa-calendar fa-sm"></i> {{ year }}
+                    </span>
+</a>
+</div>
 
 {% endif %}
 
@@ -127,7 +110,7 @@ pagination:
     {% assign tags = post.tags | join: "" %}
     {% assign categories = post.categories | join: "" %}
 
-    <li>
+    <li class="blog-post-item" data-blog-title="{{ post.title | downcase }}" data-blog-description="{{ post.description | downcase }}" data-blog-tags="{{ post.tags | join: ' ' | downcase }}" data-blog-year="{{ year }}">
 
 {% if post.thumbnail %}
 
@@ -160,16 +143,10 @@ pagination:
         </a>
         {% if tags != "" %}
           &nbsp; &middot; &nbsp;
-          {% for tag in post.tags limit:3 %}
+          {% for tag in post.tags limit:2 %}
             <a href="{{ tag | slugify | prepend: '/blog/tag/' | prepend: site.baseurl}}"><i class="fa-solid fa-hashtag fa-sm"></i>{{ tag }}</a>{% unless forloop.last %}&nbsp;{% endunless %}
           {% endfor %}
-          {% if post.tags.size > 3 %}&nbsp;<span class="post-tags-more">+{{ post.tags.size | minus: 3 }}</span>{% endif %}
-        {% endif %}
-        {% if categories != "" %}
-          &nbsp; &middot; &nbsp;
-          {% for category in post.categories limit:2 %}
-            <a href="{{ category | slugify | prepend: '/blog/category/' | prepend: site.baseurl}}"><i class="fa-solid fa-hashtag fa-sm"></i>{{ category }}</a>{% unless forloop.last %}&nbsp;{% endunless %}
-          {% endfor %}
+          {% if post.tags.size > 2 %}&nbsp;<span class="post-tags-more">+{{ post.tags.size | minus: 2 }}</span>{% endif %}
         {% endif %}
       </p>
 
@@ -193,3 +170,51 @@ pagination:
 {% endif %}
 
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const posts = Array.from(document.querySelectorAll(".blog-post-item"));
+    const searchInput = document.getElementById("blog-search");
+    const tagButtons = Array.from(document.querySelectorAll(".blog-tag-pill"));
+    const yearButtons = Array.from(document.querySelectorAll(".blog-date-pill"));
+    let activeTag = "all";
+    let activeYear = "all";
+    let query = "";
+
+    function applyBlogFilters() {
+      posts.forEach((post) => {
+        const tags = (post.dataset.blogTags || "").split(" ");
+        const searchable = `${post.dataset.blogTitle || ""} ${post.dataset.blogDescription || ""} ${post.dataset.blogTags || ""}`;
+        const matchesTag = activeTag === "all" || tags.includes(activeTag);
+        const matchesYear = activeYear === "all" || post.dataset.blogYear === activeYear;
+        const matchesSearch = !query || searchable.includes(query);
+        post.hidden = !(matchesTag && matchesYear && matchesSearch);
+      });
+    }
+
+    tagButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeTag = button.dataset.blogTag;
+        tagButtons.forEach((pill) => pill.classList.remove("active"));
+        button.classList.add("active");
+        applyBlogFilters();
+      });
+    });
+
+    yearButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeYear = button.dataset.blogYear;
+        yearButtons.forEach((pill) => pill.classList.remove("active"));
+        button.classList.add("active");
+        applyBlogFilters();
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener("input", () => {
+        query = searchInput.value.trim().toLowerCase();
+        applyBlogFilters();
+      });
+    }
+  });
+</script>
