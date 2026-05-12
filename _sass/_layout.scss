@@ -3,13 +3,17 @@
  ******************************************************************************/
 
 body {
-  padding-bottom: 70px;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
   color: var(--global-text-color);
   background-color: var(--global-bg-color);
-  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 0.96rem;
-  line-height: 1.7;
-  letter-spacing: 0.005em;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  letter-spacing: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 
   h1,
   h2,
@@ -17,23 +21,23 @@ body {
   h4,
   h5,
   h6 {
-    scroll-margin-top: 66px;
-    font-family: 'Outfit', sans-serif;
+    scroll-margin-top: 40px;
+    font-family: 'Inter', sans-serif;
   }
 
   h1 {
     font-weight: 700;
-    letter-spacing: -0.03em;
+    letter-spacing: 0;
   }
 
   h2 {
     font-weight: 700;
-    letter-spacing: -0.025em;
+    letter-spacing: 0;
   }
 
   h3 {
     font-weight: 600;
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
   }
 
   h4,
@@ -55,6 +59,7 @@ body.sticky-bottom-footer {
 
 .container {
   max-width: $max-content-width;
+  flex-grow: 1;
 }
 
 // Profile
