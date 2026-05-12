@@ -2,12 +2,13 @@
 page_id: collab_smol_course
 layout: page
 title: Smol Course
-description: Spanish translations and example notebooks for fine-tuning and dataset creation tutorials
-img: https://raw.githubusercontent.com/huggingface/smol-course/refs/heads/main/banner.png
+description: Spanish translations and notebooks for fine-tuning and dataset creation.
+img: https://github.com/huggingface/smol-course/blob/main/banner.png?raw=true
 year: 2024
 importance: -1
 category: collaborations
 github: https://github.com/huggingface/smol-course
+github_prs: [76, 73, 65]
 related_publications: false
 tags: [ai, llm]
 ---
@@ -22,4 +23,4 @@ Contributed Spanish translations and example notebooks to the Smol Course projec
 - Dataset creation tutorials
 - Educational content localization
 
-*[Multilingual AI education resources and practical examples]* 
+*[Multilingual AI education resources and practical examples]*

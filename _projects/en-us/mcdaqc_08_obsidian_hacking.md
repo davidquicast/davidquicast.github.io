@@ -2,7 +2,7 @@
 page_id: davidquicast_obsidian_hacking
 layout: page
 title: Obsidian Hacking Notes
-description: Comprehensive knowledge base for cybersecurity and ethical hacking using Obsidian
+description: Structured cybersecurity notes for ethical hacking, labs, and references.
 img: https://i.ytimg.com/vi/DbsAQSIKQXk/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGFYgQyh_MA8=&rs=AOn4CLAYSvCj_Drms444LPchkJbwMnJkyA
 importance: 11
 category: personal
@@ -14,4 +14,4 @@ year: 2024
 
 Comprehensive knowledge base for cybersecurity and ethical hacking techniques using Obsidian for organized learning.
 
-*[Space for knowledge base screenshot]* 
+*[Space for knowledge base screenshot]*
