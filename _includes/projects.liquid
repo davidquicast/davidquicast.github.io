@@ -1,7 +1,7 @@
-<div class="col project-entry-col">
+<div class="col project-entry-col" data-project-category="{{ project.category }}" data-project-tags="{% if project.tags %}{{ project.tags | join: ' ' | downcase }}{% endif %}" data-project-title="{{ project.title | downcase }}" data-project-description="{{ project.description | downcase }}">
   <div class="row no-gutters project-entry">
     {% if project.img %}
-      <div class="col-auto project-entry-thumb">
+      <div class="col-auto project-entry-thumb{% if project.img_fit == 'contain' %} project-entry-thumb-contain{% endif %}">
         <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" loading="eager">
       </div>
     {% endif %}
@@ -22,14 +22,32 @@
         </div>
       {% endif %}
       <div class="project-entry-links">
-        {% if project.github %}
+        {% if project.argilla_prs %}
+          {% for pr in project.argilla_prs %}
+            <a href="{{ project.github | replace: 'github.com', 'github.com/argilla-io' }}/pull/{{ pr }}" target="_blank" rel="noopener" class="btn btn-sm z-depth-0">
+              <span style="font-weight: 600;">Argilla #{{ pr }}</span>
+            </a>
+          {% endfor %}
+        {% endif %}
+        {% if project.github_prs %}
+          {% for pr in project.github_prs %}
+            <a href="{{ project.github }}/pull/{{ pr }}" target="_blank" rel="noopener" class="btn btn-sm z-depth-0">
+              <i class="fa-brands fa-github"></i> #{{ pr }}
+            </a>
+          {% endfor %}
+        {% elsif project.github %}
           <a href="{{ project.github }}" target="_blank" rel="noopener" class="btn btn-sm z-depth-0">
             <i class="fa-brands fa-github"></i> Repo
           </a>
         {% endif %}
         {% if project.huggingface %}
           <a href="{{ project.huggingface }}" target="_blank" rel="noopener" class="btn btn-sm z-depth-0">
-            HF Repo
+            <img class="project-link-icon" src="https://huggingface.co/datasets/huggingface/brand-assets/resolve/main/hf-logo.svg" alt="" aria-hidden="true"> HF Repo
+          </a>
+        {% endif %}
+        {% if project.redirect and project.github == blank and project.huggingface == blank %}
+          <a href="{{ project.redirect }}" target="_blank" rel="noopener" class="btn btn-sm z-depth-0">
+            Visit
           </a>
         {% endif %}
       </div>
