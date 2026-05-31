@@ -7,6 +7,7 @@ tags: [wsl2, docker, windows, virtualization, disk-management]
 categories: [tutorials, system-administration]
 featured: false
 github: https://gist.github.com/davidquicast/563c7a92af8da9d911b4f358858d8504
+image: assets/img/blog/2025-01-07-shrink-wsl2-docker-virtual-disks_4.png
 ---
 
 Over time, WSL2 distributions and Docker images can consume significant disk space on your Windows system. Even after deleting files, containers, or images, the allocated virtual disk (VHDX) files do not automatically shrink to reflect the freed space. This comprehensive guide explains how to manually reclaim disk space by optimizing these virtual disks.

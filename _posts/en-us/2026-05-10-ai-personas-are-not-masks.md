@@ -6,6 +6,7 @@ description: "Why AI personas need layered behavioral structure instead of only 
 tags: [ai-personas, ai-safety]
 categories: [notes]
 featured: true
+image: assets/img/blog/2026-05-10-ai-personas-are-not-masks_1.png
 ---
 
 Most people use the word persona as if it meant costume.

@@ -6,6 +6,7 @@ description: "Simple JavaScript trick to enable dark mode on any website using F
 tags: [javascript, css, browser, dark-theme, web-development]
 categories: [tutorials, web-development]
 featured: false
+image: assets/img/blog/2025-01-07-instant-dark-theme-browser-devtools_2.png
 ---
 
 Ever wished you could enable dark mode on websites that don't offer it? Here's a brilliant JavaScript one-liner that instantly transforms any website into dark theme using your browser's developer tools.

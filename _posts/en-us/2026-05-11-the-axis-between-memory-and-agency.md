@@ -6,6 +6,7 @@ description: "A field note on persistent AI agents, memory, agency, and why cont
 tags: [ai-personas, memory]
 categories: [notes]
 featured: false
+image: assets/img/blog/2026-05-11-the-axis-between-memory-and-agency_3.png
 ---
 
 An AI agent without memory can be useful and still feel strangely weightless.

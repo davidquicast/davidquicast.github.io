@@ -4,6 +4,7 @@ layout: default
 {% assign year = page.date | date: '%Y' %}
 {% assign tags = page.tags | join: '' %}
 {% assign categories = page.categories | join: '' %}
+{% assign post_image = page.image | default: page.thumbnail %}
 
 {% if page._styles %}
   <!-- Page/Post style -->
@@ -67,6 +68,12 @@ layout: default
       {% endif %}
     </p>
   </header>
+
+  {% if post_image %}
+    <figure class="post-hero">
+      <img src="{{ post_image | relative_url }}" alt="">
+    </figure>
+  {% endif %}
 
   <div class="post-reading-layout">
     <aside class="post-live-toc" aria-label="Post sections">
