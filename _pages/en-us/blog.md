@@ -34,8 +34,46 @@ pagination:
   </div>
   {% endif %}
 
-{% if site.display_tags and site.display_tags.size > 0 %}
+{% assign featured_posts = site.posts | where: "featured", "true" %}
+{% assign featured_post_url = "" %}
+{% if featured_posts.size > 0 %}
+  {% assign post = featured_posts | first %}
+  {% assign featured_post_url = post.url %}
+  {% if post.external_source == blank %}
+    {% assign read_time = post.content | number_of_words | divided_by: 180 | plus: 1 %}
+  {% else %}
+    {% assign read_time = post.feed_content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
+  {% endif %}
+  {% assign year = post.date | date: "%Y" %}
+  {% assign post_image = post.image | default: post.thumbnail %}
+  {% assign post_href = post.url | relative_url %}
+  {% assign post_target = "" %}
+  {% if post.redirect contains "://" %}
+    {% assign post_href = post.redirect %}
+    {% assign post_target = "external" %}
+  {% elsif post.redirect %}
+    {% assign post_href = post.redirect | relative_url %}
+  {% endif %}
 
+  <section class="blog-featured">
+    <a href="{{ post_href }}" class="blog-featured-image" aria-label="{{ post.title }}"{% if post_target == "external" %} target="_blank" rel="noopener noreferrer"{% endif %}>
+      {% if post_image %}
+        <img src="{{ post_image | relative_url }}" alt="">
+      {% endif %}
+    </a>
+    <div class="blog-featured-copy">
+      <span class="featured-pin"><i class="fa-solid fa-thumbtack fa-xs"></i> pinned</span>
+      <h2><a href="{{ post_href }}"{% if post_target == "external" %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ post.title }}</a></h2>
+      <p>{{ post.description }}</p>
+      <div class="post-meta">
+        {{ read_time }} min read &nbsp; &middot; &nbsp;
+        {% include date_format.liquid format="long" date=post.date %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% if site.display_tags and site.display_tags.size > 0 %}
   <div class="blog-filter" aria-label="Blog filters">
     <div class="blog-filter-topbar">
       <label class="blog-search">
@@ -64,34 +102,7 @@ pagination:
   </div>
   {% endif %}
 
-{% assign featured_posts = site.posts | where: "featured", "true" %}
-{% if featured_posts.size > 0 %}
-<br>
-
-<div class="featured-posts">
-{% assign post = featured_posts | first %}
-<a href="{{ post.url | relative_url }}" class="featured-post">
-<span class="featured-pin"><i class="fa-solid fa-thumbtack fa-xs"></i> pinned</span>
-<span class="featured-title">{{ post.title }}</span>
-<span class="featured-desc">{{ post.description }}</span>
-
-                    {% if post.external_source == blank %}
-                      {% assign read_time = post.content | number_of_words | divided_by: 180 | plus: 1 %}
-                    {% else %}
-                      {% assign read_time = post.feed_content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
-                    {% endif %}
-                    {% assign year = post.date | date: "%Y" %}
-
-                    <span class="post-meta">
-                      {{ read_time }} min read &nbsp; &middot; &nbsp;
-                      <i class="fa-solid fa-calendar fa-sm"></i> {{ year }}
-                    </span>
-</a>
-</div>
-
-{% endif %}
-
-  <ul class="post-list">
+  <ul class="post-list blog-card-grid">
 
     {% if page.pagination.enabled %}
       {% assign postlist = paginator.posts %}
@@ -100,6 +111,7 @@ pagination:
     {% endif %}
 
     {% for post in postlist %}
+    {% unless post.url == featured_post_url %}
 
     {% if post.external_source == blank %}
       {% assign read_time = post.content | number_of_words | divided_by: 180 | plus: 1 %}
@@ -110,23 +122,29 @@ pagination:
     {% assign tags = post.tags | join: "" %}
     {% assign categories = post.categories | join: "" %}
 
-    <li class="blog-post-item" data-blog-title="{{ post.title | downcase }}" data-blog-description="{{ post.description | downcase }}" data-blog-tags="{{ post.tags | join: ' ' | downcase }}" data-blog-year="{{ year }}">
+    {% assign post_image = post.image | default: post.thumbnail %}
+    {% assign post_href = post.url | relative_url %}
+    {% assign post_target = "" %}
+    {% if post.redirect contains "://" %}
+      {% assign post_href = post.redirect %}
+      {% assign post_target = "external" %}
+    {% elsif post.redirect %}
+      {% assign post_href = post.redirect | relative_url %}
+    {% endif %}
 
-{% if post.thumbnail %}
-
-<div class="row">
-          <div class="col-sm-9">
-{% endif %}
-        <h3>
-        {% if post.redirect == blank %}
-          <a class="post-title" href="{{ post.url | relative_url }}">{{ post.title }}</a>
-        {% elsif post.redirect contains '://' %}
-          <a class="post-title" href="{{ post.redirect }}" target="_blank">{{ post.title }}</a>
-          <svg width="2rem" height="2rem" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-            <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path>
+    <li class="blog-post-item blog-card" data-blog-title="{{ post.title | downcase }}" data-blog-description="{{ post.description | downcase }}" data-blog-tags="{{ post.tags | join: ' ' | downcase }}" data-blog-year="{{ year }}">
+      {% if post_image %}
+        <a class="blog-card-image" href="{{ post_href }}" aria-label="{{ post.title }}"{% if post_target == "external" %} target="_blank" rel="noopener noreferrer"{% endif %}>
+          <img src="{{ post_image | relative_url }}" alt="">
+        </a>
+      {% endif %}
+      <div class="blog-card-body">
+      <h3>
+        <a class="post-title" href="{{ post_href }}"{% if post_target == "external" %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ post.title }}</a>
+        {% if post_target == "external" %}
+          <svg width="1.1rem" height="1.1rem" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="currentColor" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path>
           </svg>
-        {% else %}
-          <a class="post-title" href="{{ post.redirect | relative_url }}">{{ post.title }}</a>
         {% endif %}
       </h3>
       <p>{{ post.description }}</p>
@@ -149,17 +167,9 @@ pagination:
           {% if post.tags.size > 2 %}&nbsp;<span class="post-tags-more">+{{ post.tags.size | minus: 2 }}</span>{% endif %}
         {% endif %}
       </p>
-
-{% if post.thumbnail %}
-
-</div>
-
-  <div class="col-sm-3">
-    <img class="card-img" src="{{ post.thumbnail | relative_url }}" style="object-fit: cover; height: 90%" alt="image">
-  </div>
-</div>
-{% endif %}
+      </div>
     </li>
+    {% endunless %}
 
     {% endfor %}
 
