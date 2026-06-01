@@ -1,8 +1,8 @@
 ---
 page_id: personaxis
 layout: page
-title: Personaxis + persona.md
-description: AI persona infrastructure: the Personaxis registry/deployment platform plus persona.md, the open standard and CLI for defining AI agent personas.
+title: "Personaxis + persona.md"
+description: "AI persona infrastructure: the Personaxis registry/deployment platform plus persona.md, the open standard and CLI for defining AI agent personas."
 img: assets/img/projects/personaxis.png
 img_fit: contain
 importance: 0
