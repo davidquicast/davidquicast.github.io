@@ -2,7 +2,7 @@
 page_id: personaxis
 layout: page
 title: Personaxis
-description: AI persona infrastructure: registry, deployment platform, and the PERSONA.md open standard.
+description: AI persona infrastructure that groups the Personaxis registry/deployment platform and the persona.md open standard.
 img: assets/img/projects/personaxis.png
 img_fit: contain
 importance: 0
@@ -11,19 +11,19 @@ redirect: https://personaxis.com
 related_publications: false
 tags: [ai, ai-personas, cli]
 project_items:
-  - title: Registry and deployment platform
+  - title: Personaxis
     label: Platform
-    detail: personaxis.com
+    detail: Registry and deployment platform for AI agent personas.
     icon: link
     url: https://personaxis.com
-  - title: PERSONA.md open standard
-    label: Standard
-    detail: personaxis/persona.md
+  - title: persona.md
+    label: Open standard + CLI
+    detail: Specification, schema, validation, linting, export, diff, templates, and compiler targets.
     icon: github
     url: https://github.com/personaxis/persona.md
 year: 2026
 ---
 
-Personaxis is an AI agent persona registry and deployment platform. It supports browsing, publishing, exporting, and deploying persona configurations across agent frameworks.
+Personaxis groups two parts of the same project: the hosted registry/deployment platform and `persona.md`, the open specification and CLI for defining who an AI agent is.
 
-The product is built around `PERSONA.md`: an open, versionable behavioral specification for defining who an AI agent is across identity, character, personality, cognition, affect, values, self-regulation, memory, metacognition, and presentation.
+`persona.md` is a declarative Markdown/YAML format for agent personhood across identity, character, personality, cognition, affect, values, self-regulation, memory, metacognition, and presentation.
