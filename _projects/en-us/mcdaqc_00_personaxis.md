@@ -1,15 +1,16 @@
 ---
 page_id: personaxis
 layout: page
-title: Personaxis
-description: AI persona infrastructure that groups the Personaxis registry/deployment platform and the persona.md open standard.
+title: Personaxis + persona.md
+description: AI persona infrastructure: the Personaxis registry/deployment platform plus persona.md, the open standard and CLI for defining AI agent personas.
 img: assets/img/projects/personaxis.png
 img_fit: contain
 importance: 0
 category: personal
 redirect: https://personaxis.com
 related_publications: false
-tags: [ai, ai-personas, cli]
+tags: [ai, ai-personas, persona-md, cli]
+display_tags: [ai, ai-personas, persona.md, cli]
 project_items:
   - title: Personaxis
     label: Platform
