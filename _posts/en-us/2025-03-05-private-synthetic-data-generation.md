@@ -8,7 +8,7 @@ categories: [external, ai]
 featured: false
 external_source: huggingface.co
 redirect: https://huggingface.co/blog/davidquicast/private-synthetic-data-generation
-image: assets/img/blog/2025-03-05-external-huggingfaceco-private-synthetic-data-generation_1.png
+image: assets/img/blog/2025-03-05-external-huggingfaceco-private-synthetic-data-generation_1.webp
 ---
 
 External post hosted on Hugging Face.
