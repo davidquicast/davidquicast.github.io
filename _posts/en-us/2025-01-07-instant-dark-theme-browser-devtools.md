@@ -6,7 +6,9 @@ description: "Simple JavaScript trick to enable dark mode on any website using F
 tags: [javascript, css, browser, dark-theme, web-development]
 categories: [tutorials, web-development]
 featured: false
-image: assets/img/blog/2025-01-07-instant-dark-theme-browser-devtools_2.webp
+image: /assets/img/editorial/instant-dark-theme-browser-devtools-1440.webp
+thumbnail: /assets/img/editorial/instant-dark-theme-browser-devtools-480.webp
+cover_alt: "A paper landscape reverses light and dark across an overlapping window, illustrating CSS color inversion."
 ---
 
 Ever wished you could enable dark mode on websites that don't offer it? Here's a brilliant JavaScript one-liner that instantly transforms any website into dark theme using your browser's developer tools.
@@ -27,7 +29,7 @@ let css = `
     background-color: white;
     mix-blend-mode: difference;
     z-index: 1;
-`
+`;
 cover.setAttribute("style", css);
 document.body.appendChild(cover);
 ```
@@ -37,6 +39,7 @@ document.body.appendChild(cover);
 This technique leverages CSS's `mix-blend-mode: difference` property to create an instant color inversion effect:
 
 ### **The Magic Properties:**
+
 - **`position: fixed`** - Covers the entire viewport
 - **`width: 100vw; height: 100vh`** - Full screen coverage
 - **`pointer-events: none`** - Allows clicking through the overlay
@@ -44,9 +47,11 @@ This technique leverages CSS's `mix-blend-mode: difference` property to create a
 - **`z-index: 1`** - Ensures overlay stays on top
 
 ### **Color Inversion Logic:**
+
 When `mix-blend-mode: difference` is applied with a white background:
+
 - **White** → Black
-- **Black** → White  
+- **Black** → White
 - **Light colors** → Dark colors
 - **Bright colors** → Muted/inverted colors
 
@@ -61,12 +66,14 @@ When `mix-blend-mode: difference` is applied with a white background:
 ## Use Cases
 
 ### **Perfect for:**
+
 - 📚 **Late-night reading** on bright websites
 - 👀 **Reducing eye strain** during long browsing sessions
 - 🎨 **Testing how your site looks** with inverted colors
 - 🔧 **Quick dark mode** when websites lack native support
 
 ### **Limitations:**
+
 - Images and videos will also be inverted
 - Some color combinations may look odd
 - Effect is temporary (refreshing the page removes it)
@@ -75,19 +82,35 @@ When `mix-blend-mode: difference` is applied with a white background:
 ## Pro Tips
 
 ### **Remove the Effect:**
+
 ```javascript
 // Remove the dark overlay
 document.querySelector('div[style*="mix-blend-mode: difference"]').remove();
 ```
 
 ### **Toggle Function:**
+
 Create a bookmark with this code for one-click toggling:
+
 ```javascript
-javascript:(function(){var e=document.querySelector('div[style*="mix-blend-mode: difference"]');if(e)e.remove();else{var t=document.createElement("div");t.setAttribute("style","position:fixed;pointer-events:none;top:0;left:0;width:100vw;height:100vh;background-color:white;mix-blend-mode:difference;z-index:1"),document.body.appendChild(t)}})();
+javascript: (function () {
+  var e = document.querySelector('div[style*="mix-blend-mode: difference"]');
+  if (e) e.remove();
+  else {
+    var t = document.createElement("div");
+    t.setAttribute(
+      "style",
+      "position:fixed;pointer-events:none;top:0;left:0;width:100vw;height:100vh;background-color:white;mix-blend-mode:difference;z-index:1"
+    ),
+      document.body.appendChild(t);
+  }
+})();
 ```
 
 ### **Browser Compatibility:**
+
 This technique works on all modern browsers that support:
+
 - CSS `mix-blend-mode` property
 - ES6 template literals
 - Modern DOM methods
@@ -100,4 +123,4 @@ In an era where **dark themes are becoming standard** for better accessibility a
 
 ---
 
-**⚡ Quick Bookmark:** Save the toggle function as a browser bookmark for instant access to dark mode on any website! 
+**⚡ Quick Bookmark:** Save the toggle function as a browser bookmark for instant access to dark mode on any website!

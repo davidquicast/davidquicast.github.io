@@ -1,0 +1,16 @@
+# Transparent curation: newest papers, selected projects and recent writing.
+# Projects have year precision unless published_at is explicitly supplied.
+featured_projects:
+  - mcdaqc_13_iberotales
+  - collab_01_synthetic_data_generator
+  - mcdaqc_14_vuln_intelligence
+  - collab_02_smol_course
+  - mcdaqc_12_corpus_historia
+spotlight_projects:
+  - mcdaqc_00_personaxis
+  - mcdaqc_16_sorry_bench_multilingual
+  - mcdaqc_15_open_deep_research
+
+featured_papers:
+  - include-2-0
+  - culturalriddles

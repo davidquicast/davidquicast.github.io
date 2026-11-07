@@ -1,6 +1,6 @@
 ---
 page_id: davidquicast_gpt2_android
-layout: page
+layout: project
 title: GPT-2 Offline Android
 description: Offline Android implementation of a GPT-2 language model.
 img: https://tavant.com/wp-content/uploads/2024/09/ODML.png
@@ -13,5 +13,3 @@ year: 2023
 ---
 
 Mobile implementation of GPT-2 language model optimized for offline operation on Android devices.
-
-*[Space for mobile app screenshot]*

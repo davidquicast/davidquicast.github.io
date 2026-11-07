@@ -1,0 +1,9 @@
+<div class="journal-list wall-grid">
+  {% for post in page.posts -%}
+    {%- unless post.published == false %}
+      {% assign loading = 'lazy' -%}
+      {%- if forloop.index < 4 %}{% assign loading = 'eager' %}{% endif %}
+      {% include writing-card.liquid post=post loading=loading %}
+    {% endunless -%}
+  {%- endfor %}
+</div>

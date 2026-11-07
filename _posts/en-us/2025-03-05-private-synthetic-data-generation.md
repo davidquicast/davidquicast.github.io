@@ -8,7 +8,11 @@ categories: [external, ai]
 featured: false
 external_source: huggingface.co
 redirect: https://huggingface.co/blog/davidquicast/private-synthetic-data-generation
-image: assets/img/blog/2025-03-05-external-huggingfaceco-private-synthetic-data-generation_1.webp
+image: /assets/img/editorial/private-synthetic-data-generation-1440.webp
+thumbnail: /assets/img/editorial/private-synthetic-data-generation-480.webp
+cover_alt: "A paper workshop processes and sorts cards within a private perimeter, illustrating local dataset generation and review."
 ---
 
-External post hosted on Hugging Face.
+This article walks through private synthetic data generation with Docker, Ollama and Argilla, from local inference to dataset review. The full article is published on Hugging Face.
+
+[Read the full article on Hugging Face]({{ page.redirect }})

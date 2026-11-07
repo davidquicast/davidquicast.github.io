@@ -1,6 +1,6 @@
 ---
 page_id: davidquicast_kuntur
-layout: page
+layout: project
 title: Kuntur
 description: Peruvian legal-context LLM in Spanish and Quechua.
 img: https://cdn-uploads.huggingface.co/production/uploads/64461026e1fd8d65b27e6187/L3eQBj1eJBB02B2V7fBex.jpeg
@@ -14,5 +14,3 @@ year: 2024
 ---
 
 Legal context language model designed to provide personalized legal advice in Spanish and Quechua based on Peruvian legal texts. Specialized LLM trained on Peruvian legal corpus for accessible legal consultation.
-
-*[Space for legal consultation interface]*

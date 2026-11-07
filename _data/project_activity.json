@@ -1,0 +1,410 @@
+{
+  "schema_version": 1,
+  "projects": {
+    "collab_synthetic_data_generator": {
+      "resources": [
+        {
+          "kind": "github",
+          "url": "https://github.com/argilla-io/synthetic-data-generator",
+          "source_url": "https://api.github.com/repos/argilla-io/synthetic-data-generator",
+          "created_at": "2024-11-21T11:46:34Z",
+          "updated_at": "2025-09-19T13:26:29Z",
+          "commit_url": "https://github.com/argilla-io/synthetic-data-generator/commit/771d5d7885a7d38c6983ed8d68396a4937658583",
+          "sha": "771d5d7885a7d38c6983ed8d68396a4937658583",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok",
+          "archived": false
+        }
+      ],
+      "contributions": [
+        {
+          "url": "https://github.com/argilla-io/synthetic-data-generator/pull/26",
+          "source_url": "https://api.github.com/repos/argilla-io/synthetic-data-generator/pulls/26",
+          "merged_at": "2025-02-20T07:47:37Z",
+          "author": "davidquicast",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "merged"
+        }
+      ]
+    },
+    "collab_smol_course": {
+      "resources": [
+        {
+          "kind": "github",
+          "url": "https://github.com/huggingface/smol-course",
+          "source_url": "https://api.github.com/repos/huggingface/smol-course",
+          "created_at": "2024-11-25T19:22:43Z",
+          "updated_at": "2026-10-06T09:38:49Z",
+          "commit_url": "https://github.com/huggingface/smol-course/commit/b712705327d1204353a1209e991334d441b4de7e",
+          "sha": "b712705327d1204353a1209e991334d441b4de7e",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok",
+          "archived": false
+        }
+      ],
+      "contributions": [
+        {
+          "url": "https://github.com/huggingface/smol-course/pull/76",
+          "source_url": "https://api.github.com/repos/huggingface/smol-course/pulls/76",
+          "merged_at": "2024-12-10T09:41:52Z",
+          "author": "davidquicast",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "merged"
+        },
+        {
+          "url": "https://github.com/huggingface/smol-course/pull/73",
+          "source_url": "https://api.github.com/repos/huggingface/smol-course/pulls/73",
+          "merged_at": "2024-12-16T08:41:25Z",
+          "author": "davidquicast",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "merged"
+        },
+        {
+          "url": "https://github.com/huggingface/smol-course/pull/65",
+          "source_url": "https://api.github.com/repos/huggingface/smol-course/pulls/65",
+          "merged_at": "2024-12-09T09:30:33Z",
+          "author": "davidquicast",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "merged"
+        }
+      ]
+    },
+    "collab_gemma_recipes": {
+      "resources": [
+        {
+          "kind": "github",
+          "url": "https://github.com/huggingface/huggingface-gemma-recipes",
+          "source_url": "https://api.github.com/repos/huggingface/huggingface-gemma-recipes",
+          "created_at": "2025-06-26T07:43:27Z",
+          "updated_at": "2026-08-25T12:09:57Z",
+          "commit_url": "https://github.com/huggingface/huggingface-gemma-recipes/commit/7f3f0668c7e92dfcd1a143aef8f77ea5a82a51e0",
+          "sha": "7f3f0668c7e92dfcd1a143aef8f77ea5a82a51e0",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok",
+          "archived": false
+        }
+      ],
+      "contributions": [
+        {
+          "url": "https://github.com/huggingface/huggingface-gemma-recipes/pull/18",
+          "source_url": "https://api.github.com/repos/huggingface/huggingface-gemma-recipes/pulls/18",
+          "merged_at": "2025-07-17T10:25:18Z",
+          "author": "davidquicast",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "merged"
+        }
+      ]
+    },
+    "personaxis": {
+      "resources": [
+        {
+          "kind": "github",
+          "url": "https://github.com/personaxis/persona.md",
+          "source_url": "https://api.github.com/repos/personaxis/persona.md",
+          "created_at": "2026-04-20T09:54:58Z",
+          "updated_at": "2026-10-09T17:54:58Z",
+          "commit_url": "https://github.com/personaxis/persona.md/commit/292753bbbf1d3ac057e6d4e4c18da016c4a376ea",
+          "sha": "292753bbbf1d3ac057e6d4e4c18da016c4a376ea",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok",
+          "archived": false
+        }
+      ]
+    },
+    "davidquicast_gpt2_android": {
+      "resources": [
+        {
+          "kind": "github",
+          "url": "https://github.com/davidquicast/gpt2-offline-android-app",
+          "source_url": "https://api.github.com/repos/davidquicast/GPT2-Offline-Android-App",
+          "created_at": "2023-07-14T22:32:55Z",
+          "updated_at": "2023-09-19T05:23:29Z",
+          "commit_url": "https://github.com/davidquicast/gpt2-offline-android-app/commit/eb1a1199b5c1158423aa1e74d129714c554f93f1",
+          "sha": "eb1a1199b5c1158423aa1e74d129714c554f93f1",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok",
+          "archived": false
+        }
+      ]
+    },
+    "davidquicast_rpsls": {
+      "resources": [
+        {
+          "kind": "github",
+          "url": "https://github.com/davidquicast/RPSLS",
+          "source_url": "https://api.github.com/repos/davidquicast/RPSLS",
+          "created_at": "2024-07-11T01:40:18Z",
+          "updated_at": "2024-07-11T02:08:23Z",
+          "commit_url": "https://github.com/davidquicast/RPSLS/commit/f71e4e7066a3a28813ca115fc8a2c69397881974",
+          "sha": "f71e4e7066a3a28813ca115fc8a2c69397881974",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok",
+          "archived": false
+        }
+      ]
+    },
+    "davidquicast_incident_db": {
+      "resources": [
+        {
+          "kind": "github",
+          "url": "https://github.com/davidquicast/Incident-Response-DB",
+          "source_url": "https://api.github.com/repos/davidquicast/Incident-Response-DB",
+          "created_at": "2024-05-21T06:43:00Z",
+          "updated_at": "2024-05-22T12:44:23Z",
+          "commit_url": "https://github.com/davidquicast/Incident-Response-DB/commit/53c4fa8be9ed2513b05c1c82f61414b457701586",
+          "sha": "53c4fa8be9ed2513b05c1c82f61414b457701586",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok",
+          "archived": false
+        }
+      ]
+    },
+    "davidquicast_devfolio": {
+      "resources": [
+        {
+          "kind": "github",
+          "url": "https://github.com/davidquicast/devfolio",
+          "source_url": "https://api.github.com/repos/davidquicast/DevFolio",
+          "created_at": "2024-08-23T13:44:13Z",
+          "updated_at": "2025-07-07T06:26:28Z",
+          "commit_url": "https://github.com/davidquicast/devfolio/commit/a0f5b5e28c4bdd499a6af932da61b5b29b41c8fe",
+          "sha": "a0f5b5e28c4bdd499a6af932da61b5b29b41c8fe",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok",
+          "archived": false
+        }
+      ]
+    },
+    "davidquicast_icecuy": {
+      "resources": [
+        {
+          "kind": "github",
+          "url": "https://github.com/davidquicast/Icecuy",
+          "source_url": "https://api.github.com/repos/davidquicast/Icecuy",
+          "created_at": "2023-05-26T17:20:36Z",
+          "updated_at": "2025-07-07T08:01:41Z",
+          "commit_url": "https://github.com/davidquicast/Icecuy/commit/f18a098541b13fd8bec6466f8b077d4c95aed342",
+          "sha": "f18a098541b13fd8bec6466f8b077d4c95aed342",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok",
+          "archived": false
+        }
+      ]
+    },
+    "davidquicast_seikaly": {
+      "resources": [
+        {
+          "kind": "github",
+          "url": "https://github.com/davidquicast/Seikaly",
+          "source_url": "https://api.github.com/repos/davidquicast/Seikaly",
+          "created_at": "2023-10-08T10:00:28Z",
+          "updated_at": "2023-10-08T10:27:14Z",
+          "commit_url": "https://github.com/davidquicast/Seikaly/commit/d2bb615617814857dd752cfe5e5a64061b901962",
+          "sha": "d2bb615617814857dd752cfe5e5a64061b901962",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok",
+          "archived": false
+        }
+      ]
+    },
+    "davidquicast_obsidian_hacking": {
+      "resources": [
+        {
+          "kind": "github",
+          "url": "https://github.com/davidquicast/Obsidian-Hacking-Notes",
+          "source_url": "https://api.github.com/repos/davidquicast/obsidian-hacking-notes",
+          "created_at": "2024-01-29T03:00:21Z",
+          "updated_at": "2024-01-29T03:39:19Z",
+          "commit_url": "https://github.com/davidquicast/Obsidian-Hacking-Notes/commit/24b3753f3ed393920f9505f1dd7d8d1224f572d2",
+          "sha": "24b3753f3ed393920f9505f1dd7d8d1224f572d2",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok",
+          "archived": false
+        }
+      ]
+    },
+    "davidquicast_sw_dev_multi_agent": {
+      "resources": [
+        {
+          "kind": "github",
+          "url": "https://github.com/davidquicast/sw-dev-multi-agent",
+          "source_url": "https://api.github.com/repos/davidquicast/sw-dev-multi-agent",
+          "created_at": "2024-12-21T03:53:41Z",
+          "updated_at": "2024-12-22T00:08:48Z",
+          "commit_url": "https://github.com/davidquicast/sw-dev-multi-agent/commit/048ca9d68e9ae3976d9708ed9c843e13f6a44bf7",
+          "sha": "048ca9d68e9ae3976d9708ed9c843e13f6a44bf7",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok",
+          "archived": false
+        }
+      ]
+    },
+    "davidquicast_kuntur": {
+      "resources": [
+        {
+          "kind": "github",
+          "url": "https://github.com/davidquicast/Kuntur",
+          "source_url": "https://api.github.com/repos/davidquicast/kuntur",
+          "created_at": "2024-04-11T02:48:22Z",
+          "updated_at": "2026-10-04T18:06:57Z",
+          "commit_url": "https://github.com/davidquicast/Kuntur/commit/e7454ba08f51020c440d426b392bec745151e80f",
+          "sha": "e7454ba08f51020c440d426b392bec745151e80f",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok",
+          "archived": false
+        },
+        {
+          "kind": "hf_model",
+          "url": "https://huggingface.co/davidquicast/kuntur-peru-legal-es-gemma-2b-it-merged",
+          "source_url": "https://huggingface.co/api/models/davidquicast/kuntur-peru-legal-es-gemma-2b-it-merged",
+          "created_at": "2024-04-11T06:19:27.000Z",
+          "updated_at": "2024-08-23T12:39:50.000Z",
+          "commit_url": "https://huggingface.co/davidquicast/kuntur-peru-legal-es-gemma-2b-it-merged/commit/2c6e9674f18ea659db4faaa5ddf0eef7d56e00f2",
+          "sha": "2c6e9674f18ea659db4faaa5ddf0eef7d56e00f2",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok"
+        }
+      ]
+    },
+    "davidquicast_portfolio_site": {
+      "resources": [
+        {
+          "kind": "github",
+          "url": "https://github.com/davidquicast/davidquicast.github.io",
+          "source_url": "https://api.github.com/repos/davidquicast/davidquicast.github.io",
+          "created_at": "2024-12-15T23:53:52Z",
+          "updated_at": "2026-06-20T08:47:54Z",
+          "commit_url": "https://github.com/davidquicast/davidquicast.github.io/commit/2421da6d256cf996e70631f21aa9e1fcf9f42f1a",
+          "sha": "2421da6d256cf996e70631f21aa9e1fcf9f42f1a",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok",
+          "archived": false
+        }
+      ]
+    },
+    "davidquicast_corpus_historia": {
+      "resources": [
+        {
+          "kind": "github",
+          "url": "https://github.com/davidquicast/Corpus-Historia-Peru-ExamenAdmisionUNMSM-MultipleChoice",
+          "source_url": "https://api.github.com/repos/davidquicast/Corpus-Historia-Peru-ExamenAdmisionUNMSM-MultipleChoice",
+          "created_at": "2025-04-20T05:44:36Z",
+          "updated_at": "2025-04-20T18:10:16Z",
+          "commit_url": "https://github.com/davidquicast/Corpus-Historia-Peru-ExamenAdmisionUNMSM-MultipleChoice/commit/6445c51c7dcd27f33176533fb4bbb02fced4de1a",
+          "sha": "6445c51c7dcd27f33176533fb4bbb02fced4de1a",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok",
+          "archived": false
+        }
+      ]
+    },
+    "davidquicast_iberotales": {
+      "resources": [
+        {
+          "kind": "github",
+          "url": "https://github.com/davidquicast/Iberotales",
+          "source_url": "https://api.github.com/repos/davidquicast/Iberotales",
+          "created_at": "2025-05-02T16:12:32Z",
+          "updated_at": "2025-06-05T11:37:48Z",
+          "commit_url": "https://github.com/davidquicast/Iberotales/commit/2398a08659fbea7bd577c2502a4771ae18b16afd",
+          "sha": "2398a08659fbea7bd577c2502a4771ae18b16afd",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok",
+          "archived": false
+        },
+        {
+          "kind": "hf_space",
+          "url": "https://huggingface.co/spaces/somosnlp-hackathon-2025/Iberotales-thinking-demo",
+          "source_url": "https://huggingface.co/api/spaces/somosnlp-hackathon-2025/Iberotales-thinking-demo",
+          "created_at": "2025-06-05T11:00:02.000Z",
+          "updated_at": "2025-06-05T14:53:24.000Z",
+          "commit_url": "https://huggingface.co/spaces/somosnlp-hackathon-2025/Iberotales-thinking-demo/commit/d6e70b10d9d78747f032f3fed9a2338db9c6a7d9",
+          "sha": "d6e70b10d9d78747f032f3fed9a2338db9c6a7d9",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok"
+        }
+      ]
+    },
+    "davidquicast_vuln_intelligence": {
+      "resources": [
+        {
+          "kind": "github",
+          "url": "https://github.com/davidquicast/vulnerability-intelligence-diagrammatic-reasoning",
+          "source_url": "https://api.github.com/repos/davidquicast/vulnerability-intelligence-diagrammatic-reasoning",
+          "created_at": "2025-05-13T21:54:59Z",
+          "updated_at": "2025-06-06T21:39:28Z",
+          "commit_url": "https://github.com/davidquicast/vulnerability-intelligence-diagrammatic-reasoning/commit/0ad141cf91b62659da108a7072962b962644bb18",
+          "sha": "0ad141cf91b62659da108a7072962b962644bb18",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok",
+          "archived": false
+        },
+        {
+          "kind": "hf_dataset",
+          "url": "https://huggingface.co/datasets/davidquicast/vulnerability-intelligence-diagrammatic-reasoning",
+          "source_url": "https://huggingface.co/api/datasets/davidquicast/vulnerability-intelligence-diagrammatic-reasoning",
+          "created_at": "2025-05-14T00:20:13.000Z",
+          "updated_at": "2025-05-14T01:23:10.000Z",
+          "commit_url": "https://huggingface.co/datasets/davidquicast/vulnerability-intelligence-diagrammatic-reasoning/commit/005a83f4eb9e048b9d2123dfb36ed4bea0d0ea65",
+          "sha": "005a83f4eb9e048b9d2123dfb36ed4bea0d0ea65",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok"
+        }
+      ]
+    },
+    "davidquicast_open_deep_research": {
+      "resources": [
+        {
+          "kind": "github",
+          "url": "https://github.com/davidquicast/open-deep-research-vulnerability-intelligence",
+          "source_url": "https://api.github.com/repos/davidquicast/open-deep-research-vulnerability-intelligence",
+          "created_at": "2025-06-08T18:58:50Z",
+          "updated_at": "2025-07-02T20:49:27Z",
+          "commit_url": "https://github.com/davidquicast/open-deep-research-vulnerability-intelligence/commit/763b84479979e79595e5e211a71dc77cc6224f49",
+          "sha": "763b84479979e79595e5e211a71dc77cc6224f49",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok",
+          "archived": false
+        },
+        {
+          "kind": "hf_space",
+          "url": "https://huggingface.co/spaces/davidquicast/open-deep-research-vulnerability-intelligence",
+          "source_url": "https://huggingface.co/api/spaces/davidquicast/open-deep-research-vulnerability-intelligence",
+          "created_at": "2025-06-30T23:16:59.000Z",
+          "updated_at": "2025-07-02T19:48:35.000Z",
+          "commit_url": "https://huggingface.co/spaces/davidquicast/open-deep-research-vulnerability-intelligence/commit/fdb144728230a4306f6b5caf77b1b7148e052bbe",
+          "sha": "fdb144728230a4306f6b5caf77b1b7148e052bbe",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok"
+        }
+      ]
+    },
+    "sorry_bench_multilingual_translation": {
+      "resources": [
+        {
+          "kind": "github",
+          "url": "https://github.com/davidquicast/sorry-bench-translation-pipeline",
+          "source_url": "https://api.github.com/repos/davidquicast/sorry-bench-translation-pipeline",
+          "created_at": "2026-03-31T09:44:35Z",
+          "updated_at": "2026-04-08T06:57:19Z",
+          "commit_url": "https://github.com/davidquicast/sorry-bench-translation-pipeline/commit/5e9d8b9045715612de446ae4a78db26c7862d9f9",
+          "sha": "5e9d8b9045715612de446ae4a78db26c7862d9f9",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok",
+          "archived": false
+        },
+        {
+          "kind": "hf_dataset",
+          "url": "https://huggingface.co/datasets/tiny-aya-safety/sorry-bench-202503-multilingual",
+          "source_url": "https://huggingface.co/api/datasets/tiny-aya-safety/sorry-bench-202503-multilingual",
+          "created_at": "2026-03-31T07:08:34.000Z",
+          "updated_at": "2026-04-08T06:25:01.000Z",
+          "commit_url": "https://huggingface.co/datasets/tiny-aya-safety/sorry-bench-202503-multilingual/commit/599c7126940d5862fc476f93795d5ab276bdf0cc",
+          "sha": "599c7126940d5862fc476f93795d5ab276bdf0cc",
+          "checked_at": "2026-11-05T12:11:28.476899+00:00",
+          "status": "ok"
+        }
+      ]
+    }
+  }
+}

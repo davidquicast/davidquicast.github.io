@@ -1,0 +1,19 @@
+# MCP servers execute inside the portfolio Docker service.
+# Open Codex from this trusted repository; no global credentials or approval settings are changed.
+
+[mcp_servers.shadcn]
+command = "docker"
+args = ["compose", "exec", "-T", "jekyll", "npm", "exec", "--prefix", "tools/mcp", "--", "shadcn", "mcp"]
+startup_timeout_sec = 60
+tool_timeout_sec = 120
+
+[mcp_servers.chrome-devtools]
+command = "docker"
+args = ["compose", "exec", "-T", "jekyll", "npm", "exec", "--prefix", "tools/mcp", "--", "chrome-devtools-mcp", "--headless", "--isolated", "--executablePath=/usr/bin/chromium", "--chromeArg=--no-sandbox", "--chromeArg=--disable-dev-shm-usage", "--no-usage-statistics", "--no-performance-crux", "--filesystemRoot=/srv/jekyll"]
+startup_timeout_sec = 60
+tool_timeout_sec = 120
+
+# Deferred until credentials are available; never store an API key in this file.
+[mcp_servers."21st"]
+url = "https://21st.dev/api/mcp"
+enabled = false

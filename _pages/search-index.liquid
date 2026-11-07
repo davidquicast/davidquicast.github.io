@@ -1,0 +1,54 @@
+---
+layout: null
+permalink: /search-index.json
+sitemap: false
+---
+[ {"title":{{ 'navigation.overview' | ui_label: 'Overview' | jsonify }},"description":
+{{- 'David Quispe, systems engineering, cybersecurity and AI safety.' | jsonify -}}
+,"url":{{ '/' | locale_url: site.active_lang | jsonify }},"type":"Page"}, {"title":
+{{- 'navigation.projects' | ui_label: 'Projects' | jsonify -}}
+,"description":{{ 'Personal projects and open-source collaborations.' | jsonify }},"url":
+{{- '/projects/' | locale_url: site.active_lang | jsonify -}}
+,"type":"Page"}, {"title":{{ 'navigation.writing' | ui_label: 'Writing' | jsonify }},"description":
+{{- 'Articles, technical essays and project notes.' | jsonify -}}
+,"url":
+{{- '/blog/' | locale_url: site.active_lang | jsonify -}}
+,"type":"Page"}, {"title":{{ 'navigation.research' | ui_label: 'Research' | jsonify }},"description":
+{{- 'Research and publications.' | jsonify -}}
+,"url":
+{{- '/publications/' | locale_url: site.active_lang | jsonify -}}
+,"type":"Page"}, {"title":{{ 'navigation.resume' | ui_label: 'Resume' | jsonify }},"description":
+{{- 'Professional experience and downloadable curriculum vitae.' | jsonify -}}
+,"url":{{ '/resume/' | locale_url: site.active_lang | jsonify }},"type":"Page"}, {"title":
+{{- 'navigation.about' | ui_label: 'About' | jsonify -}}
+,"description":{{ 'Background, interests and contact.' | jsonify }},"url":{{ '/about/' | locale_url: site.active_lang | jsonify }},"type":"Page"}
+{%- if site.enable_darkmode -%}
+  , {"title":{{ 'theme.to_light' | ui_label: 'Light theme' | jsonify }},"type":"Action","action":"light"}, {"title":
+  {{- 'theme.to_dark' | ui_label: 'Dark theme' | jsonify -}}
+  ,"type":"Action","action":"dark"}, {"title":{{ 'theme.system' | ui_label: 'System theme' | jsonify }},"type":"Action","action":"system"}
+{%- endif -%}
+{%- if site.socials_in_search -%}
+  {%- for profile in site.data.profile_links -%}
+    , {"title":{{ profile.label | jsonify }},"description":{{ '' | jsonify }},"url":{{ profile.url | jsonify }},"type":"Profile"}
+  {%- endfor -%}
+{%- endif -%}
+{%- for project in site.projects -%}
+  {%- if project.published != false -%}
+    , {"title":{{ project.title | jsonify }},"description":{{ project.description | strip_html | default: '' | jsonify }},"url":
+    {{- project.url | locale_url: site.active_lang | jsonify -}}
+    ,"type":"Project","lang":{{ project | content_locale | locale_tag | jsonify }},"tags":{{ project.tags | join: ' ' | jsonify }}}
+  {%- endif -%}
+{%- endfor -%}
+{%- for post in site.posts -%}
+  {%- if post.published != false -%}
+    , {"title":{{ post.title | jsonify }},"description":{{ post.description | strip_html | default: '' | jsonify }},"url":
+    {{- post.url | locale_url: site.active_lang | jsonify -}}
+    ,"type":"Article","lang":{{ post | content_locale | locale_tag | jsonify }},"tags":{{ post.tags | join: ' ' | jsonify }}}
+  {%- endif -%}
+{%- endfor %}
+{%- for paper in site.data.research.entries -%}
+  , {"title":{{ paper.title | jsonify }},"description":{{ paper.summary | default: paper.abstract | jsonify }},"url":
+  {{- paper.detail_url | locale_url: site.active_lang | jsonify -}}
+  ,"type":"Research","tags":{{ paper.relationship | append: ' ' | append: paper.venue | jsonify }}}
+{%- endfor %}
+]

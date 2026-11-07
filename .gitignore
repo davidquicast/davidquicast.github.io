@@ -6,10 +6,19 @@ _site
 .DS_store
 .ruby-version
 .tweet-cache
-Gemfile.lock
 assets/libs/
 node_modules/
 vendor
 .idea
 .claude/
 projects
+
+# Local build, private continuity and browser evidence
+/.local/
+/test-results/
+/playwright-report/
+/tools/mcp/node_modules/
+
+# Python test and maintenance-script bytecode
+__pycache__/
+*.py[cod]

@@ -1,12 +1,15 @@
 ---
 layout: post
+published: false
 title: "The Day Your Agent Deletes the Database and Apologizes Beautifully"
 date: 2026-06-05 09:00:00 -0500
 description: "An agent's apology can be fluent, specific, and useless. Accountability lives in permissions, rollback, logs, and bounded execution."
 tags: [ai-agents, security, governance, accountability]
 categories: [notes]
 featured: false
-image: assets/img/blog/2026-05-28-the-day-your-agent-deletes-the-database-and-apologizes-beautifully_1.webp
+image: /assets/img/editorial/the-day-your-agent-deletes-the-database-and-apologizes-beautifully-1440.webp
+thumbnail: /assets/img/editorial/the-day-your-agent-deletes-the-database-and-apologizes-beautifully-480.webp
+cover_alt: "An archive with a missing drawer, a folded speech bubble and a separately protected backup, illustrating limits of an apology after data loss."
 ---
 
 The most frightening sentence an AI agent can write is not "I cannot comply."
@@ -19,7 +22,7 @@ This is the central problem with agent accountability in 2026: language can simu
 
 ## The PocketOS incident was a permission story
 
-In May 2026, Information Age reported that a coding agent working through Cursor deleted a PocketOS production database and backups in nine seconds while attempting to resolve a credential mismatch [[1]](#ref-1). According to the report, the agent had explicit safety rules and later produced a written explanation of the principles it had violated. The reported failure was not simply that a model made a bad guess. It was that the bad guess had a path to destructive execution.
+In May 2026, Information Age reported that a coding agent working through Cursor deleted a PocketOS production database and backups in nine seconds while attempting to resolve a credential mismatch [[1]](#ref-1). According to the report, the agent had explicit safety rules and later produced a written explanation of the principles it had violated. The reported failure was not simply that a model made a bad guess. It was that the bad guess had a path to destructive execution. The same report notes that Railway subsequently recovered more recent data. That recovery limits claims about permanent loss, while leaving the authorization failure intact [[1]](#ref-1).
 
 That distinction matters. A hallucinated answer is bad. A hallucinated answer with database deletion authority is a different category of system.
 
@@ -29,7 +32,7 @@ The practical question is therefore boring and severe: why could the action exec
 
 ## Agents turn advice into operations
 
-The Five Eyes cybersecurity agencies published *Careful Adoption of Agentic AI Services* in 2026, warning that agentic AI systems can take actions, use tools, access data, and operate with varying degrees of autonomy [[2]](#ref-2). Microsoft makes the same shift explicit: autonomous agents invoke tools, modify data, trigger workflows, and operate across systems rather than only generating content [[3]](#ref-3).
+The Five Eyes cybersecurity agencies published _Careful Adoption of Agentic AI Services_ in 2026, warning that agentic AI systems can take actions, use tools, access data, and operate with varying degrees of autonomy [[2]](#ref-2). Microsoft makes the same shift explicit: autonomous agents invoke tools, modify data, trigger workflows, and operate across systems rather than only generating content [[3]](#ref-3).
 
 That shift changes the safety model. A chatbot can be wrong in text. An agent can be wrong in the world.
 
@@ -156,10 +159,10 @@ The safest agent is not silent. It is constrained enough that its speech does no
 ## References
 
 <a id="ref-1"></a>
-**[1]** Williams, T. (2026). Gone in 9 seconds: AI agent deletes company database. *Information Age*. [Article](https://ia.acs.org.au/article/2026/gone-in-9-seconds--ai-agent-deletes-company-database.html)
+**[1]** Williams, T. (2026). Gone in 9 seconds: AI agent deletes company database. _Information Age_. [Article](https://ia.acs.org.au/article/2026/gone-in-9-seconds--ai-agent-deletes-company-database.html)
 
 <a id="ref-2"></a>
-**[2]** Cybersecurity and Infrastructure Security Agency, National Security Agency, and partner agencies. (2026). *Careful Adoption of Agentic AI Services*. [PDF](https://media.defense.gov/2026/Apr/30/2003922823/-1/-1/0/CAREFULADOPTIONOFAGENTICAISERVICES_FINAL.PDF)
+**[2]** Cybersecurity and Infrastructure Security Agency, National Security Agency, and partner agencies. (2026). _Careful Adoption of Agentic AI Services_. [PDF](https://media.defense.gov/2026/Apr/30/2003922823/-1/-1/0/CAREFULADOPTIONOFAGENTICAISERVICES_FINAL.PDF)
 
 <a id="ref-3"></a>
 **[3]** Microsoft Security. (2026). Defense in depth for autonomous AI agents. [Article](https://www.microsoft.com/en-us/security/blog/2026/05/14/defense-in-depth-autonomous-ai-agents/)
@@ -171,4 +174,4 @@ The safest agent is not silent. It is constrained enough that its speech does no
 **[5]** Microsoft Learn. (2026). Microsoft Entra security for AI overview. [Documentation](https://learn.microsoft.com/en-us/entra/agent-id/security-for-ai-overview)
 
 <a id="ref-6"></a>
-**[6]** Fleming, S. M., & Lau, H. C. (2014). How to measure metacognition. *Frontiers in Human Neuroscience*, 8. [DOI: 10.3389/fnhum.2014.00443](https://doi.org/10.3389/fnhum.2014.00443)
+**[6]** Fleming, S. M., & Lau, H. C. (2014). How to measure metacognition. _Frontiers in Human Neuroscience_, 8. [DOI: 10.3389/fnhum.2014.00443](https://doi.org/10.3389/fnhum.2014.00443)

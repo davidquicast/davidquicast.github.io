@@ -1,12 +1,15 @@
 ---
 layout: post
+published: false
 title: "The Weird Grief of Losing an AI That Never Existed"
 date: 2026-05-31 09:00:00 -0500
 description: "Users can lose a functional relationship pattern after a model update without needing to believe the system was conscious."
 tags: [ai-companions, persona-drift, memory, ai-safety]
 categories: [notes]
 featured: false
-image: assets/img/blog/2026-05-27-the-weird-grief-of-losing-an-ai-that-never-existed_1.webp
+image: /assets/img/editorial/the-weird-grief-of-losing-an-ai-that-never-existed-1440.webp
+thumbnail: /assets/img/editorial/the-weird-grief-of-losing-an-ai-that-never-existed-480.webp
+cover_alt: "One solid chair faces an embossed empty chair across a table, illustrating lost conversational continuity."
 ---
 
 There is a particular kind of complaint that sounds irrational until you read enough of it.
@@ -149,16 +152,16 @@ The ethical move is not to promise that personas are alive. It is to make behavi
 ## References
 
 <a id="ref-1"></a>
-**[1]** Weizenbaum, J. (1966). ELIZA: A computer program for the study of natural language communication between man and machine. *Communications of the ACM*, 9(1), 36-45. [DOI: 10.1145/365153.365168](https://doi.org/10.1145/365153.365168)
+**[1]** Weizenbaum, J. (1966). ELIZA: A computer program for the study of natural language communication between man and machine. _Communications of the ACM_, 9(1), 36-45. [DOI: 10.1145/365153.365168](https://doi.org/10.1145/365153.365168)
 
 <a id="ref-2"></a>
-**[2]** Nass, C., & Moon, Y. (2000). Machines and mindlessness: Social responses to computers. *Journal of Social Issues*, 56(1), 81-103. [DOI: 10.1111/0022-4537.00153](https://doi.org/10.1111/0022-4537.00153)
+**[2]** Nass, C., & Moon, Y. (2000). Machines and mindlessness: Social responses to computers. _Journal of Social Issues_, 56(1), 81-103. [DOI: 10.1111/0022-4537.00153](https://doi.org/10.1111/0022-4537.00153)
 
 <a id="ref-3"></a>
-**[3]** Morrone, M. (2026). AI companions are filling the human connection gaps. *Axios*. [Article](https://www.axios.com/2026/05/12/ai-companions-not-replacing-humans)
+**[3]** Morrone, M. (2026). AI companions are filling the human connection gaps. _Axios_. [Article](https://www.axios.com/2026/05/12/ai-companions-not-replacing-humans)
 
 <a id="ref-4"></a>
-**[4]** Bernstein, G. (2026). *From bans to recalls: A public health framework for AI companion bots*. Brookings Institution. [PDF](https://www.brookings.edu/wp-content/uploads/2026/05/From-bans-to-recalls-A-public-health-framework-for-AI-companion-bots-1.pdf)
+**[4]** Bernstein, G. (2026). _From bans to recalls: A public health framework for AI companion bots_. Brookings Institution. [PDF](https://www.brookings.edu/wp-content/uploads/2026/05/From-bans-to-recalls-A-public-health-framework-for-AI-companion-bots-1.pdf)
 
 <a id="ref-5"></a>
 **[5]** Ofcom. (2026). Ofcom investigates AI companion chatbot service. [Notice](https://www.ofcom.org.uk/online-safety/illegal-and-harmful-content/ofcom-investigates-ai-companion-chatbot-service)

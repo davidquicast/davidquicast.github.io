@@ -1,4 +1,4 @@
-{% if site.enable_google_analytics %}
+{% if site.enable_google_analytics and site.google_analytics != blank %}
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
   <script>
@@ -10,7 +10,7 @@
     gtag('config', '{{ site.google_analytics }}');
   </script>
 {% endif %}
-{% if site.enable_cronitor_analytics %}
+{% if site.enable_cronitor_analytics and site.cronitor_analytics != blank %}
   <!-- Cronitor RUM -->
   <script async src="https://rum.cronitor.io/script.js"></script>
   <script>
@@ -22,7 +22,7 @@
     cronitor('config', { clientKey: '{{ site.cronitor_analytics }}' });
   </script>
 {% endif %}
-{% if site.enable_pirsch_analytics %}
+{% if site.enable_pirsch_analytics and site.pirsch_analytics != blank %}
   <script
     defer
     src="https://api.pirsch.io/pa.js"
@@ -30,7 +30,7 @@
     data-code="{{ site.pirsch_analytics }}"
   ></script>
 {% endif %}
-{% if site.enable_openpanel_analytics %}
+{% if site.enable_openpanel_analytics and site.openpanel_analytics != blank %}
   <script>
     window.op =
       window.op ||

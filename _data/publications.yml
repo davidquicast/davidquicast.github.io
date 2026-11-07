@@ -1,0 +1,356 @@
+# Canonical author lists and primary-source evidence; see docs/publications.md.
+---
+publications:
+  - id: include-2-0
+    title: "INCLUDE-2.0: Disentangling Knowledge Gaps in Multilingual LLM Evaluation"
+    authors:
+      - Angelika Romanou
+      - María Grandury
+      - Clara Meister
+      - Negar Foroutan
+      - Jabez Magomere
+      - Anna Sotnikova
+      - Hitesh Laxmichand Patel
+      - Akshay Kumar Dubey
+      - Alfonso Amayuelas
+      - Amit Agarwal
+      - Arion Das
+      - Carlos Arriaga
+      - Cheng Yu
+      - Dalia Ali
+      - David Quispe-Castillo
+      - Fenal Ashokbhai Ilasariya
+      - Francisco-Javier Rodrigo-Ginés
+      - Gonzalo Martínez
+      - Gouthami Vadithya
+      - Guido Ivetta
+      - Javier Conde
+      - Jorge Vallego
+      - Juan J. Calderón G.
+      - Karan Gupta
+      - Marcos J Gomez
+      - Marvin M. Agüero-Torales
+      - Mithil Bangera
+      - Naira Paola Arnez Jordan
+      - Oscar M. Cumbicus-Pineda
+      - Priyaranjan Pattnayak
+      - Reewos Erwin Talla Chumpitaz
+      - Sahil Aggarwal
+      - Sahil Raj
+      - Shruti Jalan
+      - Srikant Panda
+      - Susana Zhou
+      - Yeshil Bangera
+      - Orestis Papakyriakopoulos
+      - Scott A. Hale
+      - Shamsuddeen Hassan Muhammad
+      - Antoine Bosselut
+    year: 2026
+    published_at: 2026-10
+    type: inproceedings
+    venue: EMNLP 2026
+    relationship: coauthor
+    authorship_status: verified
+    selected: true
+    url: https://aclanthology.org/2026.emnlp-main.1344/
+    pdf: https://aclanthology.org/2026.emnlp-main.1344.pdf
+    booktitle: Proceedings of the 2026 Conference on Empirical Methods in Natural Language
+      Processing
+    pages: 30643--30666
+    publisher: Association for Computational Linguistics
+    month: oct
+    doi: 10.18653/2026.emnlp-main.1344
+    dataset: https://huggingface.co/datasets/epfl-nlp/include-2.0
+    summary: A multilingual benchmark that separates language proficiency from region-specific
+      factual knowledge.
+    relationship_note: Coauthor listed in the ACL Anthology publication and PDF.
+    google_scholar_id: QIV2ME_5wuYC
+    evidence:
+      - label: ACL Anthology author list
+        url: https://aclanthology.org/2026.emnlp-main.1344/
+      - label: Published paper PDF
+        url: https://aclanthology.org/2026.emnlp-main.1344.pdf
+  - id: culturalriddles
+    title: "CulturalRiddles: A Multicultural Benchmark of Riddles"
+    authors:
+      - My Chiffon Nguyen
+      - Tianyi Hu
+      - Vinod Anbalagan
+      - Henry Gagnier
+      - Pouya Sadeghi
+      - Farah Abdou
+      - Tidor-Vlad Pricope
+      - Diego MMS Oliveira
+      - Jocelyn K D'Arcy
+      - Madeline Smith
+      - Oluwaseun A Ajayi
+      - Yusser Al Ghussin
+      - Zena Al-Khalili
+      - Micol Altomare
+      - Shayan Amir
+      - Ahanaf Aziz
+      - Bryan Chen
+      - Ruchira Dhar
+      - Abdellah El Mekki
+      - Rawan Mohammed Elframawy
+      - Akhil Eppa
+      - Silvia Fernandez
+      - Alex Gimei
+      - Arya Hariharan
+      - Christian Hoang
+      - RamMohanRao Kadiyala
+      - Diana Kozachek
+      - Peerat Limkonchotiwat
+      - Ankita Maity
+      - Di Mo
+      - Ayush Munot
+      - Aylin Naebzadeh
+      - Anastasiia Nikitina
+      - Dina Pisarevskaya
+      - Divas Poudel
+      - Jebish Purbey
+      - Md Rabius Sany Apu
+      - Ahmad Mufli Ramadhan
+      - Ralitza Nikolova Rizova
+      - Diogo M. Serrano-Miranda
+      - Vivek Gopalkrishna Silimkhan
+      - Luis Fernando Solis Navarro
+      - Kaiser Sun
+      - Arya Suneesh
+      - Manaswitha Sunkara
+      - Tejaswi Sunkara
+      - Jonathan E Swindell
+      - Hanna Yukhymenko
+      - Jingyi Zheng
+      - Weihua Zheng
+      - Esther Adenuga
+      - Ilia Afanasev
+      - Amit Agarwal
+      - Wafa Aissa
+      - Lisa Alazraki
+      - Lauren C Altomare
+      - Priscilla Amondi Amuok
+      - Emile Anand
+      - Vivek Anbalagan
+      - Gabriel Assis
+      - José Matías Avalos
+      - Silvia Lorena Avila
+      - Zakaria Baannou
+      - Niyati Bafna
+      - Yash Bagla
+      - Sarah Bahrami
+      - Bontu F Balcha
+      - Vanya Bannihatti Kumar
+      - Irene Baucells
+      - Abdumutalib Begmuratov
+      - Ceren Berk
+      - Naman Bhatia
+      - Souvik Bhattacharyya
+      - Nabilah Binte Md Johan
+      - Isabel Blanco Ferreiro
+      - Felipe Bochini
+      - Sayuru Bopitiya
+      - Angana Borah
+      - Tulika Bose
+      - Olena Bugaiova
+      - Juliana Carvalho
+      - Nancy F Chen
+      - Stephy Chen
+      - Rochelle Choenni
+      - Jayanth Krishna Chundru
+      - Leandro A Cossio
+      - Nebojša Damnjanović
+      - Ona de Gibert
+      - Marco De Santis
+      - Pedro Delgado
+      - Kaustubh Dholé
+      - Adnan El Assadi
+      - Wesam El-Sayed
+      - Nadine M Elframawy
+      - Oumayma Essarhi
+      - Naome A Etori
+      - Reuben Chagas Fernandes
+      - Saanidhi Pravin Gade
+      - Javier García Gilabert
+      - Álvaro González-Escapa
+      - Bin Hu
+      - Kaiyu Huang
+      - Fenal Ashokbhai Ilasariya
+      - Abderrahmane Issam
+      - Danka Jokić
+      - Ulugbek Khalilov
+      - Dominik Krzemiński
+      - Roy Ka-Wei Lee
+      - Haichang Li
+      - Chen Cecilia Liu
+      - Zhengyuan Liu
+      - Cedric Lothritz
+      - Houman Mehrafarin
+      - Antonio Miranda-Escalada
+      - Fengran Mo
+      - Mehrnaz Mofakhami
+      - Wafaa Mohammed
+      - Felipe Moreno-Vera
+      - Prahitha Movva
+      - Jannatul Nayem
+      - Van Ngo
+      - Joy Olusanya
+      - Marc Pàmies
+      - Avinash Kumar Pandey
+      - Yurii Paniv
+      - Hitesh Laxmichand Patel
+      - Fred Philippy
+      - Vladislav Poritski
+      - Dikshya Poudel
+      - Joanna Radoła
+      - Sara Rajaee
+      - Swati Rajwal
+      - Prerana Rane
+      - Muhammad Ravi Shulthan Habibi
+      - Lucas Resck
+      - Shubhashis Roy Dipta
+      - Ananya Sahu
+      - Eduardo Sánchez
+      - Borja Sánchez Clemente
+      - Aleix Sant
+      - Nobin Sarwar
+      - Istiak Shihab
+      - Santhoshini Pranathi Singaraju
+      - Jane Smith
+      - David Stap
+      - Emily Z Su
+      - Ananth K Suresh
+      - Sajag Swami
+      - Ruiyang Tan
+      - Nazia Tasnim
+      - Khalid Tounoussi
+      - Patteera Triamamornwooth
+      - Muhammad Saad Umar
+      - Shankar Venkitachalam
+      - Oksana Volchek
+      - Lingbo Wang
+      - Debela Desalegn Yadeta
+      - Rushikesh Zawar
+      - Jinghan Zhang
+      - Mike Zhang
+      - Marzieh Fadaee
+      - Akhil Arora
+      - Károly Boczka
+      - Julia Kreutzer
+    year: 2026
+    published_at: "2026-10-21"
+    last_revised_at: "2026-10-27"
+    type: article
+    venue: arXiv preprint
+    relationship: coauthor
+    authorship_status: pending_update
+    selected: true
+    url: https://arxiv.org/abs/2610.29968
+    pdf: https://arxiv.org/pdf/2610.29968
+    journal: arXiv preprint arXiv:2610.29968
+    doi: 10.48550/arXiv.2610.29968
+    eprint: "2610.29968"
+    archiveprefix: arXiv
+    primaryclass: cs.CL
+    summary: A community-built benchmark of original riddles that tests culturally grounded
+      reasoning across languages.
+    relationship_note: Credited for Spanish (Peru) in the official dataset. Coauthorship
+      is confirmed by David Quispe-Castillo; the paper's public author list is awaiting
+      an update.
+    code: https://github.com/Cohere-Labs-Community/CulturalRiddles
+    dataset: https://huggingface.co/datasets/CohereLabsCommunity/CulturalRiddles
+    google_scholar_id: dhFuZR0502QC
+    evidence:
+      - label: Official dataset contributor credits
+        url: https://huggingface.co/datasets/CohereLabsCommunity/CulturalRiddles#contributors
+      - label: Published arXiv v3 author list
+        url: https://arxiv.org/abs/2610.29968v3
+citations:
+  - id: somos600m
+    title: "The #Somos600M Project: Generating NLP resources that represent the diversity
+      of the languages from LATAM, the Caribbean, and Spain"
+    authors:
+      - María Grandury
+    year: 2024
+    published_at: "2024-07-01"
+    type: article
+    venue: arXiv preprint
+    relationship: cited_work
+    authorship_status: verified
+    selected: false
+    url: https://arxiv.org/abs/2407.17479
+    pdf: https://arxiv.org/pdf/2407.17479
+    journal: arXiv preprint arXiv:2407.17479
+    doi: 10.48550/arXiv.2407.17479
+    eprint: "2407.17479"
+    archiveprefix: arXiv
+    primaryclass: cs.CL
+    summary: A community effort to build instruction and evaluation resources for Spanish
+      and co-official languages.
+    relationship_note: Cites KUNTUR and WikiHowES, credited to David Alonso Quispe Castillo.
+    google_scholar_id: 7PzlFSSx8tAC
+    evidence:
+      - label: KUNTUR reference
+        url: https://arxiv.org/html/2407.17479v1#bib.bib43
+      - label: WikiHowES reference
+        url: https://arxiv.org/html/2407.17479v1#bib.bib44
+      - label: "Appendix D: instruction datasets"
+        url: https://arxiv.org/html/2407.17479v1#A4
+    mentions:
+      - title: KUNTUR
+        url: https://huggingface.co/datasets/somosnlp/constitucion-politica-del-peru-1993-qa
+        evidence_url: https://arxiv.org/html/2407.17479v1#bib.bib43
+        note: Legal-assistance dataset listed in Appendix D and credited in reference
+          Quispe Castillo (2024a).
+      - title: WikiHowES
+        url: https://huggingface.co/datasets/somosnlp/wikihow_es
+        evidence_url: https://arxiv.org/html/2407.17479v1#bib.bib44
+        note: Spanish instruction dataset listed in Appendix D and credited in reference
+          Quispe Castillo (2024b).
+  - id: rigochat-2
+    title: "RigoChat 2: an adapted language model to Spanish using a bounded dataset
+      and reduced hardware"
+    authors:
+      - Gonzalo Santamaría Gómez
+      - Guillem García Subies
+      - Pablo Gutiérrez Ruiz
+      - Mario González Valero
+      - Natàlia Fuertes
+      - Helena Montoro Zamorano
+      - Carmen Muñoz Sanz
+      - Leire Rosado Plaza
+      - Nuria Aldama García
+      - David Betancur Sánchez
+      - Kateryna Sushkova
+      - Marta Guerrero Nieto
+      - Álvaro Barbero Jiménez
+    year: 2025
+    published_at: "2025-03-11"
+    type: article
+    venue: arXiv preprint
+    relationship: cited_work
+    authorship_status: verified
+    selected: false
+    url: https://arxiv.org/abs/2503.08188
+    pdf: https://arxiv.org/pdf/2503.08188
+    journal: arXiv preprint arXiv:2503.08188
+    doi: 10.48550/arXiv.2503.08188
+    eprint: "2503.08188"
+    archiveprefix: arXiv
+    primaryclass: cs.CL
+    summary: A study of adapting a compact language model to Spanish with limited data
+      and hardware.
+    relationship_note: WikiHowES is credited in reference 33 and listed among the study's
+      training datasets.
+    google_scholar_id: L8Ckcad2t8MC
+    evidence:
+      - label: "Reference 33: WikiHowES"
+        url: https://arxiv.org/html/2503.08188v1#bib.bib33
+      - label: "Table 1: training datasets"
+        url: https://arxiv.org/html/2503.08188v1#S2.T1
+    mentions:
+      - title: WikiHowES
+        url: https://huggingface.co/datasets/somosnlp/wikihow_es
+        evidence_url: https://arxiv.org/html/2503.08188v1#bib.bib33
+        note: Credited to David Alonso Quispe Castillo in reference 33 and listed as a
+          Spanish training-data source in Table 1.

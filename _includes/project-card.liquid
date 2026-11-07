@@ -1,0 +1,51 @@
+{% assign project = include.project %}
+{% assign project_dates = project | content_timeline: 'project' %}
+{% assign project_type = project.category | profile_project_type %}
+{% assign media = site.data.project_media[project.slug] %}
+<article
+  class="wall-card project-card {% if include.selected %}selected-project{% else %}project-row{% endif %}"
+  data-wall-card
+  {% include feed-attributes.liquid entry=include.entry %}
+  {% unless include.selected %}
+    {% unless include.entry %}data-feed-project-type="{{ project_type | escape }}"{% endunless %}
+    data-filter-item data-topics="{{ project.tags | join:' ' | downcase | escape }} {{ project.category | escape }} {{ project_type | escape }}"
+    data-search-text="{{ project.title | append:' ' | append:project.description | downcase | escape }}"
+  {% endunless %}
+>
+  <a
+    class="wall-media project-media"
+    data-fit="{{ media.fit | default: 'contain' }}"
+    href="{{ project.url | relative_url | escape }}"
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    {%- include project-image.liquid project=project loading=include.loading priority=include.priority sizes="(min-width: 1600px) 300px, (min-width: 1100px) 24vw, (min-width: 800px) 31vw, (min-width: 600px) 46vw, 92vw" -%}
+  </a>
+  <div class="wall-card-body project-card-copy">
+    <p class="wall-meta">
+      {% include icon.liquid name='work' -%}
+      {% if project_type == 'contributions' -%}
+        {{- 'projects.contribution' | ui_label: 'Contribution' -}}
+      {%- elsif project_type == 'independent' -%}
+        {{- 'projects.personal' | ui_label -}}
+      {%- else -%}
+        {{- 'types.project' | ui_label -}}
+      {%- endif %}
+      <span aria-hidden="true">·</span><span class="project-year">{% include content-date.liquid value=project_dates.primary %}</span>
+      {% if include.entry.featured -%}
+        <span class="featured-mark">
+          {%- include icon.liquid name='star' -%}
+          {{- 'feed.featured' | ui_label -}}
+        </span>
+      {%- endif %}
+    </p>
+    {% include content-updated.liquid item=project kind='project' %}
+    <h2>
+      <a class="project-open" data-content-overlay href="{{ project.url | relative_url | escape }}" data-pretext>{{ project.title }}</a>
+    </h2>
+    <p class="wall-excerpt" data-pretext>{{ project.description }}</p>
+    {% include project-destinations.liquid project=project context="card" %}
+  </div>
+  {% assign menu_key = project.url | prepend: 'project-' %}
+  {% include card-actions.liquid key=menu_key title=project.title url=project.url image=media.image alt=media.alt %}
+</article>

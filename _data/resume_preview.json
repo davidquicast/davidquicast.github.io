@@ -1,0 +1,77 @@
+{
+  "source": {
+    "path": "/assets/pdf/en-us/cv.pdf",
+    "sha256": "96bd4ffc04fc16f6da34f0c067c8ef3ad178e8c9cc2b69d71927213f433a4ad1",
+    "bytes": 173076
+  },
+  "settings": {
+    "version": 2,
+    "widths": [800, 1600],
+    "webp": "lossless",
+    "extraction": "layout"
+  },
+  "tools": {
+    "pdftoppm": "pdftoppm version 22.12.0",
+    "pdftotext": "pdftotext version 22.12.0",
+    "imagemagick": "Version: ImageMagick 6.9.11-60 Q16 aarch64 2021-01-25 https://imagemagick.org"
+  },
+  "page_count": 2,
+  "pages": [
+    {
+      "number": 1,
+      "image": {
+        "src": "/assets/img/resume/en-us/cv-page-1-1600-0f06a6fd7942.webp",
+        "width": 1600,
+        "height": 2263,
+        "bytes": 188474,
+        "sha256": "0f06a6fd79425b49ac4d5748f3130e5357bad407f16f2054d10684d32e34064e"
+      },
+      "variants": [
+        {
+          "src": "/assets/img/resume/en-us/cv-page-1-800-9104686a37d5.webp",
+          "width": 800,
+          "height": 1132,
+          "bytes": 84212,
+          "sha256": "9104686a37d54b0d55b4dddfcdf0c6b0907d82f8bd00ab8f4f9f45e47a7a484f"
+        },
+        {
+          "src": "/assets/img/resume/en-us/cv-page-1-1600-0f06a6fd7942.webp",
+          "width": 1600,
+          "height": 2263,
+          "bytes": 188474,
+          "sha256": "0f06a6fd79425b49ac4d5748f3130e5357bad407f16f2054d10684d32e34064e"
+        }
+      ],
+      "srcset": "/assets/img/resume/en-us/cv-page-1-800-9104686a37d5.webp 800w, /assets/img/resume/en-us/cv-page-1-1600-0f06a6fd7942.webp 1600w",
+      "text": "Last update on August 29, 2025\n\n\nDAVID QUISPE\nda.qc@outlook.com | portfolio | Madrid, Spain (open to relocation)\n\nSystems Engineer with focus on Cybersecurity and AI/ML frameworks.\n\nEXPERIENCE\nFIAP (Public Administration Internationalization Foundation) | Madrid, Spain (hybrid)\nSpanish public foundation managing international cooperation projects to strengthen governance and public policies.\nPosition: Cybersecurity Technician | September 2024 – June 2025\nResponsibilities:\n• Implemented cybersecurity strategies covering vulnerability intelligence, endpoint protection, threat detection, and enforcement of\ninformation security policies, ensuring alignment with national and international standards.\nAchievements:\n➢ Initiated and led a Vulnerability Intelligence program to proactively identify and address internal cybersecurity risks.\n➢ Developed PoCs with MS Copilot, open-source LLMs, and agentic frameworks to automate Cyber Threat Intelligence.\n➢ Supported inventory management, auditing, and incident response using EDR solutions and CCN-CERT tools.\n➢ Enhanced network security by managing and optimizing Fortinet technologies, reducing exploitable vulnerabilities\n➢ Secured the Microsoft 365 environment (SharePoint, Exchange, Defender, etc.) by applying Zero Trust (ZTNA) principles.\n➢ Contributed to the drafting and improvement of Information Security Policies, aligning practices with organizational needs.\n➢ Supported the implementation and compliance efforts with national and international cybersecurity standards and regulations, including ENS,\nNIST, and CCN-CERT.\n\nPLAWLABS LTD. | London, UK (remote)\nTech Startup focused on AI-powered virtual assistant solutions and custom software development.\nPosition: AI/ML Engineer | July 2024 – September 2024 Direct Reports: 1\nResponsibilities:\n• Implemented and tested both open-source and proprietary Large Language Models (LLMs) to accomplish specific tasks, collaborating with\ncross-functional teams to deliver tailored solutions and successfully execute Proof of Concept (PoC) projects focused on LLM workloads.\nAchievements:\n➢ Fine-tuned and optimized LLaMA 3.1 8B and 70B models using quantization and PEFT (Parameter Efficient Fine-Tuning) techniques to\ncreate custom adapters and integrate them with base models for improved performance.\n➢ Developed and deployed a Retrieval-Augmented Generation (RAG) system with an embedded model and vector database for efficient text\nretrieval and precise response generation.\n➢ Applied prompt engineering techniques, including few-shot learning and active prompting, to enhance model output accuracy and\nresponsiveness.\n➢ Deployed AI agents using LangChain and Langroid, leveraging tool-calling and task management to automate processes and interact with\nexternal applications, significantly boosting operational efficiency.\n\nHAMB INGENIERÍA Y CONSTRUCCIÓN S.A.C. | Cusco, Perú (on-premise)\nEngineering and construction company, specializing in project development, civil works management, specialized systems, and real\nestate development.\nPosition (internship): Full Stack Web Developer | January 2022 – September 2022 Direct Reports: 2\nResponsibilities:\n• Led an interdisciplinary team to design, develop, and deploy HAMBIC S.A.C.'s web application, leveraging Laravel (backend), React\n(frontend), MySQL, and WordPress with Elementor for no-code solutions, delivering a robust and scalable platform.\nAchievements:\n➢ Successfully implemented the SAP system, optimizing inventory control and reducing inefficiencies by 30%.\n➢ Enhanced the main domain's web application, resulting in a 25% increase in the customer base.\n➢ Boosted the sales team's productivity by 20% through the implementation and training on the use of a CRM.\n\nEDUCATION\nDIGITECH, TECHNOLOGY AND DIGITIZATION CENTER | Madrid, Spain\nDual Higher Degree in Network Systems Administration | September 2023 – June 2025)\n\nUNIVERSIDAD MAYOR |Santiago, Chile\nOnline Diploma in Cybersecurity | April 2023 - November 2023\n\nCEUPE (EUROPEAN CENTER OF POSTGRADUATE STUDIES AND BUSINESS) | Madrid, Spain\nOnline Master in Cybersecurity | March 2022 - May 2023\n\nANDEAN UNIVERSITY OF CUSCO | Cusco, Peru\nBachelor's Degree in Systems Engineering | January 2017 - November 2022"
+    },
+    {
+      "number": 2,
+      "image": {
+        "src": "/assets/img/resume/en-us/cv-page-2-1600-e489ba9a5619.webp",
+        "width": 1600,
+        "height": 2263,
+        "bytes": 117190,
+        "sha256": "e489ba9a5619106b905213f32e3e05862a58cb63d5af1bc6319669936a2a355f"
+      },
+      "variants": [
+        {
+          "src": "/assets/img/resume/en-us/cv-page-2-800-d1a9ccf0bfe0.webp",
+          "width": 800,
+          "height": 1132,
+          "bytes": 49424,
+          "sha256": "d1a9ccf0bfe062ce525a731526f6ebe5e12b594db1bfe8089bde7575ba818952"
+        },
+        {
+          "src": "/assets/img/resume/en-us/cv-page-2-1600-e489ba9a5619.webp",
+          "width": 1600,
+          "height": 2263,
+          "bytes": 117190,
+          "sha256": "e489ba9a5619106b905213f32e3e05862a58cb63d5af1bc6319669936a2a355f"
+        }
+      ],
+      "srcset": "/assets/img/resume/en-us/cv-page-2-800-d1a9ccf0bfe0.webp 800w, /assets/img/resume/en-us/cv-page-2-1600-e489ba9a5619.webp 1600w",
+      "text": "Last update on August 29, 2025\n\n\nTECHNICAL SKILLS\nLANGUAJES TOOLS / SOFTWARE\nSpanish Native Autopsy Intermediate\nEnglish C1 Burpsuite Basic\nFortinet Intermediate\nPROGRAMMING FRAMEWORKS Git Intermediate\nASP.NET Intermediate Microsoft Threat Modeling Tool Intermediate\nBootstrap Intermediate Nessus Intermediate\nFastAPI Intermediate SolarWinds Intermediate\nFlutter Intermediate Vega Advanced\nJQuery Basic Vooki Intermediate\nWireshark Intermediate\nCYBERSECURITY FRAMEWORKS ZAP Advanced\nCIS Intermediate\nMITRE ATT&CK Intermediate DATABASE MANAGEMENT SYSTEMS\nNIST Intermediate Microsoft SQL Server Advanced\nOWASP Top 10 Intermediate MongoDB Basic\nGEN AI OWASP Top 10 Intermediate MySQL Intermediate\nSTRIDE Intermediate Redis Basic\nOracle Database Intermediate\nAI/ML FRAMEWORKS\nCrewai Basic PROGRAMMING LANGUAGES\nHuggingface Intermediate C# Intermediate\nKeras Intermediate C++ Intermediate\nLangchain Intermediate Dart Intermediate\nSmolagents Basic Go Basic\nPyTorch Intermediate Java Intermediate\nTensorflow Intermediate JavaScript Intermediate\nKotlin Intermediate\nCLOUD COMPUTING Python Advanced\nMicrosoft Azure Basic SQL Advanced\nAmazon Web Service Intermediate Shell Intermediate\nGoogle Cloud Basic Typescript Basic\nVisual Basic .NET Basic\nVECTOR DATABASES\nChroma Intermediate\nQdrant Intermediate\nDataStax Intermediate\n\nCERTIFICATIONS\n• Expert in Transformer Models and Deep Learning for NLP LenguajeNatural.AI | August 2024\n• Expert in Information and Security Systems European Postgraduate and Business Studies | March 2023\n• Internal Auditor ISO 27001 TÜV NORD | March 2023\n• Internal Auditor ISO 22301 TÜV NORD | March 2023\n• Cloud Security Technician Carlos Slim Fundation | October 2022\n\nCOURSES\n• Building RAG Agents with LLMs NVIDIA | April 2025\n• The Reasoning Course - Building AI models that reason Hugging Face | April 2025\n• AI Agents Fundamentals Hugging Face | February 2025\n• Endpoint Security Cisco Networking Academy | October 2023\n• CyberOps Associate Training Cisco Networking Academy | July 2023\n• International Certification in Computer Forensics National Forensic Investigation Institute of Perú | April 2023\n• International Certification in Ethical Hacking National Forensic Investigation Institute of Perú | March 2023\n• International Certification in Information Security National Forensic Investigation Institute of Perú | February 2023\n• Cybersecurity White Hacker Lev#1 Training Course MOCT College | October 2022\n\nONLINE PROFILES\ngithub.com/davidquicast huggingface.co/davidquicast linkedin.com/in/davidquicast x.com/davidquicast"
+    }
+  ]
+}

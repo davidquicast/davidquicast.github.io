@@ -1,33 +1,19 @@
+# frozen_string_literal: true
+
 module Jekyll
   class LocalizationExistsTag < Liquid::Tag
     def initialize(tag_name, key, tokens)
       super
-      @key = key.strip()
+      @key = key.strip
     end
 
     def render(context)
-      content = Liquid::Template.parse(@key).render context
-      exists = true
-      language = context.registers[:site].config['languages'].first
-      if !content.include? "." or context.registers[:site].data[language] == nil
-        exists = false
-      end
-
-      current_element = context.registers[:site].data[language]['strings']
-      splittedKey = content.split('.')
-
-      if exists
-        for part in splittedKey do
-          if current_element.key?(part)
-            current_element = current_element[part]
-          else
-            exists = false
-            break
-          end
-        end
-      end
-
-      "#{exists}"
+      key = Liquid::Template.parse(@key).render(context).strip
+      site = context.registers[:site]
+      language = (site.respond_to?(:active_lang) && site.active_lang) || site.config['active_lang'] || site.config['default_lang'] || Array(site.config['languages']).first
+      node = (site.data[language] || {})['strings']
+      key.split('.').each { |part| node = node.is_a?(Hash) ? node[part] : nil }
+      (!key.empty? && !node.nil?).to_s
     end
   end
 end

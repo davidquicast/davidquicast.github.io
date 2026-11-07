@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" /><title>Editorial text fixture</title>
+  <link rel="stylesheet" href="/assets/css/editorial.css" /><style>
+    @font-face {
+      font-family: "DM Sans";
+      src: url(/assets/fonts/editorial/dm-sans-latin-400-normal.woff2) format("woff2");
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Zilla Slab";
+      src: url(/assets/fonts/editorial/zilla-slab-latin-400-normal.woff2) format("woff2");
+      font-weight: 400;
+      font-display: swap;
+    }
+    body {
+      margin: 24px;
+      font-family: "DM Sans", sans-serif;
+    }
+    main {
+      max-width: 860px;
+    }
+    h1 {
+      font-family: "Zilla Slab", serif;
+      font-weight: 400;
+      font-size: clamp(32px, 6vw, 72px);
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+    }
+    h2 {
+      font-family: "Zilla Slab", serif;
+      font-weight: 400;
+      font-size: 32px;
+      line-height: 1.2;
+    }
+    p {
+      font-size: 19px;
+      line-height: 1.6;
+      max-width: 610px;
+    }
+    a {
+      color: inherit;
+    }
+  </style>
+  <main>
+    <h1 data-pretext="lines">Building practical AI systems with accountable agent behavior.</h1>
+    <h2><a href="#project" data-pretext>Portable specifications for the behavior of AI agents</a></h2>
+    <p data-pretext>Agent identity, memory and safety constraints deserve the same care as the systems that deploy them.</p>
+    <p data-pretext id="dynamic">A short excerpt with a readable fallback.</p>
+  </main>
+  <script type="module" src="/assets/js/dist/editorial.js"></script>
+</html>

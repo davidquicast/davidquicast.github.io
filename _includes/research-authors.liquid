@@ -1,0 +1,14 @@
+{% assign author_paper = include.paper %}
+<p class="research-authors">
+  {% if author_paper.authors_preview -%}
+    {{- author_paper.authors_preview | escape -}}
+  {%- else -%}
+    {{- author_paper.authors | join: ', ' | escape -}}
+  {%- endif %}
+</p>
+{% if include.expand and author_paper.authors.size > 3 %}
+  <details class="research-author-list">
+    <summary>{{ 'research.all_authors' | ui_label: 'All authors' }} ({{ author_paper.authors.size }})</summary>
+    <p>{{ author_paper.authors | join: ', ' | escape }}</p>
+  </details>
+{% endif %}

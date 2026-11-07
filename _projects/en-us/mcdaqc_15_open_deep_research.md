@@ -1,6 +1,6 @@
 ---
 page_id: davidquicast_open_deep_research
-layout: page
+layout: project
 title: Open Deep Research for Vulnerability Intelligence
 description: Agentic security research over NVD, KEV, EPSS, and Shodan-style vulnerability sources.
 img: https://the-decoder.com/wp-content/uploads/2025/02/open_deep_research_HF.png
@@ -14,5 +14,3 @@ year: 2025
 ---
 
 AI-powered platform for automated vulnerability intelligence research, built on Hugging Face's Open Deep Research architecture. Uses code agents with smolagents library to systematically browse security databases (NIST NVD, Shodan CVEDB, KEVin, EPSS), analyze vulnerability data, and generate comprehensive intelligence reports.
-
-*[Space for framework architecture diagram]*

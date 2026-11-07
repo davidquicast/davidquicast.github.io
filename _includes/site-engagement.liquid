@@ -1,0 +1,6 @@
+{% assign newsletter_endpoint = site.newsletter.endpoint | newsletter_endpoint %}
+{% if site.newsletter.enabled and newsletter_endpoint != '' %}
+  <section class="site-engagement" aria-label="{{ 'newsletter.label' | ui_label: 'Newsletter' }}">
+    {% include scripts/newsletter.liquid %}
+  </section>
+{% endif %}

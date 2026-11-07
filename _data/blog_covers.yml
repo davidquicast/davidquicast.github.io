@@ -1,0 +1,110 @@
+{
+  "ai-personas-are-not-masks":
+    {
+      "image": "/assets/img/editorial/ai-personas-are-not-masks-1440.webp",
+      "thumbnail": "/assets/img/editorial/ai-personas-are-not-masks-480.webp",
+      "srcset": "/assets/img/editorial/ai-personas-are-not-masks-480.webp 480w, /assets/img/editorial/ai-personas-are-not-masks-960.webp 960w, /assets/img/editorial/ai-personas-are-not-masks-1440.webp 1440w",
+      "alt": "Layered paper profiles bound by thread beside a discarded mask, illustrating a structured AI persona.",
+      "width": 1440,
+      "height": 960,
+    },
+  "benchmarks-are-fanfiction-with-numbers":
+    {
+      "image": "/assets/img/editorial/benchmarks-are-fanfiction-with-numbers-1440.webp",
+      "thumbnail": "/assets/img/editorial/benchmarks-are-fanfiction-with-numbers-480.webp",
+      "srcset": "/assets/img/editorial/benchmarks-are-fanfiction-with-numbers-480.webp 480w, /assets/img/editorial/benchmarks-are-fanfiction-with-numbers-960.webp 960w, /assets/img/editorial/benchmarks-are-fanfiction-with-numbers-1440.webp 1440w",
+      "alt": "A paper theatre exposes the supports behind an impossible measuring loop, illustrating staged and contaminated benchmarks.",
+      "width": 1440,
+      "height": 960,
+    },
+  "instant-dark-theme-browser-devtools":
+    {
+      "image": "/assets/img/editorial/instant-dark-theme-browser-devtools-1440.webp",
+      "thumbnail": "/assets/img/editorial/instant-dark-theme-browser-devtools-480.webp",
+      "srcset": "/assets/img/editorial/instant-dark-theme-browser-devtools-480.webp 480w, /assets/img/editorial/instant-dark-theme-browser-devtools-960.webp 960w, /assets/img/editorial/instant-dark-theme-browser-devtools-1440.webp 1440w",
+      "alt": "A paper landscape reverses light and dark across an overlapping window, illustrating CSS color inversion.",
+      "width": 1440,
+      "height": 960,
+    },
+  "personas-are-becoming-the-new-passwords":
+    {
+      "image": "/assets/img/editorial/personas-are-becoming-the-new-passwords-1440.webp",
+      "thumbnail": "/assets/img/editorial/personas-are-becoming-the-new-passwords-480.webp",
+      "srcset": "/assets/img/editorial/personas-are-becoming-the-new-passwords-480.webp 480w, /assets/img/editorial/personas-are-becoming-the-new-passwords-960.webp 960w, /assets/img/editorial/personas-are-becoming-the-new-passwords-1440.webp 1440w",
+      "alt": "A paper passport with abstract seals sits apart from a private envelope, illustrating portable identity and separate private memory.",
+      "width": 1440,
+      "height": 960,
+    },
+  "private-synthetic-data-generation":
+    {
+      "image": "/assets/img/editorial/private-synthetic-data-generation-1440.webp",
+      "thumbnail": "/assets/img/editorial/private-synthetic-data-generation-480.webp",
+      "srcset": "/assets/img/editorial/private-synthetic-data-generation-480.webp 480w, /assets/img/editorial/private-synthetic-data-generation-960.webp 960w, /assets/img/editorial/private-synthetic-data-generation-1440.webp 1440w",
+      "alt": "A paper workshop processes and sorts cards within a private perimeter, illustrating local dataset generation and review.",
+      "width": 1440,
+      "height": 960,
+    },
+  "shrink-wsl2-docker-virtual-disks":
+    {
+      "image": "/assets/img/editorial/shrink-wsl2-docker-virtual-disks-1440.webp",
+      "thumbnail": "/assets/img/editorial/shrink-wsl2-docker-virtual-disks-480.webp",
+      "srcset": "/assets/img/editorial/shrink-wsl2-docker-virtual-disks-480.webp 480w, /assets/img/editorial/shrink-wsl2-docker-virtual-disks-960.webp 960w, /assets/img/editorial/shrink-wsl2-docker-virtual-disks-1440.webp 1440w",
+      "alt": "A compressed accordion file leaves a large empty space, illustrating reclaimed virtual disk storage.",
+      "width": 1440,
+      "height": 960,
+    },
+  "the-axis-between-memory-and-agency":
+    {
+      "image": "/assets/img/editorial/the-axis-between-memory-and-agency-1440.webp",
+      "thumbnail": "/assets/img/editorial/the-axis-between-memory-and-agency-480.webp",
+      "srcset": "/assets/img/editorial/the-axis-between-memory-and-agency-480.webp 480w, /assets/img/editorial/the-axis-between-memory-and-agency-960.webp 960w, /assets/img/editorial/the-axis-between-memory-and-agency-1440.webp 1440w",
+      "alt": "Individual paper records stitched into a bridge, with older sheets set aside, illustrating accountable agent memory.",
+      "width": 1440,
+      "height": 960,
+    },
+  "the-day-your-agent-deletes-the-database-and-apologizes-beautifully":
+    {
+      "image": "/assets/img/editorial/the-day-your-agent-deletes-the-database-and-apologizes-beautifully-1440.webp",
+      "thumbnail": "/assets/img/editorial/the-day-your-agent-deletes-the-database-and-apologizes-beautifully-480.webp",
+      "srcset": "/assets/img/editorial/the-day-your-agent-deletes-the-database-and-apologizes-beautifully-480.webp 480w, /assets/img/editorial/the-day-your-agent-deletes-the-database-and-apologizes-beautifully-960.webp 960w, /assets/img/editorial/the-day-your-agent-deletes-the-database-and-apologizes-beautifully-1440.webp 1440w",
+      "alt": "An archive with a missing drawer, a folded speech bubble and a separately protected backup, illustrating limits of an apology after data loss.",
+      "width": 1440,
+      "height": 960,
+    },
+  "the-problem-with-a-persona-that-cannot-refuse":
+    {
+      "image": "/assets/img/editorial/the-problem-with-a-persona-that-cannot-refuse-1440.webp",
+      "thumbnail": "/assets/img/editorial/the-problem-with-a-persona-that-cannot-refuse-480.webp",
+      "srcset": "/assets/img/editorial/the-problem-with-a-persona-that-cannot-refuse-480.webp 480w, /assets/img/editorial/the-problem-with-a-persona-that-cannot-refuse-960.webp 960w, /assets/img/editorial/the-problem-with-a-persona-that-cannot-refuse-1440.webp 1440w",
+      "alt": "A blue gate blocks one path and leaves a narrower safe route, illustrating principled refusal boundaries.",
+      "width": 1440,
+      "height": 960,
+    },
+  "the-weird-grief-of-losing-an-ai-that-never-existed":
+    {
+      "image": "/assets/img/editorial/the-weird-grief-of-losing-an-ai-that-never-existed-1440.webp",
+      "thumbnail": "/assets/img/editorial/the-weird-grief-of-losing-an-ai-that-never-existed-480.webp",
+      "srcset": "/assets/img/editorial/the-weird-grief-of-losing-an-ai-that-never-existed-480.webp 480w, /assets/img/editorial/the-weird-grief-of-losing-an-ai-that-never-existed-960.webp 960w, /assets/img/editorial/the-weird-grief-of-losing-an-ai-that-never-existed-1440.webp 1440w",
+      "alt": "One solid chair faces an embossed empty chair across a table, illustrating lost conversational continuity.",
+      "width": 1440,
+      "height": 960,
+    },
+  "why-ai-girlfriends-understand-product-market-fit-better-than-enterprise-agents":
+    {
+      "image": "/assets/img/editorial/why-ai-girlfriends-understand-product-market-fit-better-than-enterprise-agents-1440.webp",
+      "thumbnail": "/assets/img/editorial/why-ai-girlfriends-understand-product-market-fit-better-than-enterprise-agents-480.webp",
+      "srcset": "/assets/img/editorial/why-ai-girlfriends-understand-product-market-fit-better-than-enterprise-agents-480.webp 480w, /assets/img/editorial/why-ai-girlfriends-understand-product-market-fit-better-than-enterprise-agents-960.webp 960w, /assets/img/editorial/why-ai-girlfriends-understand-product-market-fit-better-than-enterprise-agents-1440.webp 1440w",
+      "alt": "A continuous bridge and a broken paper path with a repair thread, illustrating governed continuity in recurring AI agents.",
+      "width": 1440,
+      "height": 960,
+    },
+  "your-ai-has-a-midlife-crisis-because-you-gave-it-memory":
+    {
+      "image": "/assets/img/editorial/your-ai-has-a-midlife-crisis-because-you-gave-it-memory-1440.webp",
+      "thumbnail": "/assets/img/editorial/your-ai-has-a-midlife-crisis-because-you-gave-it-memory-480.webp",
+      "srcset": "/assets/img/editorial/your-ai-has-a-midlife-crisis-because-you-gave-it-memory-480.webp 480w, /assets/img/editorial/your-ai-has-a-midlife-crisis-because-you-gave-it-memory-960.webp 960w, /assets/img/editorial/your-ai-has-a-midlife-crisis-because-you-gave-it-memory-1440.webp 1440w",
+      "alt": "A compass tangled in old index cards beside scissors that release one loop, illustrating revision of stale agent memory.",
+      "width": 1440,
+      "height": 960,
+    },
+}

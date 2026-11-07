@@ -1,12 +1,15 @@
 ---
 layout: post
+published: false
 title: "Benchmarks Are Fanfiction With Numbers"
 date: 2026-06-15 09:00:00 -0500
 description: "A benchmark can become a staged story with a score attached when contamination, saturation, and synthetic data blur what is being measured."
 tags: [ai-evaluation, benchmarks, synthetic-data, ai-safety]
 categories: [notes]
 featured: false
-image: assets/img/blog/2026-05-30-benchmarks-are-fanfiction-with-numbers_1.webp
+image: /assets/img/editorial/benchmarks-are-fanfiction-with-numbers-1440.webp
+thumbnail: /assets/img/editorial/benchmarks-are-fanfiction-with-numbers-480.webp
+cover_alt: "A paper theatre exposes the supports behind an impossible measuring loop, illustrating staged and contaminated benchmarks."
 ---
 
 Benchmarks are stories pretending to be thermometers.
@@ -168,13 +171,13 @@ The same discipline should apply to every future persona or safety benchmark: pu
 **[1]** OpenAI. (2026). Why SWE-bench Verified no longer measures frontier coding capabilities. [Research note](https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/)
 
 <a id="ref-2"></a>
-**[2]** Li, et al. (2025). LessLeak-Bench: A first investigation of data leakage in LLMs across 83 software engineering benchmarks. [arXiv:2502.06215](https://arxiv.org/abs/2502.06215)
+**[2]** Zhou, X., et al. (2025). LessLeak-Bench: A first investigation of data leakage in LLMs across 83 software engineering benchmarks. [arXiv:2502.06215](https://arxiv.org/abs/2502.06215)
 
 <a id="ref-3"></a>
-**[3]** International Scientific Report on the Safety of Advanced AI. (2026). *International AI Safety Report 2026*. [PDF](https://internationalaisafetyreport.org/sites/default/files/2026-02/international-ai-safety-report-2026.pdf)
+**[3]** International Scientific Report on the Safety of Advanced AI. (2026). _International AI Safety Report 2026_. [PDF](https://internationalaisafetyreport.org/sites/default/files/2026-02/international-ai-safety-report-2026.pdf)
 
 <a id="ref-4"></a>
-**[4]** Rottger, et al. (2026). How should AI safety benchmarks benchmark safety? [arXiv:2601.23112](https://arxiv.org/abs/2601.23112)
+**[4]** Yu, C., et al. (2026). How should AI safety benchmarks benchmark safety? [arXiv:2601.23112](https://arxiv.org/abs/2601.23112)
 
 <a id="ref-5"></a>
 **[5]** Beyond Surface-Level Similarity: Hierarchical Contamination Detection for Synthetic Training Data in Foundation Models. (2025). [arXiv:2511.17602](https://arxiv.org/abs/2511.17602)

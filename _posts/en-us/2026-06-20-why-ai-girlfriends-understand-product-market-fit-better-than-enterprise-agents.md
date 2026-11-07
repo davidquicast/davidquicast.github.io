@@ -1,12 +1,15 @@
 ---
 layout: post
+published: false
 title: "Why AI Girlfriends Understand Product-Market Fit Better Than Enterprise Agents"
 date: 2026-06-20 09:00:00 -0500
 description: "Companion apps learned continuity, memory, tone, and expectation earlier than enterprise agents, even when their incentives are dangerous."
 tags: [ai-companions, product, ai-agents, persona-design]
 categories: [notes]
 featured: false
-image: assets/img/blog/2026-05-31-why-ai-girlfriends-understand-product-market-fit-better-than-enterprise-agents_1.webp
+image: /assets/img/editorial/why-ai-girlfriends-understand-product-market-fit-better-than-enterprise-agents-1440.webp
+thumbnail: /assets/img/editorial/why-ai-girlfriends-understand-product-market-fit-better-than-enterprise-agents-480.webp
+cover_alt: "A continuous bridge and a broken paper path with a repair thread, illustrating governed continuity in recurring AI agents."
 ---
 
 Enterprise agents talk like slide decks. AI girlfriends know when you are gone.
@@ -31,7 +34,7 @@ Continuity is not romance. It is product competence.
 
 ## The companion market measures pain directly
 
-The Companion Index tracks public signals such as subreddit communities, app-store data, search interest, and major events, with a warning that subreddit counts are imperfect proxies for active interest [[2]](#ref-2). Imperfect is still useful. Companion communities are full of complaints about memory, drift, model swaps, personality flattening, pricing, filters, and loss of older styles.
+The Companion Index publishes subreddit community counts and a sourced event timeline, with a warning that subscriber counts are imperfect proxies for active interest. App-store trajectories and search-interest signals are listed as planned additions rather than current measurements [[2]](#ref-2). Imperfect is still useful. Companion communities are full of complaints about memory, drift, model swaps, personality flattening, pricing, filters, and loss of older styles.
 
 Enterprise agent feedback is usually cleaner and less honest. A buyer complains in a renewal call. A team quietly disables an integration. A user stops asking the agent for important tasks. The failure becomes adoption friction, not grief.
 
@@ -195,13 +198,13 @@ That is less romantic than the companion market and more useful for the work age
 ## References
 
 <a id="ref-1"></a>
-**[1]** Morrone, M. (2026). AI companions are filling the human connection gaps. *Axios*. [Article](https://www.axios.com/2026/05/12/ai-companions-not-replacing-humans)
+**[1]** Morrone, M. (2026). AI companions are filling the human connection gaps. _Axios_. [Article](https://www.axios.com/2026/05/12/ai-companions-not-replacing-humans)
 
 <a id="ref-2"></a>
 **[2]** The Companion Report. (2026). The Companion Index. [Dataset page](https://thecompanionreport.com/data/companion-index)
 
 <a id="ref-3"></a>
-**[3]** Bernstein, G. (2026). *From bans to recalls: A public health framework for AI companion bots*. Brookings Institution. [PDF](https://www.brookings.edu/wp-content/uploads/2026/05/From-bans-to-recalls-A-public-health-framework-for-AI-companion-bots-1.pdf)
+**[3]** Bernstein, G. (2026). _From bans to recalls: A public health framework for AI companion bots_. Brookings Institution. [PDF](https://www.brookings.edu/wp-content/uploads/2026/05/From-bans-to-recalls-A-public-health-framework-for-AI-companion-bots-1.pdf)
 
 <a id="ref-4"></a>
-**[4]** Nass, C., & Moon, Y. (2000). Machines and mindlessness: Social responses to computers. *Journal of Social Issues*, 56(1), 81-103. [DOI: 10.1111/0022-4537.00153](https://doi.org/10.1111/0022-4537.00153)
+**[4]** Nass, C., & Moon, Y. (2000). Machines and mindlessness: Social responses to computers. _Journal of Social Issues_, 56(1), 81-103. [DOI: 10.1111/0022-4537.00153](https://doi.org/10.1111/0022-4537.00153)

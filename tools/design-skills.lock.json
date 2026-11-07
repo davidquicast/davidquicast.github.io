@@ -1,0 +1,101 @@
+{
+  "recorded": "2026-10-28",
+  "skills": [
+    {
+      "name": "design-taste-frontend",
+      "repo": "Leonxlnx/taste-skill",
+      "path": "skills/taste-skill",
+      "version": "v2.1.5",
+      "commit": "12af471f627f866411b4bd785b19646d3672784c",
+      "licence": "MIT"
+    },
+    {
+      "name": "web-design-guidelines",
+      "repo": "vercel-labs/agent-skills",
+      "path": "skills/web-design-guidelines",
+      "version": "1.0.0 + current rules",
+      "commit": "1a2c79d4e6c4a2283dc2c614b6538cbe1ed5ca62",
+      "licence": "No root licence file found; instructions only"
+    },
+    {
+      "name": "shadcn",
+      "repo": "shadcn-ui/ui",
+      "path": "skills/shadcn",
+      "version": "4.23.0",
+      "commit": "96da9cc7f1aa10580a3741664e2a77c721206c00",
+      "licence": "MIT"
+    },
+    {
+      "name": "design-audit",
+      "repo": "AThevon/genjutsu",
+      "path": "skills/_jutsu/design-audit",
+      "version": "2026-09-08 rules",
+      "commit": "1f518a71378b15d423389e546e767cffc86e14c3",
+      "licence": "MIT"
+    },
+    {
+      "name": "css-native",
+      "repo": "AThevon/genjutsu",
+      "path": "skills/_jutsu/css-native",
+      "version": "2026-09-08 rules",
+      "commit": "1f518a71378b15d423389e546e767cffc86e14c3",
+      "licence": "MIT"
+    },
+    {
+      "name": "motion-principles",
+      "repo": "AThevon/genjutsu",
+      "path": "skills/_jutsu/motion-principles",
+      "version": "2026-09-08 rules",
+      "commit": "1f518a71378b15d423389e546e767cffc86e14c3",
+      "licence": "MIT"
+    },
+    {
+      "name": "motion-design",
+      "repo": "lottiefiles/motion-design-skill",
+      "path": "skills/motion-design",
+      "version": "1.0.0",
+      "commit": "f9a8a041b85185ee4881b3471d3415e939aac772",
+      "licence": "MIT"
+    },
+    {
+      "name": "threejs-fundamentals",
+      "repo": "cloudai-x/threejs-skills",
+      "path": "skills/threejs-fundamentals",
+      "version": "r186 guide",
+      "commit": "0e181866f095b5f06d005133876e926515390d95",
+      "licence": "MIT"
+    },
+    {
+      "name": "threejs-materials",
+      "repo": "cloudai-x/threejs-skills",
+      "path": "skills/threejs-materials",
+      "version": "r186 guide",
+      "commit": "0e181866f095b5f06d005133876e926515390d95",
+      "licence": "MIT"
+    },
+    {
+      "name": "threejs-shaders",
+      "repo": "cloudai-x/threejs-skills",
+      "path": "skills/threejs-shaders",
+      "version": "r186 guide",
+      "commit": "0e181866f095b5f06d005133876e926515390d95",
+      "licence": "MIT"
+    },
+    {
+      "name": "threejs-postprocessing",
+      "repo": "cloudai-x/threejs-skills",
+      "path": "skills/threejs-postprocessing",
+      "version": "r186 guide",
+      "commit": "0e181866f095b5f06d005133876e926515390d95",
+      "licence": "MIT"
+    },
+    {
+      "name": "threejs-r3f",
+      "repo": "AThevon/genjutsu",
+      "path": "skills/_jutsu/threejs-r3f",
+      "version": "2026-09-08 rules",
+      "commit": "1f518a71378b15d423389e546e767cffc86e14c3",
+      "licence": "MIT"
+    }
+  ]
+}

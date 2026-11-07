@@ -1,0 +1,312 @@
+---
+navigation:
+  overview: Profile
+  projects: Projects
+  writing: Blog
+  research: Research
+  about: About
+  resume: Resume
+  contact: Contact
+  search: Search
+  menu: Menu
+  home: Home
+  language: Language
+  main: Main navigation
+  profile: Profile
+  work: Work
+  cv: CV
+labels:
+  view_project: View project
+  skip: Skip to content
+  all_writing: All articles
+  all_projects: All projects
+  back_to_top: Back to top
+  publications_empty: Publications will be added here.
+  read_more: Read more
+  current_work: Current work
+  selected_work: Selected work
+  publications: Publications
+  links: Links
+  elsewhere: Elsewhere
+  download: Download
+  open_pdf: Open PDF
+  download_pdf: Download PDF
+  view_resume: View resume
+  in_this_article: In this article
+  on_this_page: On this page
+  article_topics: Article topics
+  keep_reading: Keep reading
+  local_draft: Unpublished draft · Local preview
+  updated: Updated
+  minute_read: min read
+  view_all: View all
+  projects_contributions: Projects & contributions
+  recent_writing: Recent articles
+  resume_pdf: Open resume PDF
+  footer_links: Footer links
+  professional_profiles: Professional profiles
+  profile_resources: Profile resources
+  news: News
+  selected_publications: Selected publications
+search:
+  title: Search
+  placeholder: Search projects and articles
+  loading: Searching…
+  no_results: No results found.
+  error: Search is unavailable. Browse projects and articles below.
+  result_singular: "{count} result"
+  result_plural: "{count} results"
+  results_label: Search results
+  close: Close search
+  clear: Clear search
+  navigation: Pages
+  projects: Projects
+  writing: Blog
+  profiles: Profiles
+  hint: Search by title, topic or description.
+  showing_results: Showing results
+  explore: Explore
+  retry: Try again
+  input_label: Search projects, writing and pages
+  recovery_intro: Search could not load.
+  recovery_browse: Browse
+  recovery_or: or
+  recovery_retry: or try again.
+  selected_project: Selected project
+filters:
+  all: All
+  reset: Clear filters
+  search_projects: Search projects
+  search_writing: Search writing
+  all_years: All years
+  all_topics: All topics
+  year: Year
+  project_singular: "{count} project"
+  project_plural: "{count} projects"
+  article_singular: "{count} article"
+  article_plural: "{count} articles"
+  no_projects: No projects match these filters.
+  no_articles: No articles match these filters.
+  topics: Topics
+  categories: Categories
+  find_project: Find a project
+  find_article: Find an article
+  project_placeholder: Search by name, topic or technology…
+  article_placeholder: Search titles, topics and descriptions…
+  focus: Focus
+  all_work: All work
+  ai_systems: AI systems
+  cybersecurity: Cybersecurity
+  collaborations: Collaborations
+  everything: Everything
+  topic: Topic
+  projects_initial: All projects are shown.
+  articles_initial: All articles are shown.
+  empty_projects_help: Try another topic or clear your search to see all the work.
+  empty_articles_help: Try another topic, year or search term.
+  enable_projects: Enable JavaScript to search or filter the projects.
+  enable_articles: Enable JavaScript to search or filter the articles.
+theme:
+  to_light: Switch to light theme
+  to_dark: Switch to dark theme
+  system: Follow system appearance
+  label: Theme
+gallery:
+  title: Image gallery
+  close: Close image viewer
+  previous: Previous image
+  next: Next image
+  load_error: This image could not be loaded.
+  loading: Loading image…
+  open_original: Open original image
+  caption_fallback: Project image
+  position: Image {current} of {total}
+  enlarge: Enlarge image
+motion:
+  carousel: carousel
+  slide: slide
+  preview_title: Selected project previews
+  slide_position: "{current} of {total}"
+  choose_project: Choose a project
+  show_project: Show project
+  previous_project: Previous project
+  next_project: Next project
+  pause: Pause
+  resume: Resume
+  paused: Animation paused
+  playing: Animation playing
+  pause_previews: Pause project previews
+  resume_previews: Resume project previews
+  project_position: "Project {current} of {total}: {title}"
+clipboard:
+  copy: Copy code
+  copied: Copied
+  error: Could not copy. Select and copy the text.
+research:
+  outputs: Open research
+  title: Research
+  coauthored_paper: Coauthored paper
+  coauthored: Coauthored papers
+  cited_work: Cites my work
+  citations: Work cited in research
+  citations_description: Papers that cite my datasets or other open-source work.
+  pending_author_list: Author-list update pending
+  overview: Overview
+  all_authors: All authors
+  search_placeholder: Search titles, authors or resources…
+  view_reference: View reference in paper
+  sources: Sources and attribution
+  mentioned_resources: Cited resources
+  dataset: Dataset
+  read_paper: Read paper
+  publications: Publications
+  empty: Publications will be added here.
+  abstract: Abstract
+  citation: Citation
+  publication: Publication
+  code: Code
+  slides: Slides
+  poster: Poster
+  supplementary: Supplementary material
+  download_bibtex: Download BibTeX
+  links_for: Links for
+  search: Search research
+  no_results: No research entries match this search.
+  result_singular: "{count} research entry"
+  result_plural: "{count} research entries"
+newsletter:
+  email: Email address
+  subscribe: Subscribe
+  subscribing: Subscribing…
+  success: You are subscribed.
+  error: Could not subscribe. Please try again.
+  rate_limit: Too many requests. Please try again later.
+optional:
+  view_source: View source
+  load_error: Interactive content could not be loaded. The source remains available.
+types:
+  page: Page
+  project: Project
+  article: Article
+  profile: Profile
+  action: Action
+  research: Research
+profile:
+  role: Systems engineer
+  focus: Cybersecurity & AI safety
+  summary: I build practical AI systems, from agent workflows and evaluation to secure,
+    auditable deployment.
+  research_focus: AI behavior, safety evaluation and vulnerability intelligence.
+  resume_focus: Systems engineering, cybersecurity and AI safety.
+  current_description: At [Personaxis](https://personaxis.com), I work on portable,
+    versionable AI personas and the open [PERSONA.md specification](https://github.com/personaxis/persona.md).
+  contact_intro: For projects, research or a conversation about the work,
+  contact_action: send me an email
+projects:
+  personal: Personal project
+  navigation: Project navigation
+  open_source_collaboration: Open-source collaboration
+  collaboration: Collaboration
+  visit: Visit project
+  repository: View repository
+  huggingface: Explore on Hugging Face
+  context: Project context
+  focus: Focus
+  year: Year
+  resources: Resources
+  contribution: Contribution
+  contributions: Contributions
+  pull_request: Pull request
+  browse: Browse all work
+  discuss: Talk about this project
+errors:
+  not_found: Page not found
+  not_found_help: The link may have changed, or the page may no longer exist.
+  go_home: Go home
+  explore_work: Explore the work
+  browse_writing: Browse the writing
+resume:
+  fallback: Your browser cannot display this PDF.
+  open: Open the resume
+pagination:
+  previous: Previous
+  next: Next
+cards:
+  front_page: Front page
+  portfolio_feed: Work and writing by David Quispe
+  actions: Actions for
+  view_image: View image
+  copy_link: Copy link
+  field_note: Field note
+card_menu:
+  success: Link copied to clipboard.
+  error: Copy failed. Open the page and copy its address, or try again.
+feed:
+  project_group: Project type
+  all_projects: All projects
+  personal: Personal
+  catalog: Work, articles and papers
+  show: Show content
+  featured: Featured
+  all: All
+  papers: Research
+  paper: Paper
+  article: Article
+  sort: Sort content
+  recommended: Featured
+  updated: Latest changes
+  newest: Newest
+  oldest: Oldest
+  search: Search this profile
+  search_placeholder: Search…
+  items: items
+  count_singular: "{count} item"
+  count_plural: "{count} items"
+  featured_description: Selected projects and recent writing.
+  empty_title: No matches
+  empty_description: Try another search or category.
+  papers_empty_title: Research
+  papers_empty_description: Publication details will be added here. Research projects
+    are available in Projects.
+  reset: Show all work
+  browse: Browse all content
+  citation: BibTeX citation
+  project_spotlight: Project spotlight
+  descriptions:
+    featured: Selected projects and recent writing.
+    all: Projects, writing and papers in one place.
+    projects: Software, datasets and open-source contributions.
+    writing: Technical articles and field notes.
+    papers: Coauthored papers and research citing my work.
+    blogs: Technical articles and field notes.
+    research: Coauthored papers and research citing my work.
+overlay:
+  title: Content
+  close: Close
+  retry: Try again
+  open_page: Open full page
+  loading: Loading…
+  error: This content could not load. Try again or open the full page.
+about_reader:
+  previous: Previous
+  next: Next
+  page: Page {current} of {total}
+  navigation: Biography pages
+  cv: View CV
+  download: Download PDF
+
+dates:
+  title: Dates
+  published: Published
+  revised: Revised
+  updated: Updated
+  project_year: Project year
+  contribution: Linked contribution
+  latest_contribution: Latest contribution
+  linked_contributions: Merged contributions
+  merged: Merged
+  repository_dates: Repository dates
+  repository_created: Repository created
+  repository_updated: Repository updated
+  checked: Last checked
+  archived: Archived repository

@@ -1,0 +1,23 @@
+<nav class="profile-link-list{% if include.compact %} profile-social-links{% endif %}" aria-label="{{ 'navigation.profile' | ui_label }}">
+  {% for profile in site.data.profile_links %}
+    {% unless profile.group == 'research' %}
+      {% include profile-link.liquid profile=profile %}
+    {% endunless %}
+  {% endfor %}
+  {% if include.resume %}
+    <div class="profile-resources">
+      <a href="{{ '/resume/' | relative_url }}" data-content-overlay>
+        {%- include icon.liquid name='resume' -%}
+        {{- 'navigation.cv' | ui_label: 'CV' -}}
+      </a>
+    </div>
+  {% endif %}
+</nav>
+{% assign research_profiles = site.data.profile_links | where: 'group', 'research' %}
+{% if research_profiles.size > 0 %}
+  <nav class="profile-link-list profile-research-links" aria-label="{{ 'labels.research_profiles' | ui_label: 'Research profiles' }}">
+    {% for profile in research_profiles %}
+      {% include profile-link.liquid profile=profile %}
+    {% endfor %}
+  </nav>
+{% endif %}

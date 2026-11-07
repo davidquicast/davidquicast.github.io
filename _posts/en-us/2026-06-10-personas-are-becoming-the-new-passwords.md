@@ -1,12 +1,15 @@
 ---
 layout: post
+published: false
 title: "Personas Are Becoming the New Passwords"
 date: 2026-06-10 09:00:00 -0500
 description: "As agents move across tools and organizations, a persona becomes a portable behavioral credential that needs ownership, revocation, and audit."
 tags: [persona-md, ai-identity, ai-agents, security]
 categories: [notes]
 featured: false
-image: assets/img/blog/2026-05-29-personas-are-becoming-the-new-passwords_1.webp
+image: /assets/img/editorial/personas-are-becoming-the-new-passwords-1440.webp
+thumbnail: /assets/img/editorial/personas-are-becoming-the-new-passwords-480.webp
+cover_alt: "A paper passport with abstract seals sits apart from a private envelope, illustrating portable identity and separate private memory."
 ---
 
 The password was never only a secret. It was a crude claim about who could act.
@@ -184,4 +187,4 @@ The password era taught users to fear invisible authority. Persona systems shoul
 **[3]** Microsoft Security. (2026). Defense in depth for autonomous AI agents. [Article](https://www.microsoft.com/en-us/security/blog/2026/05/14/defense-in-depth-autonomous-ai-agents/)
 
 <a id="ref-4"></a>
-**[4]** Gabriel, I. (2020). Artificial intelligence, values, and alignment. *Minds and Machines*, 30, 411-437. [DOI: 10.1007/s11023-020-09539-2](https://doi.org/10.1007/s11023-020-09539-2)
+**[4]** Gabriel, I. (2020). Artificial intelligence, values, and alignment. _Minds and Machines_, 30, 411-437. [DOI: 10.1007/s11023-020-09539-2](https://doi.org/10.1007/s11023-020-09539-2)

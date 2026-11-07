@@ -1,0 +1,67 @@
+name: Verify portfolio
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      publish_artifact:
+        type: boolean
+        default: false
+      refresh_activity:
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Match the workspace owner
+        run: |
+          echo "PORTFOLIO_UID=$(id -u)" >> "$GITHUB_ENV"
+          echo "PORTFOLIO_GID=$(id -g)" >> "$GITHUB_ENV"
+      - name: Start the Docker development environment
+        run: docker compose up --build --wait --wait-timeout 180
+      - name: Check JavaScript and formatting
+        run: |
+          docker compose exec -T jekyll npm run check:js
+          docker compose exec -T jekyll npx prettier . --check
+      - name: Verify publishing and installer regressions
+        run: |
+          docker compose exec -T jekyll python3 -m unittest discover -s tests -p "test_*.py"
+          docker compose exec -T jekyll python3 -m unittest discover -s tools/tests
+      - name: Refresh verified repository dates
+        if: inputs.refresh_activity
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: docker compose exec -T -e GITHUB_TOKEN jekyll ruby scripts/refresh-project-activity.rb
+      - name: Build and verify the static production site
+        env:
+          PORTFOLIO_BUILD_SHA: ${{ github.sha }}
+        run: docker compose exec -T -e PORTFOLIO_BUILD_SHA jekyll bash bin/build-production.sh
+      - name: Serve the verified production artifact
+        run: |
+          docker compose exec -T -d jekyll python3 -m http.server 8092 --bind 127.0.0.1 --directory .local/production
+          for attempt in $(seq 1 20); do
+            if docker compose exec -T jekyll curl --fail --silent http://127.0.0.1:8092/build-info.json; then
+              exit 0
+            fi
+            sleep 1
+          done
+          exit 1
+      - name: Verify all browser regressions against production
+        run: docker compose exec -T -e PORTFOLIO_URL=http://127.0.0.1:8092 -e PRODUCTION_SITE=/srv/jekyll/.local/production jekyll npm test
+      - name: Upload the verified Pages artifact
+        if: inputs.publish_artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .local/production
+      - name: Stop containers
+        if: always()
+        run: docker compose down

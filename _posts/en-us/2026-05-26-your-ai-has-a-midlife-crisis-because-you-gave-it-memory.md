@@ -1,12 +1,15 @@
 ---
 layout: post
+published: false
 title: "Your AI Has a Midlife Crisis Because You Gave It Memory"
 date: 2026-05-26 09:00:00 -0500
 description: "Persistent memory makes agents useful, but it also gives them old commitments, stale self-models, and the possibility of identity drift."
 tags: [ai-personas, memory, ai-agents, governance]
 categories: [notes]
 featured: false
-image: assets/img/blog/2026-05-26-your-ai-has-a-midlife-crisis-because-you-gave-it-memory_1.webp
+image: /assets/img/editorial/your-ai-has-a-midlife-crisis-because-you-gave-it-memory-1440.webp
+thumbnail: /assets/img/editorial/your-ai-has-a-midlife-crisis-because-you-gave-it-memory-480.webp
+cover_alt: "A compass tangled in old index cards beside scissors that release one loop, illustrating revision of stale agent memory."
 ---
 
 An AI system with no memory can be annoying. An AI system with memory can become politically complicated.
@@ -147,19 +150,19 @@ That explanation is what lets a user trust change without surrendering control.
 ## References
 
 <a id="ref-1"></a>
-**[1]** Tulving, E. (1985). Memory and consciousness. *Canadian Psychology / Psychologie canadienne*, 26(1), 1-12. [DOI: 10.1037/h0080017](https://doi.org/10.1037/h0080017)
+**[1]** Tulving, E. (1985). Memory and consciousness. _Canadian Psychology / Psychologie canadienne_, 26(1), 1-12. [DOI: 10.1037/h0080017](https://doi.org/10.1037/h0080017)
 
 <a id="ref-2"></a>
-**[2]** Conway, M. A. (2005). Memory and the self. *Journal of Memory and Language*, 53(4), 594-628. [DOI: 10.1016/j.jml.2005.08.005](https://doi.org/10.1016/j.jml.2005.08.005)
+**[2]** Conway, M. A. (2005). Memory and the self. _Journal of Memory and Language_, 53(4), 594-628. [DOI: 10.1016/j.jml.2005.08.005](https://doi.org/10.1016/j.jml.2005.08.005)
 
 <a id="ref-3"></a>
-**[3]** Fleming, S. M., & Lau, H. C. (2014). How to measure metacognition. *Frontiers in Human Neuroscience*, 8. [DOI: 10.3389/fnhum.2014.00443](https://doi.org/10.3389/fnhum.2014.00443)
+**[3]** Fleming, S. M., & Lau, H. C. (2014). How to measure metacognition. _Frontiers in Human Neuroscience_, 8. [DOI: 10.3389/fnhum.2014.00443](https://doi.org/10.3389/fnhum.2014.00443)
 
 <a id="ref-4"></a>
-**[4]** Bernstein, G. (2026). *From bans to recalls: A public health framework for AI companion bots*. Brookings Institution. [PDF](https://www.brookings.edu/wp-content/uploads/2026/05/From-bans-to-recalls-A-public-health-framework-for-AI-companion-bots-1.pdf)
+**[4]** Bernstein, G. (2026). _From bans to recalls: A public health framework for AI companion bots_. Brookings Institution. [PDF](https://www.brookings.edu/wp-content/uploads/2026/05/From-bans-to-recalls-A-public-health-framework-for-AI-companion-bots-1.pdf)
 
 <a id="ref-5"></a>
-**[5]** Morrone, M. (2026). AI companions are filling the human connection gaps. *Axios*. [Article](https://www.axios.com/2026/05/12/ai-companions-not-replacing-humans)
+**[5]** Morrone, M. (2026). AI companions are filling the human connection gaps. _Axios_. [Article](https://www.axios.com/2026/05/12/ai-companions-not-replacing-humans)
 
 <a id="ref-6"></a>
 **[6]** The Companion Report. (2026). The Companion Index. [Dataset page](https://thecompanionreport.com/data/companion-index)
