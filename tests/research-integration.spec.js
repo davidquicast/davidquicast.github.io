@@ -150,3 +150,31 @@ test("populated research archive and pending-paper reader have no serious access
   report = await new AxeBuilder({ page }).include("[data-content-overlay-dialog]").withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze();
   expect(report.violations.filter((v) => ["serious", "critical"].includes(v.impact))).toEqual([]);
 });
+
+test("reader text retains full contrast during the entrance animation in both themes", async ({ page }) => {
+  test.setTimeout(60000);
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const colorScheme of ["light", "dark"]) {
+    await page.emulateMedia({ reducedMotion: "no-preference", colorScheme });
+    await page.goto(base + "/publications/", { waitUntil: "networkidle" });
+    // Stretch the actual CSS animation so the audit cannot race its completion.
+    await page.addStyleTag({ content: ".content-overlay[open] { animation-duration: 10s !important; }" });
+    await page.locator(".research-paper h3 a").filter({ hasText: "CulturalRiddles" }).click();
+    await expect(page.locator("[data-overlay-body] .paper-detail")).toBeVisible();
+    const dialog = page.locator("[data-content-overlay-dialog]");
+    const held = await dialog.evaluate((element) => {
+      const animations = element.getAnimations().filter((animation) => animation.animationName === "reader-enter");
+      for (const animation of animations) {
+        animation.pause();
+        animation.currentTime = Number(animation.effect.getComputedTiming().duration) * 0.1;
+      }
+      return animations.length;
+    });
+    expect(held).toBe(1);
+    await expect(dialog).toHaveCSS("opacity", "1");
+    const report = await new AxeBuilder({ page }).include("[data-content-overlay-dialog]").withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze();
+    expect(report.violations.filter((violation) => ["serious", "critical"].includes(violation.impact))).toEqual([]);
+    await page.keyboard.press("Escape");
+    await expect(dialog).not.toBeVisible();
+  }
+});
