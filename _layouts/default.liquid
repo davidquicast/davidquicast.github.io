@@ -1,82 +1,51 @@
 <!doctype html>
-<html lang="{{ site.active_lang }}">
-  <!-- Head -->
+<html lang="{{ page | content_locale | locale_tag }}">
   <head>
-    {% if page.redirect %}
-      {% if page.redirect == true %}
-        {% assign redirect = site.baseurl | append: '/' %}
-      {% elsif page.redirect contains '://' %}
-        {% assign redirect = page.redirect %}
-      {% else %}
-        {% assign is_asset = page.redirect | startswith: '/assets/' %}
-        {% if is_asset %}
-          {% assign redirect = page.redirect | prepend: site.baseurl_root %}
-        {% else %}
-          {% assign redirect = page.redirect | prepend: site.baseurl %}
-        {% endif %}
-      {% endif %}
-      <meta http-equiv="refresh" content="3; url={{ redirect }}">
+    {% include metadata.liquid %}
+    {% include schema-org.liquid %}
+    <link rel="canonical" href="{{ page.url | replace: 'index.html', '' | absolute_url }}">
+    <link rel="icon" href="{{ '/assets/img/icon2.ico' | relative_url }}">
+    <link rel="alternate" type="application/atom+xml" title="David Quispe" href="{{ '/feed.xml' | relative_url }}">
+    <link rel="preload" href="{{ '/assets/fonts/editorial/inter-latin-500-normal.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ '/assets/fonts/editorial/inter-latin-400-normal.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="{{ "/assets/css/readcv-interactions.css" | relative_url | bust_file_cache }}">
+    <link rel="stylesheet" href="{{ '/assets/css/portfolio.css' | relative_url | bust_file_cache }}">
+    <link rel="stylesheet" href="{{ '/assets/css/editorial.css' | relative_url | bust_file_cache }}">
+    <link rel="stylesheet" href="{{ '/assets/css/wall.css' | relative_url | bust_file_cache }}">
+    <link rel="stylesheet" href="{{ '/assets/css/profile-shell.css' | relative_url | bust_file_cache }}">
+    <link rel="stylesheet" href="{{ '/assets/css/section-layout.css' | relative_url | bust_file_cache }}">
+    <link rel="stylesheet" href="{{ '/assets/css/about-refinement.css' | relative_url | bust_file_cache }}">
+    {% include language-links.liquid %}
+    {% include ui-labels.liquid %}
+    {% include frontend-bootstrap.liquid %}
+    {% if page.redirect and page.collection != 'projects' and page.layout != 'post' %}
+      {% unless page.url == '/404.html' %}
+        <meta http-equiv="refresh" content="3; url={% if page.redirect == true %}{{ '/' | relative_url }}{% else %}{{ page.redirect }}{% endif %}">
+      {% endunless %}
     {% endif %}
-    {% include head.liquid %}
   </head>
-
-  <!-- Body -->
-  <body class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
-    <!-- Header -->
+  <body
+    data-content-overlay-host
+    data-image-zoom="{% if site.enable_medium_zoom %}true{% else %}false{% endif %}"
+    class="page-{{ page.page_id | default: page.layout | slugify }}{% if site.footer_fixed %} has-fixed-footer{% endif %}{% if site.navbar_fixed == false %} has-static-nav{% endif %}"
+  >
+    <a class="skip-link" href="#main">{{ 'labels.skip' | ui_label }}</a>
     {% include header.liquid %}
-
-    <!-- Content -->
-    <div class="container mt-3" role="main">
-      {% if page.toc and page.toc.sidebar %}
-        {% if page.toc.sidebar == 'right' %}
-          <div class="row">
-            <!-- main content area -->
-            <div class="col-sm-9">{{ content }}</div>
-            <!-- sidebar, which will move to the top on a small screen -->
-            <div class="col-sm-3">
-              <nav id="toc-sidebar" class="sticky-top"></nav>
-            </div>
-          </div>
-        {% else %}
-          <div class="row">
-            <!-- sidebar, which will move to the top on a small screen -->
-            <div class="col-sm-3">
-              <nav id="toc-sidebar" class="sticky-top"></nav>
-            </div>
-            <!-- main content area -->
-            <div class="col-sm-9">{{ content }}</div>
-          </div>
-        {% endif %}
-      {% else %}
-        {{ content }}
-      {% endif %}
-    </div>
-
-    <!-- Footer -->
+    <main id="main" tabindex="-1" class="site-main{% if page.layout == 'about' %} site-main-home{% endif %}">{{ content }}</main>
     {% include footer.liquid %}
+    {% include content-overlay.liquid %}
+    <script src="{{ '/assets/js/portfolio.js' | relative_url | bust_file_cache }}" defer></script>
+    {% include search.liquid %}
 
-    <!-- JavaScripts -->
-    {% include scripts/jquery.liquid %}
-    {% include scripts/bootstrap.liquid %}
-    {% include scripts/masonry.liquid %}
-    {% include scripts/mermaid.liquid %}
-    {% include scripts/diff2html.liquid %}
-    {% include scripts/leaflet.liquid %}
-    {% include scripts/chartjs.liquid %}
-    {% include scripts/echarts.liquid %}
-    {% include scripts/vega.liquid %}
-    {% include scripts/tikzjax.liquid %}
-    {% include scripts/typograms.liquid %}
-    {% include scripts/misc.liquid %}
-    {% include scripts/badges.liquid %}
-    {% include scripts/mathjax.liquid %}
-    {% include scripts/pseudocode.liquid %}
+    {% if page.layout == 'about' %}<script src="{{ '/assets/js/profile-feed.js' | relative_url | bust_file_cache }}" defer></script>{% endif %}
+    <script src="{{ '/assets/js/readcv-interactions.js' | relative_url | bust_file_cache }}" defer></script>
+    <script type="module" src="{{ '/assets/js/dist/editorial.js' | relative_url | bust_file_cache }}"></script>
+    <script src="{{ '/assets/js/card-menu.js' | relative_url | bust_file_cache }}" defer></script>
+    <script src="{{ '/assets/js/wall.js' | relative_url | bust_file_cache }}" defer></script>
+    <script src="{{ '/assets/js/about-reader.js' | relative_url | bust_file_cache }}" defer></script>
+    <script src="{{ '/assets/js/content-overlay.js' | relative_url | bust_file_cache }}" defer></script>
+    {% include optional-features.liquid %}
+    {% include site-progress.liquid %}
     {% include scripts/analytics.liquid %}
-    {% include scripts/progressBar.liquid %}
-    {% include scripts/wechatModal.liquid %}
-    {% include scripts/imageLayouts.liquid %}
-    {% include scripts/jekyll_tabs.liquid %}
-    {% include scripts/back_to_top.liquid %}
-    {% include scripts/search.liquid %}
   </body>
 </html>

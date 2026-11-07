@@ -1,0 +1,14 @@
+<a
+  class="profile-social-link"
+  data-profile-id="{{ include.profile.id | escape }}"
+  href="{{ include.profile.url | escape }}"
+  aria-label="{{ include.profile.aria_label | escape }}"
+  title="{{ include.profile.aria_label | escape }}"
+>
+  {% if include.profile.icon -%}
+    {%- include brand-icon.liquid name=include.profile.icon colored=true -%}
+  {%- elsif include.profile.logo -%}
+    <img class="brand-icon" src="{{ include.profile.logo | escape }}" alt="" width="20" height="20" loading="lazy" decoding="async">
+  {%- endif %}
+  <span class="profile-link-label">{{ include.profile.display | escape }}</span>
+</a>

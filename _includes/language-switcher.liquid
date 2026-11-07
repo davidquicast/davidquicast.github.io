@@ -1,0 +1,19 @@
+{% if site.show_language_switcher and site.languages.size > 1 %}
+  <nav class="language-switcher" aria-label="{{ 'navigation.language' | ui_label | escape }}">
+    {% for language in site.languages %}
+      {% assign language_route = page.permalink_lang[language] | default: page.url %}
+      <a
+        {% static_href -%}
+        href="{{ language_route | locale_url: language }}"
+        {% endstatic_href %}
+        hreflang="{{ language | locale_tag }}"
+        lang="{{ language | locale_tag }}"
+        {% if language == site.active_lang %}
+          aria-current="true"
+        {% endif %}
+      >
+        {{- language | locale_tag -}}
+      </a>
+    {% endfor %}
+  </nav>
+{% endif %}

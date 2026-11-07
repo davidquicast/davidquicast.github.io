@@ -1,6 +1,6 @@
 ---
 page_id: sorry_bench_multilingual_translation
-layout: page
+layout: project
 title: Sorry-Bench Multilingual Translation
 description: Cohere Labs collaboration translating Sorry-Bench into a multilingual safety dataset.
 img: assets/img/projects/sorry-bench-multilingual.webp

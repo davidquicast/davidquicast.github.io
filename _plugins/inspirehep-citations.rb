@@ -1,57 +1,43 @@
-require "active_support/all"
+# frozen_string_literal: true
+require 'active_support'
+require 'active_support/number_helper'
 require 'net/http'
 require 'json'
 require 'uri'
 
-module Helpers
-  extend ActiveSupport::NumberHelper
-end
-
 module Jekyll
   class InspireHEPCitationsTag < Liquid::Tag
-    Citations = { }
+    Citations = {}
 
     def initialize(tag_name, params, tokens)
       super
-      @recid = params.strip
+      @record_key = params.strip
     end
 
     def render(context)
-      recid = context[@recid.strip]
-      api_url = "https://inspirehep.net/api/literature/?fields=citation_count&q=recid:#{recid}"
-
+      record = context[@record_key].to_s
+      return 'N/A' unless record.match?(/\A[0-9]+\z/)
+      return Citations[record] if Citations.key?(record)
+      uri = URI('https://inspirehep.net/api/literature/')
+      uri.query = URI.encode_www_form(fields: 'citation_count', q: 'recid:' + record)
+      result = 'N/A'
       begin
-        # If the citation count has already been fetched, return it
-        if InspireHEPCitationsTag::Citations[recid]
-          return InspireHEPCitationsTag::Citations[recid]
+        response = Net::HTTP.start(uri.host, uri.port, use_ssl: true, open_timeout: 5, read_timeout: 5) do |http|
+          http.get(uri.request_uri)
         end
-
-        # Fetch the citation count from the API
-        uri = URI(api_url)
-        response = Net::HTTP.get(uri)
-        data = JSON.parse(response)
-
-        # # Log the response for debugging
-        # puts "API Response: #{data.inspect}"
-
-        # Extract citation count from the JSON data
-        citation_count = data["hits"]["hits"][0]["metadata"]["citation_count"].to_i
-
-        # Format the citation count for readability
-        citation_count = Helpers.number_to_human(citation_count, format: '%n%u', precision: 2, units: { thousand: 'K', million: 'M', billion: 'B' })
-
-      rescue Exception => e
-        # Handle any errors that may occur during fetching
-        citation_count = "N/A"
-
-        # Print the error message including the exception class and message
-        puts "Error fetching citation count for #{recid}: #{e.class} - #{e.message}"
+        if response.is_a?(Net::HTTPSuccess)
+          data = JSON.parse(response.body)
+          number = data.dig('hits', 'hits', 0, 'metadata', 'citation_count')
+          if number.is_a?(Integer) && number >= 0
+            result = ActiveSupport::NumberHelper.number_to_human(number, format: '%n%u', precision: 2,
+              units: { thousand: 'K', million: 'M', billion: 'B' })
+          end
+        end
+      rescue StandardError => error
+        Jekyll.logger.debug('INSPIRE metadata:', error.class.to_s)
       end
-
-      InspireHEPCitationsTag::Citations[recid] = citation_count
-      return "#{citation_count}"
+      Citations[record] = result.to_s
     end
   end
 end
-
 Liquid::Template.register_tag('inspirehep_citations', Jekyll::InspireHEPCitationsTag)

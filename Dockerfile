@@ -1,75 +1,40 @@
-FROM ruby:latest
+# Development and verification image. The deployed output remains a static Jekyll site.
+FROM node:24.22.1-bookworm-slim AS node
+FROM ruby:3.4.11-bookworm
 
-# uncomment these if you are having this issue with the build:
-# /usr/local/bundle/gems/jekyll-4.3.4/lib/jekyll/site.rb:509:in `initialize': Permission denied @ rb_sysopen - /srv/jekyll/.jekyll-cache/.gitignore (Errno::EACCES)
-# ARG GROUPID=901
-# ARG GROUPNAME=ruby
-# ARG USERID=901
-# ARG USERNAME=jekyll
+ENV DEBIAN_FRONTEND=noninteractive \
+    LANG=C.UTF-8 \
+    JEKYLL_ENV=development \
+    EXECJS_RUNTIME=Node \
+    CHROME_PATH=/usr/bin/chromium \
+    PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium
 
-ENV DEBIAN_FRONTEND noninteractive
+COPY --from=node /usr/local/ /usr/local/
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential chromium curl git imagemagick inotify-tools \
+    libffi-dev libxml2-dev libxslt1-dev pkg-config poppler-utils procps python3 python3-pip \
+    tini zlib1g-dev && \
+    pip3 install --no-cache-dir --break-system-packages nbconvert && \
+    rm -rf /var/lib/apt/lists/*
 
-LABEL authors="Amir Pourmand,George Araújo" \
-      description="Docker image for al-folio academic template" \
-      maintainer="George Araújo"
-
-# uncomment these if you are having this issue with the build:
-# /usr/local/bundle/gems/jekyll-4.3.4/lib/jekyll/site.rb:509:in `initialize': Permission denied @ rb_sysopen - /srv/jekyll/.jekyll-cache/.gitignore (Errno::EACCES)
-# add a non-root user to the image with a specific group and user id to avoid permission issues
-# RUN groupadd -r $GROUPNAME -g $GROUPID && \
-#     useradd -u $USERID -m -g $GROUPNAME $USERNAME
-
-# install system dependencies
-RUN apt-get update -y && \
-    apt-get install -y --no-install-recommends \
-        build-essential \
-        curl \
-        imagemagick \
-        inotify-tools \
-        locales \
-        nodejs \
-        procps \
-        python3-pip \
-        zlib1g-dev && \
-    pip --no-cache-dir install --upgrade --break-system-packages nbconvert
-
-# clean up
-RUN apt-get clean && \
-    apt-get autoremove && \
-    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*  /tmp/*
-
-# set the locale
-RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
-    locale-gen
-
-# set environment variables
-ENV EXECJS_RUNTIME=Node \
-    JEKYLL_ENV=production \
-    LANG=en_US.UTF-8 \
-    LANGUAGE=en_US:en \
-    LC_ALL=en_US.UTF-8
-
-# create a directory for the jekyll site
-RUN mkdir /srv/jekyll
-
-# copy the Gemfile and Gemfile.lock to the image
-ADD Gemfile.lock /srv/jekyll
-ADD Gemfile /srv/jekyll
-
-# set the working directory
 WORKDIR /srv/jekyll
-
-# install jekyll and dependencies
-RUN gem install --no-document jekyll bundler
-RUN bundle install --no-cache
-
-EXPOSE 8080
-
-COPY bin/entry_point.sh /tmp/entry_point.sh
-
-# uncomment this if you are having this issue with the build:
-# /usr/local/bundle/gems/jekyll-4.3.4/lib/jekyll/site.rb:509:in `initialize': Permission denied @ rb_sysopen - /srv/jekyll/.jekyll-cache/.gitignore (Errno::EACCES)
-# set the ownership of the jekyll site directory to the non-root user
-# USER $USERNAME
-
-CMD ["/tmp/entry_point.sh"]
+COPY Gemfile Gemfile.lock ./
+RUN bundle install --jobs 4
+COPY package.json package-lock.json ./
+RUN npm ci --no-audit --no-fund
+COPY bin/entry_point.sh /usr/local/bin/portfolio-dev
+ARG PORTFOLIO_UID=1000
+ARG PORTFOLIO_GID=1000
+RUN chmod +x /usr/local/bin/portfolio-dev && \
+    groupadd --gid "${PORTFOLIO_GID}" portfolio && \
+    useradd --uid "${PORTFOLIO_UID}" --gid "${PORTFOLIO_GID}" --create-home portfolio && \
+    mkdir -p /home/portfolio/.npm && \
+    cp -a /root/.npm/. /home/portfolio/.npm/ && \
+    chown -R portfolio:portfolio /srv/jekyll /usr/local/bundle /home/portfolio
+ENV HOME=/home/portfolio
+USER portfolio
+# Docker copies this app-owned directory into a fresh persistent skills volume.
+RUN mkdir -p /home/portfolio/.codex/skills
+EXPOSE 8080 35729
+ENTRYPOINT ["/usr/bin/tini", "--"]
+CMD ["/usr/local/bin/portfolio-dev"]

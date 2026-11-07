@@ -1,0 +1,62 @@
+{% assign paper = include.paper %}
+{% assign paper_dates = paper | content_timeline: 'paper' %}
+{% assign paper_url = paper.detail_url | default: paper.url | default: paper.doi_url | default: paper.bibtex_url %}
+<article
+  class="wall-card paper-card"
+  data-research-relationship="{{ paper.relationship | default: 'coauthor' }}"
+  data-wall-card
+  {% include feed-attributes.liquid entry=include.entry %}
+>
+  {% if site.data.research_covers[paper.id] %}
+    <a class="research-card-media" href="{{ paper_url | relative_url | escape }}" tabindex="-1" aria-hidden="true" data-content-overlay>
+      {% include research-image.liquid paper=paper loading=include.loading sizes="(min-width: 1001px) 176px, (min-width: 701px) 160px, 72px" %}
+    </a>
+  {% endif %}
+  <div class="wall-card-body">
+    <div class="paper-card-heading">
+      <div class="paper-card-kicker">
+        <p class="wall-meta">
+          {% include icon.liquid name='paper' -%}
+          {% if paper.relationship == 'cited_work' -%}
+            {{- 'research.cited_work' | ui_label: 'Cites my work' -}}
+          {%- else -%}
+            {{- 'research.coauthored_paper' | ui_label: 'Coauthored paper' -}}
+          {%- endif %}
+          <span aria-hidden="true">·</span>{% include content-date.liquid value=paper_dates.primary %}
+          {%- if include.entry.featured -%}
+            <span class="featured-mark">
+              {%- include icon.liquid name="star" -%}
+              {{- 'feed.featured' | ui_label -}}
+            </span>
+          {%- endif %}
+        </p>
+        {% include content-updated.liquid item=paper kind='paper' %}
+      </div>
+      <h2>
+        <a href="{{ paper_url | relative_url | escape }}" data-content-overlay data-pretext>{{ paper.title | escape }}</a>
+      </h2>
+      {% if paper.authorship_status == 'pending_update' %}
+        <p class="research-status">{{ 'research.pending_author_list' | ui_label: 'Author-list update pending' }}</p>
+      {% endif %}
+    </div>
+    <p class="paper-authors">
+      {% if paper.authors_preview %}{{ paper.authors_preview | escape }}{% else %}{{ paper.authors | join: ', ' | escape }}{% endif %}
+    </p>
+    {% if paper.venue != '' %}
+      <p class="paper-venue">{{ paper.venue | escape }}</p>
+    {% endif %}
+
+    {% if paper.summary != '' and paper.summary %}
+      <p class="wall-excerpt" data-pretext>{{ paper.summary | escape }}</p>
+    {% elsif paper.abstract != '' %}
+      <p class="wall-excerpt" data-pretext>{{ paper.abstract | escape }}</p>
+    {% endif %}
+    <div class="paper-card-actions">
+      {% include project-destinations.liquid project=paper context='card' %}
+      <a class="paper-citation" href="{{ paper.bibtex_url | relative_url }}">
+        {{- 'feed.citation' | ui_label: 'BibTeX citation' }}
+        {% include icon.liquid name='arrow' -%}
+      </a>
+    </div>
+  </div>
+</article>

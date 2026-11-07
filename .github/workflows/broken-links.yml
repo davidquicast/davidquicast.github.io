@@ -1,52 +1,32 @@
-name: Check for broken links
+name: Check external links
 
 on:
-  push:
-    branches:
-      - master
-      - main
-    paths:
-      - "assets/**"
-      - "**.html"
-      - "**.js"
-      - "**.liquid"
-      - "**/**.md"
-      - "**.yml"
-      - "!.github/workflows/axe.yml"
-      - "!.github/workflows/deploy-docker-tag.yml"
-      - "!.github/workflows/deploy-image.yml"
-      - "!.github/workflows/docker-slim.yml"
-      - "!.github/workflows/lighthouse-badger.yml"
-      - "!.github/workflows/prettier.yml"
-      - "!lighthouse_results/**"
-  pull_request:
-    branches:
-      - master
-      - main
-    paths:
-      - "assets/**"
-      - "**.html"
-      - "**.js"
-      - "**.liquid"
-      - "**/**.md"
-      - "**.yml"
-      - "!.github/workflows/axe.yml"
-      - "!.github/workflows/deploy-docker-tag.yml"
-      - "!.github/workflows/deploy-image.yml"
-      - "!.github/workflows/docker-slim.yml"
-      - "!.github/workflows/lighthouse-badger.yml"
-      - "!.github/workflows/prettier.yml"
-      - "!lighthouse_results/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   link-checker:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
-
-      - name: Link Checker 🔗
+      - name: Match the workspace owner
+        run: |
+          echo "PORTFOLIO_UID=$(id -u)" >> "$GITHUB_ENV"
+          echo "PORTFOLIO_GID=$(id -g)" >> "$GITHUB_ENV"
+      - name: Build the Docker environment
+        run: docker compose build
+      - name: Build and verify local destinations
+        run: docker compose run --rm --no-deps jekyll bash bin/build-production.sh
+      - name: Check external links from published HTML
         uses: lycheeverse/lychee-action@v2.1.0
         with:
           fail: true
-          # removed md files that include liquid tags
-          args: --user-agent 'curl/7.54' --exclude-path README.md --exclude-path _pages/en-us/404.md --exclude-path _pages/pt-br/404.md --exclude-path _pages/en-us/blog.md --exclude-path _pages/pt-br/blog.md --exclude-path _posts/en-us/2018-12-22-distill.md --exclude-path _posts/pt-br/2018-12-22-distill.md --exclude-path _posts/en-us/2023-04-24-videos.md --exclude-path _posts/pt-br/2023-04-24-videos.md --verbose --no-progress './**/*.md' './**/*.html'
+          args: >-
+            --verbose --no-progress
+            --base https://davidquicast.github.io
+            --exclude '^https://davidquicast\.github\.io'
+            --exclude-path .local/production/assets
+            '.local/production/**/*.html'

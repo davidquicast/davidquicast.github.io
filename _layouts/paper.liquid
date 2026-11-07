@@ -1,0 +1,73 @@
+---
+layout: default
+---
+{% assign paper = page.paper %}
+{% assign paper_dates = paper | content_timeline: 'paper' %}
+<article
+  class="paper-detail general-page"
+  data-research-relationship="{{ paper.relationship }}"
+  data-authorship-status="{{ paper.authorship_status }}"
+>
+  <a class="back-link" href="{{ '/' | relative_url }}?view=papers">← {{ 'navigation.research' | ui_label: 'Research' }}</a>
+  <header class="page-heading">
+    <p class="post-meta">
+      {% if paper.relationship == 'cited_work' -%}
+        {{- 'research.cited_work' | ui_label: 'Cites my work' -}}
+      {%- else -%}
+        {{- 'research.coauthored_paper' | ui_label: 'Coauthored paper' -}}
+      {%- endif %}
+      · {% include content-date.liquid value=paper_dates.primary %}
+      {%- if paper.venue != '' %} · {{ paper.venue | escape }}{% endif %}
+    </p>
+    {% include content-updated.liquid item=paper kind='paper' %}
+    <h1 data-pretext="lines">{{ paper.title | escape }}</h1>
+    {% include research-authors.liquid paper=paper expand=true %}
+    {% include research-attribution.liquid paper=paper %}
+  </header>
+  {% include research-links.liquid paper=paper %}
+  {% if paper.summary != '' and paper.summary %}
+    <section class="prose paper-overview" aria-labelledby="paper-overview">
+      <h2 id="paper-overview">{{ 'research.overview' | ui_label: 'Overview' }}</h2>
+      <p data-pretext>{{ paper.summary | escape }}</p>
+    </section>
+  {% endif %}
+  {% if paper.abstract != '' %}
+    <section class="prose paper-abstract" aria-labelledby="paper-abstract">
+      <h2 id="paper-abstract">{{ 'research.abstract' | ui_label }}</h2>
+      <p>{{ paper.abstract | escape | newline_to_br }}</p>
+    </section>
+  {% endif %}
+  {% if paper.mentions.size > 0 %}
+    <section class="prose research-mentions" aria-labelledby="research-mentions">
+      <h2 id="research-mentions">{{ 'research.mentioned_resources' | ui_label: 'Cited resources' }}</h2>
+      <ul>
+        {% for mention in paper.mentions %}
+          <li>
+            <a href="{{ mention.url | escape }}">{{ mention.title | escape }}</a>
+            {%- if mention.note != '' %}
+              <p>{{ mention.note | escape }}</p>
+            {% endif -%}
+            <a class="research-evidence-link" href="{{ mention.evidence_url | escape }}">
+              {{- 'research.view_reference' | ui_label: 'View reference in paper' }} ↗</a
+            >
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+  {% assign mentioned_evidence = paper.mentions | map: 'evidence_url' %}
+  {% capture evidence_items %}{% for source in paper.evidence %}{% unless mentioned_evidence contains source.url %}<li><a href="{{ source.url | escape }}">{{ source.label | escape }} ↗</a></li>{% endunless %}{% endfor %}{% endcapture %}
+  {% assign evidence_items = evidence_items | strip %}
+  {% if evidence_items != '' %}
+    <section class="research-evidence" aria-labelledby="research-evidence">
+      <h2 id="research-evidence">{{ 'research.sources' | ui_label: 'Sources and attribution' }}</h2>
+      <ul>
+        {{ evidence_items }}
+      </ul>
+    </section>
+  {% endif %}
+  <details class="research-citation">
+    <summary>{{ 'research.citation' | ui_label }}</summary>
+    <pre><code class="language-bibtex">{{ paper.bibtex | escape }}</code></pre>
+  </details>
+</article>

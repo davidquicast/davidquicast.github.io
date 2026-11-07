@@ -1,0 +1,4 @@
+{% assign shown_date = include.value | content_date -%}
+{%- if shown_date -%}
+  <time datetime="{{ shown_date.value | escape }}" data-date-precision="{{ shown_date.precision }}">{{ shown_date | precise_date }}</time>
+{%- endif %}

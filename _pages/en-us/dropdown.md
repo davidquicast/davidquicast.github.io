@@ -1,17 +1,8 @@
 ---
-id: dropdown
+page_id: dropdown
 layout: page
-title: submenus
-nav: false #editado
-nav_order: 8
-dropdown: true
-children:
-  - title: publications
-    permalink: /publications/
-  - title: divider
-  - title: projects
-    permalink: /projects/
-  - title: divider
-  - title: blog
-    permalink: /blog/
+title: Explore
+permalink: /dropdown/
 ---
+
+Browse [projects](/projects/), read the [journal](/blog/), or view my [resume](/resume/).

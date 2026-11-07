@@ -1,0 +1,22 @@
+{% assign destination_project = include.project | default: page %}
+{% if destination_project.destinations.size > 0 %}
+  <div class="project-destinations{% if include.context == 'detail' %} project-destinations-detail{% else %} project-destinations-card{% endif %}">
+    {% for destination in destination_project.destinations %}
+      {% assign destination_key = destination.icon | prepend: 'destinations.' %}
+      {% assign destination_label = destination_key | ui_label: destination.label %}
+      {% assign destination_detail = destination.detail_key | ui_label: destination.detail_label %}
+      <a
+        class="project-destination"
+        data-brand="{{ destination.icon | escape }}"
+        href="{{ destination.url | escape }}"
+        aria-label="{{ destination_project.title | escape }}: {{ destination_detail | escape }}"
+        title="{{ destination_detail | escape }}"
+      >
+        {% include brand-icon.liquid name=destination.icon colored=true %}
+        <span>
+          {%- if include.context == 'detail' %}{{ destination_detail | escape }}{% else %}{{ destination_label | escape }}{% endif -%}
+        </span>
+      </a>
+    {% endfor %}
+  </div>
+{% endif %}

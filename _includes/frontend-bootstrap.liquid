@@ -1,0 +1,80 @@
+<script>
+  // Keep essential navigation and theme controls independent of downloaded JS.
+  (() => {
+    const root = document.documentElement;
+    const systemTheme = matchMedia('(prefers-color-scheme: dark)');
+    const darkModeEnabled = {% if site.enable_darkmode %}true{% else %}false{% endif %};
+    let dictionary = {};
+    try { dictionary = JSON.parse(document.getElementById('portfolio-ui')?.textContent || '{}'); } catch {}
+    const label = (key, fallback) => {
+      const value = key.split('.').reduce((entry, part) => entry && typeof entry === 'object' ? entry[part] : undefined, dictionary);
+      return typeof value === 'string' && value ? value : fallback;
+    };
+    let chosenTheme = null;
+    try {
+      const stored = localStorage.getItem('portfolio-theme');
+      if (stored === 'light' || stored === 'dark') chosenTheme = stored;
+    } catch {}
+
+    const updateTheme = () => {
+      root.dataset.theme = darkModeEnabled ? (chosenTheme || (systemTheme.matches ? 'dark' : 'light')) : 'light';
+      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', root.dataset.theme === 'dark' ? '#0c0c0b' : '#f9f5ef');
+      document
+        .querySelector('.theme-toggle')
+        ?.setAttribute('aria-label', root.dataset.theme === 'dark' ? label('theme.to_light', 'Switch to light theme') : label('theme.to_dark', 'Switch to dark theme'));
+    };
+    const setMenu = (open, restoreFocus = false) => {
+      const button = document.querySelector('.menu-toggle');
+      button?.setAttribute('aria-expanded', String(open));
+      document.getElementById('main-navigation')?.classList.toggle('is-open', open);
+      if (restoreFocus) button?.focus();
+    };
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest?.('button, #main-navigation a');
+      if (target?.matches('.menu-toggle')) setMenu(target.getAttribute('aria-expanded') !== 'true');
+      else if (target?.matches('.theme-toggle')) {
+        chosenTheme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+        try {
+          localStorage.setItem('portfolio-theme', chosenTheme);
+        } catch {}
+        updateTheme();
+      } else if (target?.matches('#main-navigation a')) setMenu(false);
+      else if (event.target instanceof Element && !event.target.closest('.site-header')) setMenu(false);
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && document.querySelector('.menu-toggle')?.getAttribute('aria-expanded') === 'true') setMenu(false, true);
+    });
+    matchMedia('(min-width: 801px)').addEventListener('change', () => setMenu(false));
+    window.addEventListener('portfolio:set-theme', (event) => {
+      const value = event.detail?.theme;
+      if (!['light', 'dark', 'system'].includes(value)) return;
+      chosenTheme = value === 'system' ? null : value;
+      try {
+        if (chosenTheme) localStorage.setItem('portfolio-theme', chosenTheme);
+        else localStorage.removeItem('portfolio-theme');
+      } catch {}
+      updateTheme();
+    });
+    systemTheme.addEventListener('change', () => {
+      if (!chosenTheme) updateTheme();
+    });
+    window.addEventListener('storage', (event) => {
+      if (event.key !== 'portfolio-theme') return;
+      chosenTheme = event.newValue === 'light' || event.newValue === 'dark' ? event.newValue : null;
+      updateTheme();
+    });
+    const enhanceHeader = () => {
+      const menu = document.querySelector('.menu-toggle');
+      const theme = document.querySelector('.theme-toggle');
+      if (menu) menu.hidden = false;
+      if (theme) theme.hidden = false;
+      document.getElementById('main-navigation')?.setAttribute('data-enhanced', 'true');
+      updateTheme();
+    };
+    // The parser announces the header before deferred downloads complete.
+    document.addEventListener('portfolio:header-ready', enhanceHeader, { once: true });
+    document.addEventListener('DOMContentLoaded', enhanceHeader, { once: true });
+    updateTheme();
+    root.classList.add('js');
+  })();
+</script>

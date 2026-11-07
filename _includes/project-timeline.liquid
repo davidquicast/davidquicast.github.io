@@ -1,0 +1,49 @@
+{% assign timeline = include.timeline %}
+{% if timeline.resources.size > 0 or timeline.contributions.size > 0 %}
+  <h2>{{ 'dates.title' | ui_label }}</h2>
+  {% if timeline.contributions.size > 0 %}
+    <details class="project-source-dates">
+      <summary>{{ 'dates.linked_contributions' | ui_label }}</summary>
+      <ul>
+        {% for contribution in timeline.contributions %}
+          <li>
+            <a href="{{ contribution.url | escape }}">PR #{{ contribution.url | split: '/' | last }}</a><br>
+            {{ 'dates.merged' | ui_label }}
+            {% include content-date.liquid value=contribution.merged %}
+          </li>
+        {% endfor %}
+      </ul>
+    </details>
+  {% endif %}
+  <details class="project-source-dates">
+    <summary>{{ 'dates.repository_dates' | ui_label }}</summary>
+    {% for resource in timeline.resources %}
+      <div class="project-resource-dates">
+        <a href="{{ resource.url | escape }}">{{ resource.name | escape }}</a>
+        {%- if resource.archived %}
+          <p>{{ 'dates.archived' | ui_label }}</p>
+        {% endif %}
+        <dl>
+          {% if resource.created %}
+            <dt>{{ 'dates.repository_created' | ui_label }}</dt>
+            <dd>{% include content-date.liquid value=resource.created %}</dd>
+          {% endif %}
+          {% if resource.updated %}
+            <dt>{{ 'dates.repository_updated' | ui_label }}</dt>
+            <dd>
+              {% if resource.commit_url != '' -%}
+                <a href="{{ resource.commit_url | escape }}">{% include content-date.liquid value=resource.updated %}</a>
+              {%- else -%}
+                {%- include content-date.liquid value=resource.updated -%}
+              {%- endif %}
+            </dd>
+          {% endif %}
+          {% if resource.checked %}
+            <dt>{{ 'dates.checked' | ui_label }}</dt>
+            <dd>{% include content-date.liquid value=resource.checked %}</dd>
+          {% endif %}
+        </dl>
+      </div>
+    {% endfor %}
+  </details>
+{% endif %}

@@ -1,0 +1,7 @@
+{% assign update_dates = include.item | content_timeline: include.kind %}
+{% if update_dates.updated and update_dates.updated.display != update_dates.primary.display %}
+  <p class="content-updated">
+    {{ update_dates.updated_label | ui_label }}
+    {% include content-date.liquid value=update_dates.updated %}
+  </p>
+{% endif %}

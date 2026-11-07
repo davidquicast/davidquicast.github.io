@@ -1,0 +1,67 @@
+---
+layout: default
+---
+<section class="research-page">
+  <a class="back-link" href="{{ '/' | relative_url }}?view=papers">← {{ 'navigation.profile' | ui_label }}</a>
+  <header class="page-heading research-heading">
+    <h1 data-pretext="lines">{{ page.title | escape }}</h1>
+    {% if page.description %}
+      <p class="page-description" data-pretext>{{ page.description | escape }}</p>
+    {% endif %}
+  </header>
+  {{ content }}
+  {% assign papers = site.data.research.publications -%}
+  {%- assign citations = site.data.research.citations %}
+  {% assign research_count = papers.size | plus: citations.size %}
+  {% if research_count > 0 %}
+    {% if site.bib_search %}
+      <div class="research-search" data-research-search-root>
+        <label for="research-query">{{ 'research.search' | ui_label: 'Search research' }}</label
+        ><input
+          id="research-query"
+          type="search"
+          name="q"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="{{ 'research.search_placeholder' | ui_label: 'Search titles, authors or resources…' }}"
+          data-research-search
+          disabled
+        >
+        <p role="status" data-research-status></p>
+        <p data-research-empty hidden>{{ 'research.no_results' | ui_label }}</p>
+      </div>
+    {% endif %}
+    {% if papers.size > 0 %}
+      <section data-research-group class="research-group" aria-labelledby="coauthored-research">
+        <h2 id="coauthored-research">{{ 'research.coauthored' | ui_label: 'Coauthored papers' }}</h2>
+        <div class="research-publications">
+          {% for paper in papers -%}
+            {%- assign research_loading = 'lazy' -%}
+            {%- if forloop.first %}{% assign research_loading = 'eager' %}{% endif -%}
+            {%- include research-record.liquid paper=paper loading=research_loading -%}
+          {%- endfor %}
+        </div>
+      </section>
+    {% endif %}
+    {% if citations.size > 0 %}
+      <section data-research-group class="research-group research-cited" aria-labelledby="cited-research">
+        <h2 id="cited-research">{{ 'research.citations' | ui_label: 'Work cited in research' }}</h2>
+        <p class="research-group-description">
+          {{ 'research.citations_description' | ui_label: 'Papers that cite my datasets or other open-source work.' }}
+        </p>
+        <div class="research-publications">
+          {% for paper in citations -%}
+            {%- include research-record.liquid paper=paper -%}
+          {%- endfor %}
+        </div>
+      </section>
+    {% endif %}
+  {% else %}
+    <div class="research-empty">
+      <p>{{ 'research.empty' | ui_label }}</p>
+      <p>
+        <a href="{{ '/' | relative_url }}?view=projects">{{ 'research.explore_projects' | ui_label: 'Explore research projects' }} ↗</a>
+      </p>
+    </div>
+  {% endif %}
+</section>

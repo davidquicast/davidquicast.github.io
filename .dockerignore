@@ -1,3 +1,7 @@
 _site/
 .git/
-assets/
+.local/
+.taste-skill/
+node_modules/
+vendor/
+.jekyll-cache/

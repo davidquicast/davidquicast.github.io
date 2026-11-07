@@ -1,0 +1,18 @@
+<dialog id="content-overlay" class="content-overlay" aria-labelledby="content-overlay-title" data-content-overlay-dialog>
+  <div class="content-overlay-shell">
+    <header class="content-overlay-header">
+      <span class="visually-hidden" id="content-overlay-title" data-overlay-title>{{ 'overlay.title' | ui_label: 'Content' }}</span
+      ><span class="overlay-context" data-overlay-context>{{ 'overlay.title' | ui_label: 'Content' }}</span>
+      <button type="button" data-overlay-close aria-label="{{ 'overlay.close' | ui_label: 'Close content' }}">
+        {{ 'overlay.close' | ui_label: 'Close' }}
+      </button>
+    </header>
+    <p class="content-overlay-status" data-overlay-status role="status" aria-live="polite"></p>
+    <section class="content-overlay-error" data-overlay-error hidden>
+      <p data-overlay-error-message role="alert"></p>
+      <button type="button" data-overlay-retry>{{ 'overlay.retry' | ui_label: 'Try again' }}</button>
+      <a data-overlay-open-page href="/" data-overlay-native>{{ 'overlay.open_page' | ui_label: 'Open full page' }}</a>
+    </section>
+    <div class="content-overlay-body overlay-content" data-overlay-body data-content-scroll></div>
+  </div>
+</dialog>

@@ -1,159 +1,88 @@
 ---
 layout: default
 ---
-{% assign year = page.date | date: '%Y' %}
-{% assign tags = page.tags | join: '' %}
-{% assign categories = page.categories | join: '' %}
-{% assign post_image = page.image | default: page.thumbnail %}
-
-{% if page._styles %}
-  <!-- Page/Post style -->
-  <style type="text/css">
-    {{ page._styles }}
-  </style>
-{% endif %}
-
-{% assign url_beginning = page.url | slice: 0, 6 %}
-
-<div class="post">
-  <header class="post-header">
-    <h1 class="post-title">{{ page.title }}</h1>
-    <p class="post-meta">
-      {{ site.data[site.active_lang].strings.post.created_in }}
-      {% include date_format.liquid format='long' date=page.date -%}
-      {%- if page.author -%}
-        {{- site.data[site.active_lang].strings.post.created_by }}
-        {{ page.author -}}
-      {%- endif -%}
-      {%- if page.last_updated -%}
-        , {{ site.data[site.active_lang].strings.post.last_updated }}
-        {% include date_format.liquid format='long' date=page.last_updated -%}
-      {%- endif %}
-      {% if page.meta %}• {{ page.meta }}{% endif %}
-    </p>
-    <p class="post-tags">
-      {% if url_beginning == '/blog/' %}
-        <a href="{{ year | prepend: '/blog/' | prepend: site.baseurl}}"> <i class="fa-solid fa-calendar fa-sm"></i> {{ year }} </a>
-      {% else %}
-        <i class="fa-solid fa-calendar fa-sm"></i> {{ year }}
-      {% endif %}
-      {% if tags != '' %}
-        &nbsp; &middot; &nbsp;
-        {% for tag in page.tags %}
-          {% if url_beginning == '/blog/' %}
-            <a href="{{ tag | slugify | prepend: '/blog/tag/' | prepend: site.baseurl}}"> <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}</a>
-          {% else %}
-            <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}
-          {% endif %}
-          {% unless forloop.last %}
-            &nbsp;
-          {% endunless %}
-        {% endfor %}
-      {% endif %}
-
-      {% if categories != '' %}
-        &nbsp; &middot; &nbsp;
-        {% for category in page.categories %}
-          {% if url_beginning == '/blog/' %}
-            <a href="{{ category | slugify | prepend: '/blog/category/' | prepend: site.baseurl}}">
-              <i class="fa-solid fa-tag fa-sm"></i> {{ category -}}
-            </a>
-          {% else %}
-            <i class="fa-solid fa-tag fa-sm"></i> {{ category }}
-          {% endif %}
-          {% unless forloop.last %}
-            &nbsp;
-          {% endunless %}
-        {% endfor %}
-      {% endif %}
-    </p>
-  </header>
-
-  {% if post_image %}
-    <figure class="post-hero">
-      <img src="{{ post_image | relative_url }}" alt="">
-    </figure>
-  {% endif %}
-
-  <div class="post-reading-layout">
-    <aside class="post-live-toc" aria-label="Post sections">
-      <div class="post-live-toc-title">On this page</div>
-      <nav id="post-live-toc"></nav>
-    </aside>
-
-  <article class="post-content">
-    {% if page.toc and page.toc.beginning %}
-      <div id="table-of-contents">
-        {% toc %}
-      </div>
-      <hr>
+{% assign reading_time = content | number_of_words | divided_by: 200 | plus: 1 %}
+<article class="editorial-post">
+  <a class="back-link" href="{{ '/' | relative_url }}?view=writing">← {{ 'navigation.writing' | ui_label }}</a>
+  <header class="article-header">
+    {% if page.published == false %}
+      <p class="draft-notice">{{ 'labels.local_draft' | ui_label }}</p>
     {% endif %}
-    <div id="markdown-content">
-      {{ content }}
+    <h1 data-pretext="lines">{{ page.title }}</h1>
+    {% if page.description %}
+      <p class="article-deck" data-pretext>{{ page.description }}</p>
+    {% endif %}
+    <div class="article-byline">
+      <span>David Quispe</span><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | localized_date: 'long' }}</time>
+      {%- unless page.external_source -%}
+        <span>
+          {{- reading_time }}
+          {{ 'labels.minute_read' | ui_label -}}
+        </span>
+      {%- endunless %}
+      {%- if page.last_updated -%}
+        <span>
+          {{- 'labels.updated' | ui_label }}
+          {% include content-date.liquid value=page.last_updated %}
+        </span>
+      {%- endif %}
     </div>
-  </article>
+    {% if page.tags.size > 0 %}
+      <nav class="article-tags" aria-label="{{ 'labels.article_topics' | ui_label }}">
+        {% for tag in page.tags -%}
+          <a href="{{ tag | slugify | prepend: '/blog/tag/' | append: '/' | relative_url }}">{{ tag | replace: '-', ' ' }}</a>
+        {%- endfor %}
+      </nav>
+    {% endif %}
+  </header>
+  <figure class="article-cover">{% include editorial-cover.liquid post=page loading="eager" sizes="(min-width: 1000px) 760px, 90vw" %}</figure>
+  <div class="reading-layout">
+    <aside class="reading-sidebar">
+      <details class="article-outline">
+        <summary>{{ 'labels.in_this_article' | ui_label }}</summary>
+        <nav aria-label="{{ 'labels.on_this_page' | ui_label }}" id="article-toc"></nav>
+      </details>
+    </aside>
+    <div class="prose article-content" id="markdown-content">{{ content }}</div>
   </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const content = document.getElementById("markdown-content");
-      const toc = document.getElementById("post-live-toc");
-      if (!content || !toc) return;
-
-      const headings = Array.from(content.querySelectorAll("h2"));
-      if (headings.length < 2) {
-        const shell = document.querySelector(".post-live-toc");
-        if (shell) shell.hidden = true;
-        return;
-      }
-
-      headings.forEach((heading, index) => {
-        if (!heading.id) {
-          heading.id = heading.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || `section-${index + 1}`;
-        }
-        const link = document.createElement("a");
-        link.href = `#${heading.id}`;
-        link.textContent = heading.textContent;
-        toc.appendChild(link);
-      });
-
-      const links = Array.from(toc.querySelectorAll("a"));
-      const observer = new IntersectionObserver(
-        (entries) => {
-          const visible = entries
-            .filter((entry) => entry.isIntersecting)
-            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-          if (!visible) return;
-          links.forEach((link) => link.classList.toggle("active", link.getAttribute("href") === `#${visible.target.id}`));
-        },
-        { rootMargin: "-20% 0px -65% 0px", threshold: 0.01 }
-      );
-
-      headings.forEach((heading) => observer.observe(heading));
-    });
-  </script>
-
-  {% if page.citation %}
-    {% include citation.liquid %}
-  {% endif %}
-
+  {% if page.citation %}{% include citation.liquid %}{% endif %}
   {% if page.related_publications %}
-    <h2>{{ site.data[site.active_lang].strings.references }}</h2>
-    <div class="publications">
+    <div class="prose">
+      <h2>References</h2>
       {% bibliography --group_by none --cited_in_order %}
     </div>
   {% endif %}
-
-  {% if site.related_blog_posts.enabled %}
-    {% if page.related_posts == null or page.related_posts %}
-      {% include related_posts.liquid %}
+  {% assign more_posts = site.posts | where_exp: 'post', 'post.url != page.url and post.published != false' %}
+  {% assign matching_posts = '' | split: '' %}
+  {% assign other_posts = '' | split: '' %}
+  {% for post in more_posts %}
+    {% assign shares_topic = false %}
+    {% for tag in post.tags %}
+      {% if page.tags contains tag -%}
+        {%- assign shares_topic = true -%}
+        {%- break -%}
+      {%- endif %}
+    {% endfor %}
+    {% if shares_topic %}
+      {% assign matching_posts = matching_posts | push: post %}
+    {% else %}
+      {% assign other_posts = other_posts | push: post %}
     {% endif %}
+  {% endfor %}
+  {% assign more_posts = matching_posts | concat: other_posts %}
+  {% assign related_limit = site.related_blog_posts.max_related | default: 2 | plus: 0 | at_most: 2 %}
+  {% if site.related_blog_posts.enabled and related_limit > 0 and more_posts.size > 0 %}
+    <section class="article-next">
+      <h2>{{ 'labels.keep_reading' | ui_label }}</h2>
+      {% for post in more_posts limit: related_limit -%}
+        <a href="{{ post.url | relative_url }}" class="next-post"
+          ><span>{% include content-date.liquid value=post.date %}</span>
+          <h3 data-pretext>{{ post.title }}</h3>
+          <span aria-hidden="true">↗</span></a
+        >
+      {%- endfor %}
+    </section>
   {% endif %}
-
-  {% if site.disqus_shortname and page.disqus_comments %}
-    {% include disqus.liquid %}
-  {% endif %}
-  {% if site.giscus and page.giscus_comments %}
-    {% include giscus.liquid %}
-  {% endif %}
-</div>
+  {% if site.giscus.repo and page.giscus_comments %}{% include giscus.liquid %}{% endif %}
+  {% if site.disqus_shortname and page.disqus_comments %}{% include disqus.liquid %}{% endif %}
+</article>

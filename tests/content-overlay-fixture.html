@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>David Quispe profile</title>
+    <link rel="stylesheet" href="/assets/css/readcv-interactions.css" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font: 16px/1.6 Arial;
+        margin: 0;
+        padding: 20px;
+      }
+      .has-dialog {
+        overflow: hidden;
+      }
+      nav {
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 1;
+        padding: 12px;
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      main {
+        min-height: 2600px;
+      }
+      dialog.content-overlay {
+        width: min(760px, calc(100vw - 32px));
+        max-height: calc(100dvh - 32px);
+        padding: 0;
+        border: 1px solid #888;
+        border-radius: 10px;
+      }
+      dialog::backdrop {
+        background: #0006;
+      }
+      .content-overlay-shell {
+        display: flex;
+        flex-direction: column;
+        max-height: calc(100dvh - 36px);
+      }
+      .content-overlay-header {
+        display: flex;
+        justify-content: space-between;
+        padding: 16px;
+        gap: 16px;
+      }
+      .content-overlay-header h2 {
+        font-size: 16px;
+        margin: 0;
+      }
+      [data-overlay-body] {
+        overflow: auto;
+        min-height: 0;
+        padding: 0 20px 20px;
+        overscroll-behavior: contain;
+      }
+      [data-overlay-status],
+      [data-overlay-error] {
+        padding: 0 20px;
+      }
+      button,
+      a {
+        font: inherit;
+      }
+      button {
+        min-height: 36px;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+      a:focus-visible,
+      button:focus-visible {
+        outline: 2px solid blue;
+        outline-offset: 3px;
+      }
+    </style>
+    <script src="/assets/js/readcv-interactions.js" defer></script>
+    <script src="/assets/js/content-overlay.js" defer></script>
+  </head>
+  <body data-image-zoom="true">
+    <main id="main" tabindex="-1" data-profile-feed>
+      <h1>David Quispe</h1>
+      <nav aria-label="Profile content">
+        <a id="project-one" href="/projects/one/" data-content-overlay>First project</a><a id="project-two" href="/projects/two/">Second project</a
+        ><a id="about-link" href="/about/" data-content-overlay>About</a><a id="resume-link" href="/resume/">CV</a
+        ><a id="writing-link" href="/blog/2026/research-note/">Writing</a><a id="paper-link" href="/research/real-paper/">Paper</a
+        ><a id="directory" href="/projects/">Project directory</a><a id="external" href="https://example.com/">External link</a
+        ><a id="download" href="/assets/document.pdf" download>Download</a>
+      </nav>
+      <label>Retained profile filter <input id="profile-query" value="memory" /></label>
+      <section id="profile-detail">
+        <h2>Original profile feed</h2>
+        <p>The profile remains mounted while content opens.</p>
+      </section>
+    </main>
+    <dialog id="content-overlay" class="content-overlay" aria-labelledby="content-overlay-title" data-content-overlay-dialog>
+      <div class="content-overlay-shell">
+        <header class="content-overlay-header">
+          <h2 id="content-overlay-title" data-overlay-title>Content</h2>
+          <button type="button" data-overlay-close aria-label="Close content">Close</button>
+        </header>
+        <p data-overlay-status role="status" aria-live="polite"></p>
+        <section data-overlay-error hidden>
+          <p data-overlay-error-message role="alert"></p>
+          <button data-overlay-retry>Try again</button><a data-overlay-open-page data-overlay-native href="/">Open full page</a>
+        </section>
+        <div class="content-overlay-body overlay-content" data-overlay-body data-content-scroll></div>
+      </div>
+    </dialog>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+{% assign menu_id = include.key | prepend: 'card-menu-' | slugify %}
+<div class="card-actions">
+  <button
+    class="card-menu-button"
+    id="{{ menu_id }}-trigger"
+    type="button"
+    data-card-menu
+    aria-controls="{{ menu_id }}"
+    aria-label="{{ 'cards.actions' | ui_label: 'Actions for' }} {{ include.title | escape }}"
+    aria-expanded="false"
+    hidden
+    data-enable-with-js
+  >
+    <span aria-hidden="true">···</span>
+  </button>
+  <div
+    class="card-menu-panel"
+    id="{{ menu_id }}"
+    data-card-menu-panel
+    hidden
+    role="menu"
+    aria-label="{{ 'cards.actions' | ui_label: 'Actions for' }} {{ include.title | escape }}"
+  >
+    {% if include.image -%}
+      <a
+        href="{{ include.image | relative_url | escape }}"
+        role="menuitem"
+        data-lightbox
+        data-lightbox-group="wall"
+        data-lightbox-caption="{{ include.alt | default: include.title | escape }}"
+      >
+        {{- 'cards.view_image' | ui_label: 'View image' -}}
+      </a>
+    {%- endif %}
+    <button type="button" role="menuitem" data-copy-link data-url="{{ include.url | relative_url | escape }}">
+      {{ 'cards.copy_link' | ui_label: 'Copy link' }}
+    </button>
+  </div>
+</div>

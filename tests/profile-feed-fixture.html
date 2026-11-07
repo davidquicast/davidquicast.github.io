@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Profile feed fixture</title>
+    <link rel="stylesheet" href="/assets/css/editorial.css" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 20px;
+        font:
+          16px/1.5 Arial,
+          sans-serif;
+      }
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+      button {
+        min-height: 36px;
+      }
+      button:focus-visible,
+      a:focus-visible {
+        outline: 2px solid blue;
+        outline-offset: 3px;
+      }
+      .toolbar {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 20px 0;
+      }
+      [data-feed-grid] {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr));
+        gap: 22px;
+        align-items: start;
+      }
+      [data-feed-item] {
+        padding: 20px;
+        border: 1px solid #888;
+        border-radius: 10px;
+        min-width: 0;
+        background: white;
+        overflow-wrap: anywhere;
+      }
+      [data-feed-item][hidden] {
+        display: none !important;
+      }
+      [data-feed-grid][data-feed-enhanced] > [data-feed-item] {
+        transform: translate3d(var(--feed-x), var(--feed-y), 0);
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      [data-feed-item] h2 {
+        font-size: 20px;
+        margin: 0 0 12px;
+      }
+      [data-feed-item]p {
+        margin: 0;
+      }
+      a {
+        color: inherit;
+      }
+      .masthead {
+        max-width: 600px;
+      }
+      [data-profile-feed]:not([data-feed-ready]) [data-feed-toolbar] {
+        display: none;
+      }
+      [data-feed-grid][data-feed-scrollable="true"] {
+        max-height: 300px;
+        overflow: auto;
+        overscroll-behavior: contain;
+      }
+    </style>
+    <script src="/assets/js/profile-feed.js" defer></script>
+    <script type="module" src="/assets/js/dist/editorial.js"></script>
+  </head>
+  <body>
+    <header class="masthead">
+      <h1>David Quispe</h1>
+      <p>Cybersecurity and AI safety. Profile masthead remains separate from the filtered feed.</p>
+      <nav aria-label="Profile views">
+        <a data-feed-link href="/tests/profile-feed-fixture.html?view=projects">Project rail link</a>
+        <a id="external" data-feed-link href="https://example.com/?view=writing">Other website</a>
+      </nav>
+    </header>
+    <main data-profile-feed data-feed-default="featured" data-feed-writing-scroll="true" data-feed-writing-label="Writing archive">
+      <div class="toolbar" data-feed-toolbar>
+        <div class="feed-tabs" aria-label="Feed categories">
+          <button data-feed-view="featured" aria-pressed="true">Featured</button><button data-feed-view="all" aria-pressed="false">All</button
+          ><button data-feed-view="projects" aria-pressed="false">Projects</button
+          ><button data-feed-view="writing" aria-pressed="false">Writing</button><button data-feed-view="papers" aria-pressed="false">Papers</button>
+        </div>
+        <label
+          >Order
+          <select data-feed-sort>
+            <option value="recommended">Selected order</option>
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+          </select></label
+        ><label>Search <input type="search" data-feed-search autocomplete="off" name="q" /></label><button data-feed-reset>Reset feed</button>
+      </div>
+      <p role="status" aria-live="polite"><span data-feed-count></span></p>
+      <p data-feed-context></p>
+      <div data-feed-grid data-feed-min-width="270" data-feed-gap="22">
+        <article
+          data-feed-item
+          data-feed-id="spotlight"
+          data-feed-only-featured
+          data-feed-kind="project"
+          data-feed-featured="true"
+          data-feed-date="2026-01-01"
+          data-feed-rank="-1"
+        >
+          <h2>Selected project previews</h2>
+          <p>Only featured includes this functional preview deck. Every project remains individually listed in All and Projects.</p>
+        </article>
+        <article
+          data-feed-item
+          data-feed-id="project-old"
+          data-feed-kind="project"
+          data-feed-date="2023-01-01"
+          data-feed-rank="2"
+          data-feed-featured="true"
+        >
+          <h2><a href="/projects/old/" data-pretext>Early secure deployment project with a long title</a></h2>
+          <p data-pretext>
+            A practical engineering project describing secure deployment. Includes meaningful text that changes height across responsive column
+            widths.
+          </p>
+        </article>
+        <article
+          data-feed-item
+          data-feed-id="writing-new"
+          data-feed-kind="writing"
+          data-feed-date="2026-04-01"
+          data-feed-rank="1"
+          data-feed-featured="true"
+        >
+          <h2><a href="/blog/new/" data-pretext>Persona boundaries and refusal</a></h2>
+          <p data-pretext>
+            Field notes about evaluation, multilingual sécurité research, and thoughtful model behavior. This article uses a taller excerpt with
+            enough content to demonstrate shortest-column placement without assigning identical heights to every item.
+          </p>
+        </article>
+        <article
+          data-feed-item
+          data-feed-id="project-new"
+          data-feed-kind="project"
+          data-feed-date="2025-12-01"
+          data-feed-rank="3"
+          data-feed-featured="false"
+        >
+          <h2><a href="/projects/new/" data-pretext>Recent systems project</a></h2>
+          <p data-pretext>A short project description.</p>
+        </article>
+        <article
+          data-feed-item
+          data-feed-id="writing-old"
+          data-feed-kind="writing"
+          data-feed-date="2024-02-01"
+          data-feed-rank="0"
+          data-feed-featured="true"
+        >
+          <h2><a href="/blog/old/" data-pretext>Earlier editorial note</a></h2>
+          <p data-pretext>
+            Another real linked note. Different copy creates a different height, allowing the flow to fill the shortest column while preserving
+            semantic DOM order.
+          </p>
+        </article>
+        <article
+          data-feed-item
+          data-feed-id="project-middle"
+          data-feed-kind="project"
+          data-feed-date="1735689600000"
+          data-feed-rank="4"
+          data-feed-featured="false"
+        >
+          <h2><a href="/projects/middle/" data-pretext>January evaluation work</a></h2>
+          <p data-pretext>Evaluation engineering and data quality.</p>
+        </article>
+      </div>
+      <section data-feed-empty hidden>
+        <h2 data-feed-empty-title>No matching items</h2>
+        <p data-feed-empty-description>Choose another view or clear the search.</p>
+        <button data-feed-reset>View all</button>
+      </section>
+    </main>
+    <footer><a href="#top">Footer link</a></footer>
+  </body>
+</html>

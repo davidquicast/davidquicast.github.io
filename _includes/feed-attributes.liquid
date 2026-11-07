@@ -1,0 +1,6 @@
+{% if include.entry %}
+  data-feed-item data-feed-id="{{ include.entry.id | escape }}" data-feed-kind="{{ include.entry.kind }}" data-feed-date="{{ include.entry.date }}"
+  data-feed-activity="{{ include.entry.activity | default: include.entry.date }}" data-feed-date-precision="{{ include.entry.precision }}"
+  data-feed-rank="{{ include.entry.rank }}" data-feed-featured="{{ include.entry.featured }}" data-feed-text="{{ include.entry.search | escape }}"
+  {% if include.entry.kind == 'project' %}data-feed-project-type="{{ include.entry.project_type | escape }}"{% endif %}
+{% endif %}

@@ -1,4 +1,10 @@
-<div class="col project-entry-col" data-project-category="{{ project.category }}" data-project-tags="{% if project.tags %}{{ project.tags | join: ' ' | downcase }}{% endif %}" data-project-title="{{ project.title | downcase }}" data-project-description="{{ project.description | downcase }}">
+<div
+  class="col project-entry-col"
+  data-project-category="{{ project.category }}"
+  data-project-tags="{% if project.tags %}{{ project.tags | join: ' ' | downcase }}{% endif %}"
+  data-project-title="{{ project.title | downcase }}"
+  data-project-description="{{ project.description | downcase }}"
+>
   <div class="row no-gutters project-entry">
     {% if project.img %}
       <div class="col-auto project-entry-thumb{% if project.img_fit == 'contain' %} project-entry-thumb-contain{% endif %}">
@@ -7,19 +13,29 @@
     {% endif %}
     <div class="col project-entry-body">
       <div class="project-entry-header">
-        <a href="{{ project.redirect | default: project.github | default: project.url | relative_url }}"
-          {% if project.redirect or project.github %}target="_blank" rel="noopener"{% endif %}
-          class="project-entry-title">{{ project.title }}</a>
-        {% if project.year %}<span class="project-entry-year">{{ project.year }}</span>{% endif %}
-        {% if project.category == "collaborations" %}
-          <span class="project-entry-badge">{{ project.collaboration_label | default: "Hugging Face" }}</span>
+        <a
+          href="{{ project.redirect | default: project.github | default: project.url | relative_url }}"
+          {% if project.redirect or project.github %}
+            target="_blank" rel="noopener"
+          {% endif %}
+          class="project-entry-title"
+        >
+          {{- project.title -}}
+        </a>
+        {% if project.year -%}
+          <span class="project-entry-year">{{ project.year }}</span>
+        {%- endif %}
+        {% if project.category == 'collaborations' %}
+          <span class="project-entry-badge">{{ project.collaboration_label | default: 'Hugging Face' }}</span>
         {% endif %}
       </div>
       <p class="project-entry-desc">{{ project.description }}</p>
       {% if project.tags %}
         <div class="project-entry-tags">
           {% assign visible_tags = project.display_tags | default: project.tags %}
-          {% for tag in visible_tags %}<span class="project-entry-tag">{{ tag }}</span>{% endfor %}
+          {% for tag in visible_tags -%}
+            <span class="project-entry-tag">{{ tag }}</span>
+          {%- endfor %}
         </div>
       {% endif %}
       {% if project.project_items %}
@@ -27,9 +43,9 @@
           {% for item in project.project_items %}
             <a href="{{ item.url }}" target="_blank" rel="noopener" class="project-entry-item">
               <span class="project-entry-item-icon" aria-hidden="true">
-                {% if item.icon == "github" %}
+                {% if item.icon == 'github' %}
                   <i class="fa-brands fa-github"></i>
-                {% elsif item.icon == "huggingface" %}
+                {% elsif item.icon == 'huggingface' %}
                   <img src="https://huggingface.co/datasets/huggingface/brand-assets/resolve/main/hf-logo.svg" alt="">
                 {% else %}
                   <i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -38,7 +54,9 @@
               <span class="project-entry-item-copy">
                 <span class="project-entry-item-label">{{ item.label }}</span>
                 <span class="project-entry-item-title">{{ item.title }}</span>
-                {% if item.detail %}<span class="project-entry-item-detail">{{ item.detail }}</span>{% endif %}
+                {% if item.detail -%}
+                  <span class="project-entry-item-detail">{{ item.detail }}</span>
+                {%- endif %}
               </span>
               <i class="fa-solid fa-arrow-up-right-from-square project-entry-item-arrow" aria-hidden="true"></i>
             </a>
@@ -49,7 +67,12 @@
         <div class="project-entry-links">
           {% if project.argilla_prs %}
             {% for pr in project.argilla_prs %}
-              <a href="{{ project.github | replace: 'github.com', 'github.com/argilla-io' }}/pull/{{ pr }}" target="_blank" rel="noopener" class="btn btn-sm z-depth-0">
+              <a
+                href="{{ project.github | replace: 'github.com', 'github.com/argilla-io' }}/pull/{{ pr }}"
+                target="_blank"
+                rel="noopener"
+                class="btn btn-sm z-depth-0"
+              >
                 <span style="font-weight: 600;">Argilla #{{ pr }}</span>
               </a>
             {% endfor %}
@@ -61,19 +84,21 @@
               </a>
             {% endfor %}
           {% elsif project.github %}
-            <a href="{{ project.github }}" target="_blank" rel="noopener" class="btn btn-sm z-depth-0">
-              <i class="fa-brands fa-github"></i> Repo
-            </a>
+            <a href="{{ project.github }}" target="_blank" rel="noopener" class="btn btn-sm z-depth-0"> <i class="fa-brands fa-github"></i> Repo </a>
           {% endif %}
           {% if project.huggingface %}
             <a href="{{ project.huggingface }}" target="_blank" rel="noopener" class="btn btn-sm z-depth-0">
-              <img class="project-link-icon" src="https://huggingface.co/datasets/huggingface/brand-assets/resolve/main/hf-logo.svg" alt="" aria-hidden="true"> {{ project.huggingface_label | default: "HF Repo" }}
+              <img
+                class="project-link-icon"
+                src="https://huggingface.co/datasets/huggingface/brand-assets/resolve/main/hf-logo.svg"
+                alt=""
+                aria-hidden="true"
+              >
+              {{ project.huggingface_label | default: 'HF Repo' }}
             </a>
           {% endif %}
           {% if project.redirect and project.github == blank and project.huggingface == blank %}
-            <a href="{{ project.redirect }}" target="_blank" rel="noopener" class="btn btn-sm z-depth-0">
-              Visit
-            </a>
+            <a href="{{ project.redirect }}" target="_blank" rel="noopener" class="btn btn-sm z-depth-0"> Visit </a>
           {% endif %}
         </div>
       {% endunless %}
