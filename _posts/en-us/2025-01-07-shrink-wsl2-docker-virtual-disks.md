@@ -6,27 +6,28 @@ description: "Complete guide to reclaim disk space by optimizing WSL2 and Docker
 tags: [wsl2, docker, windows, virtualization, disk-management]
 categories: [tutorials, system-administration]
 featured: false
+last_updated: 2026-10-29
 github: https://gist.github.com/davidquicast/563c7a92af8da9d911b4f358858d8504
-image: assets/img/blog/2025-01-07-shrink-wsl2-docker-virtual-disks_4.webp
+image: /assets/img/editorial/shrink-wsl2-docker-virtual-disks-1440.webp
+thumbnail: /assets/img/editorial/shrink-wsl2-docker-virtual-disks-480.webp
+cover_alt: "A compressed accordion file leaves a large empty space, illustrating reclaimed virtual disk storage."
 ---
 
-Over time, WSL2 distributions and Docker images can consume significant disk space on your Windows system. Even after deleting files, containers, or images, the allocated virtual disk (VHDX) files do not automatically shrink to reflect the freed space. This comprehensive guide explains how to manually reclaim disk space by optimizing these virtual disks.
+Deleting Linux files or Docker resources can leave the Windows VHDX file larger than the live data inside it. Manual compaction can reclaim eligible space, but the result depends on the disk and its configuration.
+
+**Check your Docker Desktop version and storage backend first.** Docker Desktop 4.34 introduced automatic reclamation for its managed WSL 2 disk; legacy installations using `docker-desktop-data` may require different handling. The manual workflow below is not a required maintenance step for every installation. See [Docker's storage architecture and reclamation explanation](https://www.docker.com/blog/docker-desktop-4-34/).
 
 ## Understanding the Problem
 
-WSL2 and Docker Desktop use VHDX (Virtual Hard Disk) files to store their data. These files have a tendency to grow but rarely shrink automatically, leading to:
+WSL 2 stores a distribution's filesystem in an `ext4.vhdx` file. Free space reported inside Linux and the physical size of that file on Windows are different measurements. [Microsoft's WSL disk-space guide](https://learn.microsoft.com/en-us/windows/wsl/disk-space) explains how to locate the actual disk and inspect its capacity.
 
-- **Wasted disk space** even after cleanup
-- **Performance degradation** on systems with limited storage  
-- **Unexpected "disk full" errors** despite having deleted content
-
-The solution is to manually optimize these VHDX files using Windows' built-in tools.
+Compaction can reduce a dynamically expanding disk's physical file size. It does not guarantee a particular saving or faster workloads. [Microsoft documents that `Optimize-VHD` can complete without reducing the file size](https://learn.microsoft.com/en-us/powershell/module/hyper-v/optimize-vhd?view=windowsserver2025-ps).
 
 ## Shrinking WSL2 Virtual Disks
 
 ### Step 1: Locate the VHDX File
 
-On Windows 11, WSL2 distributions store their virtual disks in the following location:
+Store-installed distributions may use the following location. Imported or relocated distributions can be elsewhere; confirm the actual path with [Microsoft's VHD-location procedure](https://learn.microsoft.com/en-us/windows/wsl/disk-space#how-to-locate-the-vhdx-file-and-disk-path-for-your-linux-distribution) before using a compaction command:
 
 ```
 C:\Users\[username]\AppData\Local\Packages\
@@ -34,12 +35,12 @@ C:\Users\[username]\AppData\Local\Packages\
 
 Look for the vendor name corresponding to your installed distribution:
 
-| Distribution | Vendor Folder |
-|--------------|---------------|
-| **Ubuntu** | `CanonicalGroupLimited.Ubuntu*` |
-| **Debian** | `TheDebianProject.DebianGNULinux*` |
-| **Pengwin** | `WhitewaterFoundryLtd.Co.Pengwin*` |
-| **openSUSE** | `46932SUSE.openSUSE*` |
+| Distribution | Vendor Folder                      |
+| ------------ | ---------------------------------- |
+| **Ubuntu**   | `CanonicalGroupLimited.Ubuntu*`    |
+| **Debian**   | `TheDebianProject.DebianGNULinux*` |
+| **Pengwin**  | `WhitewaterFoundryLtd.Co.Pengwin*` |
+| **openSUSE** | `46932SUSE.openSUSE*`              |
 
 Once you identify the correct folder, navigate to the `LocalState` subdirectory, where you will find the `ext4.vhdx` file for the distribution.
 
@@ -49,21 +50,26 @@ Before optimizing the VHDX file, ensure you:
 
 1. **Save your work** and close all WSL2 sessions
 2. **Stop all running containers** if using Docker
-3. **Create a backup** of important data (optional but recommended)
+3. **Back up important distribution data** before disk maintenance
 
 ### Step 3: Optimize the Virtual Disk
 
 1. **Shut down WSL2 completely:**
+
    ```powershell
    wsl --shutdown
    ```
 
 2. **Open PowerShell as Administrator** and run the optimization command:
+
    ```powershell
    optimize-vhd -Path "C:\Users\[username]\AppData\Local\Packages\[vendor-folder]\LocalState\ext4.vhdx" -Mode full
    ```
 
+   This command requires the Hyper-V PowerShell module. The disk must be detached or attached read-only. For VHDX, Microsoft notes that `Full` falls back to `Prezeroed` when the disk was not attached read-only. Do not assume every free filesystem block is reclaimable.
+
    **Example for Ubuntu:**
+
    ```powershell
    optimize-vhd -Path "C:\Users\johndoe\AppData\Local\Packages\CanonicalGroupLimited.Ubuntu22.04LTS_79rhkp1fndgsc\LocalState\ext4.vhdx" -Mode full
    ```
@@ -72,23 +78,22 @@ Before optimizing the VHDX file, ensure you:
 
 ### Step 1: Locate Docker's Virtual Disks
 
-Docker Desktop stores its virtual disk files for WSL2 in these locations:
+Docker's documented default WSL 2 data disk is:
 
-```
-C:\Users\[YOURNAME]\AppData\Local\Docker\wsl\disk\
-C:\Users\[YOURNAME]\AppData\Local\Docker\wsl\data\
+```text
+%LOCALAPPDATA%\Docker\wsl\disk\docker_data.vhdx
 ```
 
-The main files you'll typically find:
-- `data.vhdx` - Contains Docker images and containers
-- `disk.vhdx` - Contains Docker's Linux filesystem
+A legacy installation may instead use `wsl\data\ext4.vhdx`. Custom disk-image locations and other backends differ. Confirm the backend and configured disk-image location in Docker Desktop rather than assuming two disks exist. See [Docker's backup and storage-location documentation](https://docs.docker.com/desktop/settings-and-maintenance/backup-and-restore/).
 
 ### Step 2: Clean Docker Resources (Optional)
 
-Before shrinking, consider cleaning up unused Docker resources:
+First inspect what Docker stores with `docker system df`. Cleanup is optional and separate from compaction.
+
+The prune commands below delete resources. In particular, `docker system prune -a --volumes` removes stopped containers, unused images, build cache and unused anonymous volumes. Those volumes can contain application data even when no container uses them. Back up data you intend to retain and review Docker's confirmation prompt before pruning. See [the documented prune scope](https://docs.docker.com/reference/cli/docker/system/prune/).
 
 ```bash
-# Remove unused containers, networks, images, and volumes
+# Destructive cleanup: review the confirmation prompt and retain required data
 docker system prune -a --volumes
 
 # Remove specific items
@@ -99,20 +104,22 @@ docker volume prune     # Remove unused volumes
 
 ### Step 3: Optimize Docker Virtual Disks
 
-1. **Shut down Docker completely:**
+1. **Quit Docker Desktop, then shut down WSL:**
+
    ```powershell
    wsl --shutdown
    ```
 
-2. **Close Docker Desktop** from the system tray
+2. **Confirm Docker Desktop is stopped** and the target disk is detached
 
-3. **Open PowerShell as Administrator** and optimize both VHDX files:
+3. **Open PowerShell as Administrator** and compact only the disk whose path you verified. These are alternative layout examples, not two commands every installation needs:
+
    ```powershell
-   # Optimize data disk
+   # Example for a legacy data disk, only if this is your confirmed path
    optimize-vhd -Path "C:\Users\[YOURNAME]\AppData\Local\Docker\wsl\data\ext4.vhdx" -Mode full
-   
-   # Optimize disk if present
-   optimize-vhd -Path "C:\Users\[YOURNAME]\AppData\Local\Docker\wsl\disk\disk.vhdx" -Mode full
+
+   # Alternative example for the managed WSL 2 data disk
+   optimize-vhd -Path "C:\Users\[YOURNAME]\AppData\Local\Docker\wsl\disk\docker_data.vhdx" -Mode full
    ```
 
 ## Advanced Tips and Troubleshooting
@@ -123,13 +130,13 @@ Before and after optimization, check the actual file sizes:
 
 ```powershell
 # Check VHDX file size
-Get-ChildItem "C:\Users\[username]\AppData\Local\Packages\*\LocalState\*.vhdx" | 
+Get-ChildItem "C:\Users\[username]\AppData\Local\Packages\*\LocalState\*.vhdx" |
     Select-Object Name, @{Name="Size(GB)";Expression={[math]::Round($_.Length/1GB,2)}}
 ```
 
 ### Alternative: Using diskpart
 
-If `optimize-vhd` is not available, you can use `diskpart`:
+If the Hyper-V cmdlet is unavailable, DiskPart also supports compaction of dynamically expanding disks. The selected disk must be detached or attached read-only. See [Microsoft's `compact vdisk` reference](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/compact-vdisk).
 
 ```cmd
 diskpart
@@ -148,37 +155,37 @@ exit
 ### Troubleshooting Common Issues
 
 **"Access Denied" Error:**
+
 - Ensure PowerShell is running as Administrator
 - Make sure WSL2 and Docker are completely shut down
 - Check if any antivirus software is locking the files
 
 **"File is in use" Error:**
+
 - Run `wsl --shutdown` and wait 10-15 seconds
 - Close Docker Desktop completely
 - Check Task Manager for any remaining `wsl.exe` or `docker` processes
 
 **Limited Space Reclaimed:**
+
 - Some VHDX files have minimum size limits
 - Recent file writes may prevent significant shrinking
 - Consider the VHDX file's allocation unit size
 
 ## Performance Impact and Results
 
-After optimization, you should expect:
+Compare the same VHDX file before and after compaction. The PowerShell example above reports file length; for a sparse or compressed file, also inspect Windows' Size on disk when measuring reclaimed host storage. The reclaimed space can be substantial, small, or zero. No universal percentage follows from this procedure.
 
-- **Significant disk space recovery** (often 50-80% reduction)
-- **Faster boot times** for WSL2 distributions
-- **Improved overall system performance** on storage-constrained systems
-- **Better Docker performance** due to optimized disk access
+Measure workloads separately before attributing a performance change to disk compaction.
 
 ## Conclusion
 
-Regular maintenance of WSL2 and Docker VHDX files is essential for optimal system performance and storage management. By following this guide, you can reclaim substantial disk space and maintain a clean, efficient development environment.
+Use compaction when your confirmed disk layout needs it, after backing up data and stopping the software that holds the disk open. Keep routine Docker cleanup separate: deleting an unused volume and reclaiming unused VHDX blocks are different operations.
 
-The optimization process is safe and can be performed regularly without data loss, though creating backups of critical data is always recommended as a best practice.
+Documentation checked on October 29, 2026.
 
 ---
 
 **📝 Original Gist:** This tutorial is based on my [original GitHub Gist](https://gist.github.com/davidquicast/563c7a92af8da9d911b4f358858d8504) with expanded content and additional troubleshooting tips.
 
-**Pro Tip:** Consider creating a PowerShell script to automate this process for multiple VHDX files, making regular maintenance even easier! 
+**Pro Tip:** Consider creating a PowerShell script to automate this process for multiple VHDX files, making regular maintenance even easier!

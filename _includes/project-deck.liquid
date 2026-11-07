@@ -1,0 +1,85 @@
+{% assign deck_source = include.projects | default: site.projects | sort: 'importance' %}
+{% assign deck_items = '' | split: '' %}
+{% for project in deck_source %}
+  {% if project.published != false %}
+    {% if include.curated %}
+      {% assign deck_items = deck_items | push: project %}
+    {% else %}
+      {% if project.page_id == 'personaxis'
+        or project.page_id == 'sorry_bench_multilingual_translation'
+        or project.page_id == 'davidquicast_open_deep_research'
+      %}
+        {% assign deck_items = deck_items | push: project %}
+      {% endif %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+{% if deck_items.size > 0 %}
+  <section
+    class="project-deck"
+    aria-label="{{ "motion.preview_title" | ui_label: "Selected project previews" }}"
+    aria-roledescription="{{ 'motion.carousel' | ui_label }}"
+    data-project-deck
+  >
+    <div class="project-deck-slides">
+      {% for project in deck_items %}
+        {% assign image_priority = 'low' %}
+        {% if forloop.first %}{% assign image_priority = 'high' %}{% endif %}
+        <article
+          class="project-deck-slide"
+          data-deck-slide
+          role="group"
+          aria-roledescription="{{ 'motion.slide' | ui_label }}"
+          aria-label="{{ forloop.index }} / {{ deck_items.size }}"
+        >
+          <a class="project-deck-media" href="{{ project.url | locale_url: site.active_lang }}" tabindex="-1" aria-hidden="true">
+            {%- include project-image.liquid project=project loading="eager" priority=image_priority sizes="(min-width: 1600px) 300px, (min-width: 1100px) 24vw, (min-width: 800px) 31vw, (min-width: 600px) 46vw, 92vw" -%}
+          </a>
+          <div class="project-deck-copy">
+            <p class="project-deck-meta">
+              {{ project.year }} ·
+              {% if project.category == 'collaborations' -%}
+                {{- 'projects.collaboration' | ui_label -}}
+              {%- else -%}
+                {{- 'projects.personal' | ui_label -}}
+              {%- endif %}
+            </p>
+            <h{{ include.heading_level | default: 3 }}>
+              <a href="{{ project.url | locale_url: site.active_lang }}" data-pretext>{{ project.title }}</a>
+            </h{{ include.heading_level | default: 3 }}>
+            <p data-pretext>{{ project.description }}</p>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+    <div class="project-deck-controls" data-deck-controls hidden>
+      <div class="project-deck-dots" aria-label="{{ 'motion.choose_project' | ui_label }}">
+        {% for project in deck_items -%}
+          <button
+            type="button"
+            data-deck-index="{{ forloop.index0 }}"
+            aria-label="{{ 'motion.show_project' | ui_label }}: {{ project.title | escape }}"
+            aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+          >
+            <span aria-hidden="true"></span>
+          </button>
+        {%- endfor %}
+      </div>
+      <div class="project-deck-actions">
+        <button type="button" data-deck-previous aria-label="{{ 'motion.previous_project' | ui_label }}">
+          {{ 'pagination.previous' | ui_label }}</button
+        ><button type="button" data-deck-next aria-label="{{ 'motion.next_project' | ui_label }}">{{ 'pagination.next' | ui_label }}</button
+        ><button
+          type="button"
+          data-deck-pause
+          aria-label="{{ "motion.pause_previews" | ui_label: "Pause automatic project previews" }}"
+          aria-pressed="false"
+        >
+          {{ 'motion.pause' | ui_label: 'Pause' }}
+        </button>
+      </div>
+    </div>
+    <span class="project-deck-timing" aria-hidden="true" hidden data-deck-timing><span data-deck-progress></span></span>
+    <p class="sr-only" role="status" aria-live="off" data-deck-status></p>
+  </section>
+{% endif %}

@@ -1,6 +1,6 @@
 ---
 page_id: davidquicast_devfolio
-layout: page
+layout: project
 title: DevFolio
 description: Lightweight portfolio web app built with HTML, CSS, and JavaScript.
 img: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYiImd4Qteat2nNJ1Y1dr3YACJGdA_-p_E1Q&s
@@ -13,5 +13,3 @@ year: 2024
 ---
 
 Responsive portfolio web app built with HTML, CSS, and JavaScript. Simple web application designed to showcase development projects, skills, and professional experience with modern responsive design.
-
-*[Space for portfolio website screenshot]*

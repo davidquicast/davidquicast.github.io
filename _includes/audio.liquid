@@ -1,29 +1,26 @@
 <figure>
   <audio
     src="{% if include.cache_bust %}{{ include.path | relative_url | bust_file_cache }}{% else %}{{ include.path | relative_url }}{% endif %}"
+    preload="metadata"
+    aria-label="{{ include.title | default: include.alt | default: 'Audio' | escape }}"
     {% if include.class %}
-      class="{{ include.class }}"
+      class="{{ include.class | escape }}"
     {% endif %}
-    {% if include.alt %}
-      alt="{{ include.alt }}"
-    {% endif %}
-    {% if include.title %}
-      title="{{ include.title }}"
-    {% endif %}
+    {% unless include.controls == false %}
+      controls
+    {% endunless %}
     {% if include.autoplay %}
       autoplay
-    {% endif %}
-    {% if include.controls %}
-      controls
-    {% endif %}
+    {% endif -%}
     {% if include.loop %}
       loop
-    {% endif %}
+    {% endif -%}
     {% if include.muted %}
       muted
     {% endif %}
-  />
-
+  >
+    <a href="{{ include.path | relative_url }}">Open audio</a>
+  </audio>
   {% if include.caption %}
     <figcaption class="caption">{{ include.caption }}</figcaption>
   {% endif %}

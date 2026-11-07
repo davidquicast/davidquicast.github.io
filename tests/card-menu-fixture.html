@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="canonical" href="https://davidquicast.github.io/" />
+    <title>Card menu regression fixture</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font: 16px/1.5 sans-serif;
+        padding: 20px;
+        max-width: 520px;
+        margin: auto;
+        color: #111;
+        background: #fff;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      button,
+      a {
+        font: inherit;
+      }
+      button {
+        min-height: 40px;
+      }
+      article {
+        min-height: 140px;
+        padding: 16px;
+        border: 1px solid #ddd;
+        margin: 16px 0;
+      }
+      article > button {
+        float: right;
+      }
+      .card-menu-panel {
+        display: grid;
+        width: 220px;
+        padding: 8px;
+        gap: 4px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background: white;
+        color: #111;
+        z-index: 50;
+      }
+      .card-menu-panel a,
+      .card-menu-panel button {
+        display: block;
+        padding: 8px;
+        font: inherit;
+        text-align: left;
+        border: 0;
+        background: white;
+        color: #111;
+        text-decoration: none;
+        min-height: 36px;
+      }
+      .card-menu-panel :focus-visible {
+        outline: 2px solid #0788f5;
+        outline-offset: 1px;
+      }
+      .card-menu-status {
+        font-size: 13px;
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+        margin: 4px 8px;
+      }
+      .card-menu-status:empty {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main id="main" tabindex="-1">
+      <h1>Project actions</h1>
+      <button id="before">Before cards</button>
+      <article>
+        <a id="project1" href="/projects/personaxis/">Personaxis</a
+        ><button id="trigger1" data-card-menu aria-controls="menu1" aria-label="Actions for Personaxis" hidden>⋯</button>
+        <div id="menu1" class="card-menu-panel" data-card-menu-panel hidden role="menu">
+          <a role="menuitem" data-lightbox href="/assets/img/prof_pic.jpg">View image</a
+          ><button role="menuitem" data-copy-link data-url="/projects/personaxis/">Copy link</button>
+        </div>
+      </article>
+      <article>
+        <a id="project2" href="/projects/research/">Open Deep Research</a
+        ><button id="trigger2" data-card-menu aria-controls="menu2" aria-label="Actions for Open Deep Research" hidden>⋯</button>
+        <div id="menu2" class="card-menu-panel" data-card-menu-panel hidden role="menu">
+          <a role="menuitem" data-lightbox href="/assets/img/prof_pic.jpg">View image</a
+          ><button role="menuitem" data-copy-link data-url="/projects/research/">Copy link</button>
+        </div>
+      </article>
+      <button id="outside">Outside menu</button>
+    </main>
+    <script src="/assets/js/readcv-interactions.js" defer></script>
+    <script src="/assets/js/card-menu.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "mcpServers": {
+    "shadcn": {
+      "command": "docker",
+      "args": ["compose", "exec", "-T", "jekyll", "npm", "exec", "--prefix", "tools/mcp", "--", "shadcn", "mcp"]
+    },
+    "chrome-devtools": {
+      "command": "docker",
+      "args": [
+        "compose",
+        "exec",
+        "-T",
+        "jekyll",
+        "npm",
+        "exec",
+        "--prefix",
+        "tools/mcp",
+        "--",
+        "chrome-devtools-mcp",
+        "--headless",
+        "--isolated",
+        "--executablePath=/usr/bin/chromium",
+        "--chromeArg=--no-sandbox",
+        "--chromeArg=--disable-dev-shm-usage",
+        "--no-usage-statistics",
+        "--no-performance-crux",
+        "--filesystemRoot=/srv/jekyll"
+      ]
+    }
+  }
+}

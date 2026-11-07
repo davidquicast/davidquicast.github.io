@@ -1,6 +1,6 @@
 ---
 page_id: personaxis
-layout: page
+layout: project
 title: "Personaxis + persona.md"
 description: "AI persona infrastructure: the Personaxis registry/deployment platform plus persona.md, the open standard and CLI for defining AI agent personas."
 img: assets/img/projects/personaxis.webp

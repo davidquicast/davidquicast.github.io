@@ -1,0 +1,16 @@
+{% if site.languages.size > 1 %}
+  {% for language in site.languages %}
+    {% if page.permalink_lang[language] %}
+      {% assign language_route = page.permalink_lang[language] | locale_url: language %}
+      <link
+        rel="alternate"
+        hreflang="{{ language | locale_tag }}"
+        {% static_href %}
+        href="{{ language_route | prepend: site.url }}"
+        {% endstatic_href %}
+      >
+    {% endif %}
+  {% endfor %}
+  {% assign default_route = page.permalink_lang[site.default_lang] | default: page.url | locale_url: site.default_lang %}
+  <link rel="alternate" hreflang="x-default" {% static_href %} href="{{ default_route | prepend: site.url }}" {% endstatic_href %}>
+{% endif %}

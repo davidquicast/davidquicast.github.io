@@ -1,79 +1,158 @@
 ---
 layout: default
 ---
-<div class="post">
-  <header class="post-header about-header">
-    <h1 class="post-title">
-      {% if site.title == 'blank' %}
-        <span class="font-weight-bold">{{ site.first_name }}</span> {{ site.middle_name }}
-        {{ site.last_name }}
-      {% else %}
-        {{ site.title }}
-      {% endif %}
-    </h1>
-    <p class="desc">{{ page.subtitle }}</p>
-  </header>
-
-  <article>
-    {% if page.profile %}
-      <div class="profile float-{% if page.profile.align == 'left' %}left{% else %}right{% endif %}">
-        {% if page.profile.image %}
-          {% assign profile_image_path = page.profile.image | prepend: 'assets/img/' %}
-          {% if page.profile.image_circular %}
-            {% assign profile_image_class = 'img-fluid z-depth-1 rounded-circle' %}
-          {% else %}
-            {% assign profile_image_class = 'img-fluid z-depth-1 rounded' %}
-          {% endif %}
-          {% capture sizes %}(min-width: {{ site.max_width }}) {{ site.max_width | minus: 30 | times: 0.3}}px, (min-width: 576px)
-      30vw, 95vw"{% endcapture %}
-          {%
-            include figure.liquid loading="eager" path=profile_image_path class=profile_image_class sizes=sizes alt=page.profile.image
-            cache_bust=true
-          %}
-        {% endif %}
-        {% if page.profile.more_info %}
-          <div class="more-info">{{ page.profile.more_info }}</div>
-        {% endif %}
+{% assign catalog = site.data.profile_catalog %}
+{% assign profile_image = page.profile.image | default: 'prof_pic.jpg' %}
+{% assign profile_prefix = profile_image | slice: 0, 1 %}
+{% unless profile_prefix == '/' or profile_image contains '://' %}{% assign profile_image = profile_image | prepend: '/assets/img/' %}{% endunless %}
+<div
+  class="profile-workspace profile-layout"
+  data-profile-feed
+  data-feed-default="all"
+  data-feed-writing-scroll="{{ site.latest_posts.scrollable }}"
+  data-feed-writing-label="{{ 'navigation.writing' | ui_label }}"
+>
+  <aside class="profile-sidebar" id="about" aria-label="{{ 'navigation.profile' | ui_label }}">
+    <div class="profile-person{% if page.profile.align == 'right' %} profile-person-right{% endif %}">
+      <img
+        class="profile-avatar{% unless page.profile.image_circular %} profile-portrait-square{% endunless %}"
+        src="{{ profile_image | relative_url | escape }}"
+        alt="David Quispe"
+        width="64"
+        height="64"
+        fetchpriority="high"
+      >
+      <div class="profile-name">
+        <h1 data-pretext="lines">David Quispe</h1>
+        <p class="profile-role">{{ 'profile.role' | ui_label }}</p>
       </div>
-    {% endif %}
-
-    <div class="clearfix">{{ content }}</div>
-
-    <!-- News -->
-    {% if page.news and site.announcements.enabled %}
-      <h2>
-        <a href="{{ '/news/' | relative_url }}" style="color: inherit">{{ site.data[site.active_lang].strings.news }}</a>
-      </h2>
-      {% include news.liquid limit=true %}
-    {% endif %}
-
-    <!-- Latest posts -->
-    {% if site.latest_posts.enabled and page.latest_posts.enabled %}
-      <h2>
-        <a href="{{ '/blog/' | relative_url }}" style="color: inherit">{{ site.data[site.active_lang].strings.latest_posts }}</a>
-      </h2>
-      {% include latest_posts.liquid %}
-    {% endif %}
-
-    <!-- Selected papers -->
-    {% if page.selected_papers %}
-      <h2>
-        <a href="{{ '/publications/' | relative_url }}" style="color: inherit">{{ site.data[site.active_lang].strings.selected_publications }}</a>
-      </h2>
-      {% include selected_papers.liquid %}
-    {% endif %}
-
-    <!-- Social -->
+    </div>
+    <div class="profile-bio">
+      <p class="profile-focus">{{ 'profile.focus' | ui_label }}</p>
+      <p class="profile-summary" data-pretext>{{ 'profile.summary' | ui_label }}</p>
+    </div>
     {% if page.social %}
-      <div class="social">
-        <div class="contact-icons">{% include social.liquid %}</div>
-
-        <div class="contact-note">{{ site.data[site.active_lang].strings.contact_note }}</div>
+      <div class="profile-connections" id="contact">{% include profile-links.liquid compact=true resume=true %}</div>
+    {% endif %}
+    {% unless page.social %}
+      <div class="profile-resources">
+        <a href="{{ '/resume/' | relative_url }}" data-content-overlay>
+          {%- include icon.liquid name='resume' -%}
+          {{- 'navigation.cv' | ui_label: 'CV' -}}
+        </a>
       </div>
+    {% endunless %}
+    {% if page.profile.more_info %}
+      <div class="profile-more-info">{{ page.profile.more_info }}</div>
     {% endif %}
-
-    {% if site.newsletter.enabled and site.footer_fixed %}
-      {% include scripts/newsletter.liquid center=true %}
-    {% endif %}
-  </article>
+  </aside>
+  <section class="profile-catalog" aria-label="{{ 'feed.catalog' | ui_label }}">
+    <div class="catalog-controls" data-ui>
+      <div class="catalog-toolbar">
+        <div class="catalog-category-row">
+          <div class="feed-tabs" role="group" aria-label="{{ 'feed.show' | ui_label }}">
+            <button type="button" data-feed-view="all" aria-pressed="true" data-enable-with-js disabled>{{ 'feed.all' | ui_label }}</button>
+            <button type="button" data-feed-view="projects" aria-pressed="false" data-enable-with-js disabled>
+              {{ 'navigation.projects' | ui_label }}
+            </button>
+            <button type="button" data-feed-view="blogs" aria-pressed="false" data-enable-with-js disabled>
+              {{ 'navigation.writing' | ui_label }}
+            </button>
+            <button type="button" data-feed-view="research" aria-pressed="false" data-enable-with-js disabled>
+              {{ 'navigation.research' | ui_label }}
+            </button>
+          </div>
+        </div>
+        <div class="catalog-search-row">
+          <div class="feed-search">
+            <label for="profile-work-search">
+              {%- include icon.liquid name='search' -%}
+              <span class="visually-hidden">{{ 'feed.search' | ui_label }}</span></label
+            >
+            <input
+              id="profile-work-search"
+              type="search"
+              data-feed-search
+              data-enable-with-js
+              disabled
+              name="q"
+              autocomplete="off"
+              placeholder="{{ 'feed.search_placeholder' | ui_label }}"
+            >
+            <button type="button" class="feed-search-clear" data-feed-clear aria-label="{{ 'search.clear' | ui_label }}" hidden>
+              <svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true">
+                <path d="m6 6 8 8M6 14l8-8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+          <label class="feed-sort">
+            {%- include icon.liquid name='sort' -%}
+            <span class="visually-hidden">{{ 'feed.sort' | ui_label }}</span
+            ><select data-feed-sort data-enable-with-js disabled>
+              <option value="recommended">{{ 'feed.recommended' | ui_label }}</option>
+              <option value="newest">{{ 'feed.newest' | ui_label }}</option>
+              <option value="oldest">{{ 'feed.oldest' | ui_label }}</option>
+              <option value="updated">{{ 'feed.updated' | ui_label }}</option>
+            </select>
+            <svg class="sort-chevron" width="12" height="12" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="m6 8 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </label>
+        </div>
+      </div>
+      {% if site.enable_project_categories %}
+        <div class="project-scope" data-project-filters hidden role="group" aria-label="{{ 'feed.project_group' | ui_label: 'Project type' }}">
+          <button type="button" data-project-filter="all" aria-pressed="true" data-enable-with-js disabled>
+            {{ 'feed.all_projects' | ui_label: 'All projects' }}
+          </button>
+          <button type="button" data-project-filter="independent" aria-pressed="false" data-enable-with-js disabled>
+            {{ 'feed.personal' | ui_label: 'Personal' -}}
+            <span>{{ catalog.counts.independent }}</span>
+          </button>
+          <button type="button" data-project-filter="contributions" aria-pressed="false" data-enable-with-js disabled>
+            {{ 'projects.contributions' | ui_label -}}
+            <span>{{ catalog.counts.contributions }}</span>
+          </button>
+        </div>
+      {% endif %}
+      <span class="visually-hidden" data-feed-count role="status" aria-live="polite" aria-atomic="true">
+        {{- catalog.counts.all }}
+        {{ 'feed.items' | ui_label -}}
+      </span>
+    </div>
+    <p class="visually-hidden" data-feed-context>{{ 'feed.descriptions.all' | ui_label }}</p>
+    <noscript>
+      <nav class="feed-fallback" aria-label="{{ 'feed.browse' | ui_label }}">
+        <a href="{{ '/projects/' | relative_url }}">{{ 'navigation.projects' | ui_label }}</a
+        ><a href="{{ '/blog/' | relative_url }}">{{ 'navigation.writing' | ui_label }}</a
+        ><a href="{{ '/publications/' | relative_url }}">{{ 'navigation.research' | ui_label }}</a>
+      </nav>
+    </noscript>
+    <div class="profile-feed-grid frontpage-wall" data-feed-grid>
+      {% for entry in catalog.items %}
+        {% assign entry_loading = 'lazy' -%}
+        {%- if forloop.index <= 4 %}{% assign entry_loading = 'eager' %}{% endif %}
+        {% case entry.kind %}
+          {% when 'project' -%}
+            {%- include project-card.liquid project=entry.source entry=entry selected=true loading=entry_loading priority='auto' %}
+          {% when 'writing' -%}
+            {%- include writing-card.liquid post=entry.source entry=entry loading=entry_loading priority='auto' %}
+          {% when 'paper' -%}
+            {%- include paper-card.liquid paper=entry.source entry=entry loading=entry_loading %}
+        {% endcase %}
+      {% endfor %}
+    </div>
+    <section class="feed-empty" data-feed-empty hidden aria-live="polite">
+      {% include icon.liquid name='search' %}
+      <h2 data-feed-empty-title>{{ 'feed.empty_title' | ui_label }}</h2>
+      <p data-feed-empty-description>{{ 'feed.empty_description' | ui_label }}</p>
+      <button type="button" class="feed-reset" data-feed-reset>{{ 'feed.reset' | ui_label }}</button>
+    </section>
+  </section>
 </div>
+{% if page.news and site.news.size > 0 %}
+  <section class="wall-announcements prose">
+    <h2>{{ 'labels.news' | ui_label }}</h2>
+    {% include news.liquid limit=true %}
+  </section>
+{% endif %}

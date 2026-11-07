@@ -1,0 +1,39 @@
+{% assign post = include.post -%}
+{%- assign cover = site.data.blog_covers[post.slug] %}
+{%- assign has_cover = false %}
+{%- if cover or post.image or post.thumbnail %}{% assign has_cover = true %}{% endif %}
+<article
+  class="wall-card writing-card writing-preview {% unless has_cover %}wall-text-card{% endunless %}"
+  data-wall-card
+  {% include feed-attributes.liquid entry=include.entry %}
+  {% if include.filter %}
+    data-filter-item data-topics="{{ post.tags | join:' ' | downcase | escape }}" data-year="{{ post.date | date: '%Y' }}"
+    data-search-text="{{ post.title | append:' ' | append:post.description | downcase | escape }}"
+  {% endif %}
+>
+  {% if has_cover -%}
+    <a class="wall-media writing-image" href="{{ post.url | relative_url | escape }}" tabindex="-1" aria-hidden="true" data-content-overlay>
+      {%- include editorial-cover.liquid post=post loading=include.loading priority=include.priority sizes="(min-width: 1100px) 24vw, (min-width: 600px) 46vw, 92vw" -%}
+    </a>
+  {%- endif %}
+  <div class="wall-card-body">
+    <p class="wall-meta">
+      {% include icon.liquid name='writing' -%}
+      {{- 'feed.article' | ui_label: 'Article' }}
+      <span aria-hidden="true">·</span>{% include content-date.liquid value=post.date %}
+      {% if include.entry.featured -%}
+        <span class="featured-mark">
+          {%- include icon.liquid name='star' -%}
+          {{- 'feed.featured' | ui_label -}}
+        </span>
+      {%- endif %}
+    </p>
+    {% include content-updated.liquid item=post kind='writing' %}
+    <h2>
+      <a href="{{ post.url | relative_url | escape }}" data-content-overlay data-pretext>{{ post.title }}</a>
+    </h2>
+    <p class="wall-excerpt" data-pretext>{{ post.description }}</p>
+  </div>
+  {% assign menu_key = post.url | prepend: 'post-' %}
+  {% include card-actions.liquid key=menu_key title=post.title url=post.url image=cover.image alt=cover.alt %}
+</article>

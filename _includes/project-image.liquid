@@ -1,0 +1,18 @@
+{% assign media = site.data.project_media[include.project.slug] %}
+{% assign image = media.image | default: include.project.img %}
+{% if image %}
+  <img
+    src="{{ image | relative_url }}"
+    {% if media.srcset %}
+      srcset="{{ media.srcset }}" sizes="{{ include.sizes | default: '(min-width: 1100px) 360px, (min-width: 768px) 48vw, 92vw' }}"
+    {% endif %}
+    width="{{ media.width | default: 960 }}"
+    height="{{ media.height | default: 600 }}"
+    alt="{{ media.alt | default: include.project.title | escape }}"
+    loading="{{ include.loading | default: 'lazy' }}"
+    {% if include.priority %}
+      fetchpriority="{{ include.priority }}"
+    {% endif %}
+    decoding="async"
+  >
+{% endif %}

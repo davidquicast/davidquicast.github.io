@@ -1,0 +1,35 @@
+{% assign paper = include.paper %}
+<nav class="research-links" aria-label="{{ 'research.links_for' | ui_label | escape }} {{ paper.title | escape }}">
+  {% if paper.doi_url != '' -%}
+    <a href="{{ paper.doi_url | escape }}">DOI ↗</a>
+  {%- endif %}
+  {% if paper.url != '' and paper.url != paper.doi_url -%}
+    {%- unless paper.destination_fields contains 'url' %}
+      <a href="{{ paper.url | relative_url | escape }}">{{ 'research.publication' | ui_label }} ↗</a>
+    {% endunless -%}
+  {%- endif %}
+  {% if paper.pdf != '' -%}
+    <a href="{{ paper.pdf | relative_url | escape }}">PDF ↗</a>
+  {%- endif %}
+  {% if paper.code != '' and paper.code != paper.url and paper.code != paper.doi_url and paper.code != paper.pdf -%}
+    {%- unless paper.destination_fields contains 'code' %}
+      <a href="{{ paper.code | relative_url | escape }}">{{ 'research.code' | ui_label }} ↗</a>
+    {% endunless -%}
+  {%- endif %}
+  {% if paper.dataset != '' and paper.dataset -%}
+    {%- unless paper.destination_fields contains 'dataset' -%}
+      <a href="{{ paper.dataset | relative_url | escape }}">{{ 'research.dataset' | ui_label: 'Dataset' }} ↗</a>
+    {%- endunless -%}
+  {%- endif %}
+  {% if paper.slides != '' -%}
+    <a href="{{ paper.slides | relative_url | escape }}">{{ 'research.slides' | ui_label }} ↗</a>
+  {%- endif %}
+  {% if paper.poster != '' -%}
+    <a href="{{ paper.poster | relative_url | escape }}">{{ 'research.poster' | ui_label }} ↗</a>
+  {%- endif %}
+  {% if paper.supplementary != '' -%}
+    <a href="{{ paper.supplementary | relative_url | escape }}">{{ 'research.supplementary' | ui_label }} ↗</a>
+  {%- endif %}
+  {% include project-destinations.liquid project=paper context='detail' %}
+  <a href="{{ paper.bibtex_url | relative_url }}" download>{{ 'research.download_bibtex' | ui_label }}</a>
+</nav>

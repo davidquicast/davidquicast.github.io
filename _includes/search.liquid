@@ -1,0 +1,57 @@
+{% if site.search_enabled %}
+  <dialog
+    class="search-dialog"
+    id="site-search"
+    aria-labelledby="site-search-title"
+    aria-describedby="site-search-help"
+    data-search-dialog
+    data-search-index="{{ '/search-index.json' | locale_url: site.active_lang }}"
+  >
+    <header class="dialog-heading">
+      <div>
+        <h2 id="site-search-title">{{ 'search.title' | ui_label: 'Search this portfolio' }}</h2>
+        <p id="site-search-help">{{ 'search.hint' | ui_label: 'Projects, writing and pages. Use the arrow keys to move through results.' }}</p>
+      </div>
+      <button type="button" class="dialog-close" data-search-close aria-label="{{ "search.close" | ui_label: "Close search" }}">
+        {{ 'search.close' | ui_label: 'Close' }}
+        <kbd>Esc</kbd>
+      </button>
+    </header>
+    <label class="global-search-field" for="site-search-query"
+      ><span class="sr-only">{{ 'search.input_label' | ui_label }}</span
+      ><input
+        id="site-search-query"
+        type="search"
+        name="search"
+        placeholder="{{ "search.placeholder" | ui_label: "Search projects, writing and pages…" }}"
+        autocomplete="off"
+        spellcheck="false"
+        aria-controls="site-search-results"
+        data-global-search-input
+    ></label>
+    <p class="search-summary" role="status" aria-live="polite" data-global-search-status>
+      {{ 'search.hint' | ui_label: 'Type a name, topic or technology.' }}
+    </p>
+    <div class="search-results-wrap">
+      <ul
+        id="site-search-results"
+        class="search-results"
+        aria-label="{{ "search.results_label" | ui_label: "Search results" }}"
+        data-global-search-results
+      ></ul>
+    </div>
+    <div class="search-recovery" data-global-search-recovery hidden>
+      <p>
+        {{ 'search.recovery_intro' | ui_label }}
+        {{ 'search.recovery_browse' | ui_label }}
+        <a href="{{ '/projects/' | locale_url: site.active_lang }}">{{ 'navigation.projects' | ui_label }}</a> {{ 'search.recovery_or' | ui_label }}
+        <a href="{{ '/blog/' | locale_url: site.active_lang }}">{{ 'navigation.writing' | ui_label }}</a>, {{ 'search.recovery_retry' | ui_label }}
+      </p>
+      <button type="button" data-global-search-retry>{{ 'search.retry' | ui_label: 'Try again' }}</button>
+    </div>
+    <footer class="search-footer">
+      <span><kbd>↑</kbd> <kbd>↓</kbd> {{ 'search.move' | ui_label: 'Move' }}</span><span><kbd>Enter</kbd> {{ 'search.open' | ui_label: 'Open' }}</span
+      ><span><kbd>Esc</kbd> {{ 'search.close' | ui_label: 'Close' }}</span>
+    </footer>
+  </dialog>
+{% endif %}

@@ -1,95 +1,56 @@
-{% assign extension = include.path | split: '.' | last %}
-
+{% assign extension = include.path | split: '?' | first | split: '.' | last | downcase %}
 <figure>
   {% if extension == 'mp4' or extension == 'webm' or extension == 'ogg' %}
     <video
       src="{% if include.cache_bust %}{{ include.path | relative_url | bust_file_cache }}{% else %}{{ include.path | relative_url }}{% endif %}"
+      preload="metadata"
+      playsinline
+      aria-label="{{ include.title | default: include.alt | default: 'Video' | escape }}"
       {% if include.class %}
-        class="{{ include.class }}"
+        class="{{ include.class | escape }}"
       {% endif %}
       {% if include.width %}
-        width="{{ include.width }}"
-      {% else %}
-        width="auto"
+        width="{{ include.width | escape }}"
       {% endif %}
       {% if include.height %}
-        height="{{ include.height }}"
-      {% else %}
-        height="auto"
+        height="{{ include.height | escape }}"
       {% endif %}
-      {% if include['min-width'] %}
-        min-width="{{ include.min-width }}"
-      {% endif %}
-      {% if include['min-height'] %}
-        min-height="{{ include.min-height }}"
-      {% endif %}
-      {% if include['max-width'] %}
-        max-width="{{ include.max-width }}"
-      {% endif %}
-      {% if include['max-height'] %}
-        height="{{ include.max-height }}"
-      {% endif %}
-      {% if include.title %}
-        title="{{ include.title }}"
-      {% endif %}
-      {% if include.alt %}
-        alt="{{ include.alt }}"
-      {% endif %}
+      {% unless include.controls == false %}
+        controls
+      {% endunless %}
       {% if include.autoplay %}
         autoplay
-      {% endif %}
-      {% if include.controls %}
-        controls
-      {% endif %}
+      {% endif -%}
       {% if include.loop %}
         loop
-      {% endif %}
+      {% endif -%}
       {% if include.muted %}
         muted
       {% endif %}
       {% if include.poster %}
-        poster="{{ include.poster }}"
+        poster="{{ include.poster | relative_url | escape }}"
       {% endif %}
-    />
-
+    >
+      <a href="{{ include.path | relative_url }}">Open video</a>
+    </video>
   {% else %}
     <iframe
-      src="{{ include.path }}"
+      src="{{ include.path | escape }}"
+      title="{{ include.title | default: include.alt | default: 'Embedded video' | escape }}"
       {% if include.class %}
-        class="{{ include.class }}"
+        class="{{ include.class | escape }}"
       {% endif %}
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowfullscreen
       {% if include.width %}
-        width="{{ include.width }}"
-      {% else %}
-        width="auto"
+        width="{{ include.width | escape }}"
       {% endif %}
       {% if include.height %}
-        height="{{ include.height }}"
-      {% else %}
-        height="auto"
+        height="{{ include.height | escape }}"
       {% endif %}
-      {% if include['min-width'] %}
-        min-width="{{ include.min-width }}"
-      {% endif %}
-      {% if include['min-height'] %}
-        min-height="{{ include.min-height }}"
-      {% endif %}
-      {% if include['max-width'] %}
-        max-width="{{ include.max-width }}"
-      {% endif %}
-      {% if include['max-height'] %}
-        height="{{ include.max-height }}"
-      {% endif %}
-      {% if include.alt %}
-        alt="{{ include.alt }}"
-      {% endif %}
-      {% if include.title %}
-        title="{{ include.title }}"
-      {% endif %}
-    />
+      loading="lazy"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+    ></iframe>
   {% endif %}
   {% if include.caption %}
     <figcaption class="caption">{{ include.caption }}</figcaption>

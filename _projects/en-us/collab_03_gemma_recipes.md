@@ -1,6 +1,6 @@
 ---
 page_id: collab_gemma_recipes
-layout: page
+layout: project
 title: Hugging Face Gemma Recipes
 description: Fine-tuning recipes and best practices for Google Gemma models.
 img: https://raw.githubusercontent.com/huggingface/huggingface-gemma-recipes/refs/heads/main/assets/thumbnail.png
@@ -13,14 +13,15 @@ related_publications: false
 tags: [ai, llm, gemma]
 ---
 
-**🤝 Hugging Face Ecosystem Collaboration**
+**Hugging Face ecosystem collaboration**
 
 Contributed fine-tuning recipes and optimization techniques for Google Gemma models. Enhanced the collection of practical examples and best practices for training and deploying Gemma models efficiently across different hardware configurations.
 
-### Key Contributions:
+## Key Contributions:
+
 - Fine-tuning implementation examples
 - Optimization techniques for Gemma models
 - Hardware-specific deployment guides
 - Performance benchmarking and evaluation
 
-*[Practical recipes for efficient Gemma model training and deployment]*
+_[Practical recipes for efficient Gemma model training and deployment]_

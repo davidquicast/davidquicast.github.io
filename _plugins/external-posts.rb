@@ -24,7 +24,7 @@ module ExternalPosts
     end
 
     def fetch_from_rss(site, src)
-      xml = HTTParty.get(src['rss_url']).body
+      xml = HTTParty.get(src['rss_url'], timeout: 10).body
       return if xml.nil?
       feed = Feedjira.parse(xml)
       process_entries(site, src, feed.entries)
@@ -95,6 +95,8 @@ module ExternalPosts
 
     def fetch_from_urls(site, src)
       src['posts'].each do |post|
+        next if external_post_exists?(site, post['url'])
+
         puts "...fetching #{post['url']}"
         content = begin
           fetch_content_from_url(post['url'])
@@ -133,7 +135,7 @@ module ExternalPosts
     end
 
     def fetch_content_from_url(url)
-      html = HTTParty.get(url).body
+      html = HTTParty.get(url, timeout: 10).body
       parsed_html = Nokogiri::HTML(html)
 
       title = parsed_html.at('head title')&.text.strip || ''

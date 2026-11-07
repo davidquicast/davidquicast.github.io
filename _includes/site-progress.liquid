@@ -1,0 +1,13 @@
+{% assign reading_progress = false %}
+{% if site.enable_progressbar and page.layout == 'post' %}{% assign reading_progress = true %}{% endif %}
+{% if reading_progress %}
+  <div class="site-progress" data-reading-progress aria-hidden="true" hidden><span class="site-progress-fill"></span></div>
+{% endif %}
+{% if reading_progress or site.footer_fixed %}
+  <script
+    src="{{ '/assets/js/site-chrome.js' | relative_url }}"
+    data-reading-progress="{{ reading_progress }}"
+    data-fixed-footer="{{ site.footer_fixed | default: false }}"
+    defer
+  ></script>
+{% endif %}

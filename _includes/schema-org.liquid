@@ -1,0 +1,5 @@
+{% if site.serve_schema_org %}
+  <script type="application/ld+json">
+    {{ page | structured_data: page_title | jsonify | replace: '<', '\u003c' }}
+  </script>
+{% endif %}

@@ -6,7 +6,9 @@ description: "A field note on refusal, values, and why useful AI personas need b
 tags: [ai-personas, ai-safety]
 categories: [notes]
 featured: false
-image: assets/img/blog/2026-04-12-the-problem-with-a-persona-that-cannot-refuse_4.webp
+image: /assets/img/editorial/the-problem-with-a-persona-that-cannot-refuse-1440.webp
+thumbnail: /assets/img/editorial/the-problem-with-a-persona-that-cannot-refuse-480.webp
+cover_alt: "A blue gate blocks one path and leaves a narrower safe route, illustrating principled refusal boundaries."
 ---
 
 A persona that cannot refuse is not kind. It is simply available.

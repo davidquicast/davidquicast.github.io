@@ -175,7 +175,9 @@ ul.task-list input[type="checkbox"] {
   border-radius: 8px !important;
   overflow: hidden;
   box-shadow: none;
-  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
 
   .card-img {
     width: 100%;
@@ -309,7 +311,12 @@ ul.task-list input[type="checkbox"] {
 
   .navbar-brand {
     color: var(--global-text-color);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family:
+      "Inter",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
     font-weight: 600;
   }
 
@@ -622,7 +629,9 @@ footer.sticky-bottom {
     text-transform: uppercase;
     user-select: none;
 
-    &::-webkit-details-marker { display: none; }
+    &::-webkit-details-marker {
+      display: none;
+    }
 
     &::after {
       content: " +";
@@ -692,7 +701,12 @@ footer.sticky-bottom {
 }
 
 .post-title {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif !important;
   font-weight: 650;
   letter-spacing: 0;
   line-height: 1.15;
@@ -830,7 +844,12 @@ footer.sticky-bottom {
 
   h2 {
     margin: 0 0 0.55rem;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-family:
+      "Inter",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif !important;
     font-size: clamp(1.45rem, 3vw, 2.2rem);
     font-weight: 700;
     line-height: 1.05;
@@ -1274,9 +1293,13 @@ footer.sticky-bottom {
       font-size: 0.75rem;
       color: color-mix(in srgb, var(--global-text-color) 55%, var(--global-text-color-light));
 
-      &::before { content: "#"; }
+      &::before {
+        content: "#";
+      }
 
-      &:not(:last-child)::after { content: ", "; }
+      &:not(:last-child)::after {
+        content: ", ";
+      }
     }
   }
 
@@ -1964,7 +1987,12 @@ nav[data-toggle="toc"] {
     margin-bottom: 0.3rem;
     padding-top: 0.15rem;
     font-size: 1rem;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-family:
+      "Inter",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif !important;
     font-weight: 650;
     color: var(--global-heading-color, var(--global-text-color));
   }
@@ -2388,8 +2416,6 @@ ninja-keys::part(ninja-input-wrapper) {
   background-color: var(--global-theme-color);
   color: var(--global-text-color);
 }
-
-
 
 // Reducir márgenes globales
 .container {

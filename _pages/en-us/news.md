@@ -1,8 +1,8 @@
 ---
 page_id: news
 layout: page
-title: news
+title: Updates
 permalink: /news/
 ---
 
-{% include news.liquid %}
+Recent work and writing are collected on the [home page](/) and in the [journal](/blog/).

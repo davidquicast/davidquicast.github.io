@@ -1,3 +1,19 @@
-<div class="publications">
-  {% bibliography --group_by none --query @*[selected=true]* %}
-</div>
+{% assign selected_research = site.data.research.publications | where: 'selected', true %}
+{% if selected_research.size > 0 %}
+  <div class="research-selected">
+    {% for paper in selected_research %}
+      <article class="research-paper">
+        <h3 data-pretext>
+          <a href="{{ '/publications/' | relative_url }}#{{ paper.id | escape }}">{{ paper.title | escape }}</a>
+        </h3>
+        <p class="research-authors">{{ paper.authors | join: ', ' | escape }}</p>
+        <p class="research-venue">
+          {{ paper.year -}}
+          {%- if paper.venue != '' %} · {{ paper.venue | escape }}{% endif %}
+        </p>
+      </article>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="publications">{% bibliography --group_by none --query @*[selected=true]* %}</div>
+{% endif %}

@@ -1,1 +1,34 @@
-<footer class="sticky-bottom" role="contentinfo">{% if site.newsletter.enabled %}{% include scripts/newsletter.liquid %}{% endif %}<div class="footer-content">&copy; Copyright {{ site.time | date: '%Y' }} {{ site.first_name }} {{ site.middle_name }} {{ site.last_name }}. {{ site.data[site.active_lang].strings.footer_text }}{% if site.impressum_path %}<a href="{{ site.url }}{{ site.baseurl }}{{ site.impressum_path }}">Impressum</a>.{% endif %}{% if site.last_updated %}Last updated: {{ 'now' | date: '%B %d, %Y' }}.{% endif %}</div></footer>
+{% include site-engagement.liquid %}
+<footer class="site-footer{% if site.footer_fixed %} site-footer-fixed{% endif %}" data-site-footer>
+  <div class="footer-bottom">
+    <div class="footer-credit">
+      <span
+        >© {{ site.time | date: '%Y' }}
+        {{ site.author.name | default: 'David Quispe' | escape -}}
+      </span>
+      {% if site.last_updated %}
+        <span class="footer-updated">
+          {{- 'labels.updated' | ui_label }}
+          <time datetime="{{ site.time | date_to_xmlschema }}">{{ site.time | localized_date: 'long' }}</time></span
+        >
+      {% endif %}
+    </div>
+    <nav aria-label="{{ 'navigation.footer' | ui_label: 'Footer links' }}">
+      {% if site.data.socials.email and site.data.socials.email != '' %}
+        <a href="mailto:{{ site.data.socials.email | escape }}">{{ 'navigation.contact' | ui_label }} ↗</a>
+      {% endif %}
+      {% if site.rss_icon -%}
+        <a href="{{ site.feed.path | default: '/feed.xml' | relative_url }}">RSS</a>
+      {%- endif %}
+      {% assign impressum_path = site.impressum_path | default: '' | strip %}
+      {% assign impressum_start = impressum_path | slice: 0, 1 %}
+      {% assign impressum_double = impressum_path | slice: 0, 2 %}
+      {% if impressum_start == '/' and impressum_double != '//' %}
+        <a href="{{ impressum_path | relative_url | escape }}">{{ 'labels.impressum' | ui_label: 'Impressum' }}</a>
+      {% endif %}
+      {% if site.back_to_top -%}
+        <a href="#main">{{ 'labels.back_to_top' | ui_label }} ↑</a>
+      {%- endif %}
+    </nav>
+  </div>
+</footer>

@@ -1,0 +1,28 @@
+/* Real text remains visible before JavaScript and when motion is reduced. */
+[data-pretext] {
+  overflow-wrap: break-word;
+}
+.pretext-composition {
+  text-align: inherit;
+}
+.pretext-line {
+  display: block;
+  /* Pretext already composed this line; keep the browser from wrapping it twice. */
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-pretext="lines"][data-pretext-ready="true"] .pretext-line {
+    animation: editorial-line-in 550ms cubic-bezier(0.2, 0.65, 0.2, 1) both;
+    animation-delay: calc(var(--line-index, 0) * 60ms);
+  }
+  @keyframes editorial-line-in {
+    from {
+      opacity: 1;
+      transform: translateY(0.25em);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

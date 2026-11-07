@@ -1,0 +1,90 @@
+{% assign paper = include.paper %}
+{% assign paper_dates = paper | content_timeline: 'paper' %}
+<article
+  class="research-paper"
+  data-research-paper
+  data-year="{{ paper.year }}"
+  data-research-relationship="{{ paper.relationship }}"
+  id="{{ paper.id | escape }}"
+>
+  <div class="research-record-preview">
+    {% if site.data.research_covers[paper.id] %}
+      <a class="research-record-media" href="{{ paper.detail_url | relative_url | escape }}" tabindex="-1" aria-hidden="true" data-content-overlay>
+        {% include research-image.liquid paper=paper loading=include.loading %}
+      </a>
+    {% endif %}
+    <div class="research-record-body">
+      <div class="research-record-kicker">
+        <p class="research-record-type">
+          {% if paper.relationship == 'cited_work' -%}
+            {{- 'research.cited_work' | ui_label: 'Cites my work' -}}
+          {%- else -%}
+            {{- 'research.coauthored_paper' | ui_label: 'Coauthored paper' -}}
+          {%- endif %}
+          · {% include content-date.liquid value=paper_dates.primary %}
+        </p>
+        {% include content-updated.liquid item=paper kind='paper' %}
+      </div>
+      <h3>
+        <a href="{{ paper.detail_url | relative_url | escape }}" data-content-overlay data-pretext>{{ paper.title | escape }}</a>
+      </h3>
+      {% include research-authors.liquid paper=paper %}
+      {% if paper.venue != '' %}
+        <p class="research-venue">{{ paper.venue | escape }}</p>
+      {% endif %}
+      {% if paper.authorship_status == 'pending_update' %}
+        <p class="research-status">{{ 'research.pending_author_list' | ui_label }}</p>
+      {% endif %}
+      {% if paper.summary != '' and paper.summary %}
+        <p class="research-summary" data-pretext>{{ paper.summary | escape }}</p>
+      {% endif %}
+    </div>
+  </div>
+  <div class="research-record-extra">
+    {% include research-attribution.liquid paper=paper %}
+    {% if paper.abstract != '' %}
+      <details class="research-abstract">
+        <summary>{{ 'research.abstract' | ui_label }}</summary>
+        <p>{{ paper.abstract | escape | newline_to_br }}</p>
+      </details>
+    {% endif %}
+    {% include research-links.liquid paper=paper %}
+    {% if paper.altmetric or paper.dimensions %}
+      <div class="research-badges">
+        {% if site.enable_publication_badges.altmetric and paper.altmetric %}
+          <span
+            class="altmetric-embed"
+            data-badge-type="2"
+            data-doi="{{ paper.doi | escape }}"
+            {% unless paper.altmetric == true %}
+              data-altmetric-id="{{ paper.altmetric | escape }}"
+            {% endunless %}
+          ></span>
+        {% endif %}
+        {% if site.enable_publication_badges.dimensions and paper.dimensions %}
+          <span
+            class="__dimensions_badge_embed__"
+            data-doi="{{ paper.doi | escape }}"
+            data-style="small_rectangle"
+            {% unless paper.dimensions == true %}
+              data-id="{{ paper.dimensions | escape }}"
+            {% endunless %}
+          ></span>
+        {% endif %}
+      </div>
+    {% endif %}
+    {% if site.enable_publication_badges.google_scholar and paper.google_scholar_id != '' and site.data.socials.scholar_userid %}
+      <a href="https://scholar.google.com/citations?view_op=view_citation&amp;citation_for_view={{ site.data.socials.scholar_userid | url_encode }}:{{ paper.google_scholar_id | url_encode }}"
+        >Google Scholar</a
+      >
+    {% endif %}
+    {% if site.enable_publication_badges.inspirehep and paper.inspirehep_id != '' %}
+      <a href="https://inspirehep.net/literature/{{ paper.inspirehep_id | url_encode }}">INSPIRE</a>
+    {% endif %}
+
+    <details class="research-citation">
+      <summary>{{ 'research.citation' | ui_label }}</summary>
+      <pre><code>{{ paper.bibtex | escape }}</code></pre>
+    </details>
+  </div>
+</article>

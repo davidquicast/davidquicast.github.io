@@ -1,12 +1,8 @@
 ---
 page_id: cv
-layout: cv
+layout: page
+title: Resume
 permalink: /cv/
-title: cv
-nav: false  # editado
-nav_order: 5
-cv_pdf: example_pdf.pdf # you can also use external links here
-description: This is a description of the page. You can modify it in '_pages/cv.md'. You can also change or remove the top pdf download button.
-toc:
-  sidebar: left
 ---
+
+[Open the resume PDF](/assets/pdf/en-us/cv.pdf) or use the [resume page](/resume/) to preview and download it.

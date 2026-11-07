@@ -1,0 +1,82 @@
+---
+layout: default
+---
+{% assign project_dates = page | content_timeline: 'project' %}
+<article class="project-detail">
+  <a class="back-link" href="{{ '/' | relative_url }}?view=projects">← {{ 'navigation.projects' | ui_label }}</a>
+  <div class="project-overview">
+    <header class="project-detail-header">
+      <h1 data-pretext="lines">{{ page.title }}</h1>
+      <p class="lead" data-pretext>{{ page.description }}</p>
+      <p class="post-meta">
+        {% include content-date.liquid value=project_dates.primary %}
+        {%- if page.category == 'collaborations' %}
+          · {{ 'projects.open_source_collaboration' | ui_label -}}
+        {%- else %}
+          · {{ 'projects.personal' | ui_label -}}
+        {%- endif %}
+      </p>
+      {% include content-updated.liquid item=page kind='project' %}
+      <div class="project-actions">
+        {% assign redirect_is_destination = false %}
+        {% for destination in page.destinations -%}
+          {%- if destination.url == page.redirect %}{% assign redirect_is_destination = true %}{% endif -%}
+        {%- endfor %}
+        {% if page.redirect and redirect_is_destination == false -%}
+          <a class="button" href="{{ page.redirect | escape }}">{{ 'projects.visit' | ui_label }} ↗</a>
+        {%- endif %}
+        {% include project-destinations.liquid project=page context='detail' %}
+      </div>
+    </header>
+    <figure class="project-detail-media">
+      {% assign media = site.data.project_media[page.slug] %}
+      <a
+        href="{{ media.image | default: page.img | relative_url }}"
+        data-lightbox
+        data-lightbox-group="{{ page.slug }}"
+        data-lightbox-caption="{{ media.alt | default: page.title | escape }}"
+        aria-label="{{ 'gallery.enlarge' | ui_label }}: {{ page.title | escape }}"
+      >
+        {%- include project-image.liquid project=page loading="eager" sizes="(min-width: 900px) 720px, 90vw" -%}
+      </a>
+    </figure>
+  </div>
+  <div class="project-detail-body">
+    <div class="prose">{{ content }}</div>
+    <aside class="project-context">
+      <h2>{{ 'projects.context' | ui_label }}</h2>
+      <dl>
+        <dt>{{ 'projects.focus' | ui_label }}</dt>
+        <dd>{{ page.display_tags | default: page.tags | join: ', ' }}</dd>
+      </dl>
+      {% include project-timeline.liquid timeline=project_dates %}
+      {% capture resource_links %}
+        {% for item in page.project_items %}
+          {% assign item_is_destination = false %}{% for destination in page.destinations %}{% if destination.url == item.url %}{% assign item_is_destination = true %}{% endif %}{% endfor %}
+          {% if item.url != page.redirect and item.url != page.github and item.url != page.huggingface and item_is_destination == false %}
+            <a class="resource-link" href="{{ item.url | escape }}">
+              {% if item.label and item.label != item.title %}<span>{{ item.label | escape }}</span>{% endif %}
+              {{ item.title | escape }} ↗
+              {% if item.detail %}<small>{{ item.detail | escape }}</small>{% endif %}
+            </a>
+          {% endif %}
+        {% endfor %}
+      {% endcapture %}
+      {% assign resource_links = resource_links | strip %}
+      {% if resource_links != '' %}
+        <h2>{{ 'projects.resources' | ui_label }}</h2>
+        {{ resource_links }}
+      {% endif %}
+      {% assign empty_contributions = '' | split: '' %}
+      {% assign github_contributions = page.github_prs | default: empty_contributions %}
+      {% assign argilla_contributions = page.argilla_prs | default: empty_contributions %}
+      {% assign contributions = github_contributions | concat: argilla_contributions | uniq %}
+      {% if contributions.size > 0 and page.github and project_dates.contributions.size == 0 %}
+        <h2>{{ 'projects.contributions' | ui_label }}</h2>
+        {% for pr in contributions %}
+          <a class="resource-link" href="{{ page.github | escape }}/pull/{{ pr }}">{{ 'projects.pull_request' | ui_label }} #{{ pr }} ↗</a>
+        {% endfor %}
+      {% endif %}
+    </aside>
+  </div>
+</article>

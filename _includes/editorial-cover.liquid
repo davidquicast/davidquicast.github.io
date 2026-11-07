@@ -1,0 +1,23 @@
+{% assign cover = site.data.blog_covers[include.post.slug] %}
+{% if cover %}
+  <img
+    src="{{ cover.image | relative_url }}"
+    srcset="{{ cover.srcset }}"
+    sizes="{{ include.sizes | default: '(min-width: 1000px) 70vw, 100vw' }}"
+    width="{{ cover.width }}"
+    height="{{ cover.height }}"
+    alt="{{ cover.alt | escape }}"
+    loading="{{ include.loading | default: 'lazy' }}"
+    {% if include.loading == 'eager' %}
+      fetchpriority="{{ include.priority | default: 'high' }}"
+    {% endif %}
+  >
+{% elsif include.post.image or include.post.thumbnail %}
+  <img
+    src="{{ include.post.image | default: include.post.thumbnail | relative_url }}"
+    width="1440"
+    height="960"
+    alt="{{ include.post.cover_alt | default: '' | escape }}"
+    loading="{{ include.loading | default: 'lazy' }}"
+  >
+{% endif %}

@@ -1,0 +1,12 @@
+{% assign optional_payload = page | optional_features %}
+{% if optional_payload.features.size > 0 %}
+  <link rel="stylesheet" href="{{ '/assets/css/optional-features.css' | relative_url | bust_file_cache }}">
+  <script type="application/json" data-optional-features>
+    {{ optional_payload | jsonify | replace: '<', '\u003c' }}
+  </script>
+{% endif %}
+<script
+  src="{{ '/assets/js/optional-features.js' | relative_url | bust_file_cache }}"
+  data-optional-css="{{ '/assets/css/optional-features.css' | relative_url | bust_file_cache }}"
+  defer
+></script>
