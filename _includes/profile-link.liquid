@@ -2,6 +2,9 @@
   class="profile-social-link"
   data-profile-id="{{ include.profile.id | escape }}"
   href="{{ include.profile.url | escape }}"
+  {% unless include.profile.url contains 'mailto:' %}
+    rel="me noopener"
+  {% endunless %}
   aria-label="{{ include.profile.aria_label | escape }}"
   title="{{ include.profile.aria_label | escape }}"
 >

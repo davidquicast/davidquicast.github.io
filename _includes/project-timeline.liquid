@@ -38,10 +38,6 @@
               {%- endif %}
             </dd>
           {% endif %}
-          {% if resource.checked %}
-            <dt>{{ 'dates.checked' | ui_label }}</dt>
-            <dd>{% include content-date.liquid value=resource.checked %}</dd>
-          {% endif %}
         </dl>
       </div>
     {% endfor %}

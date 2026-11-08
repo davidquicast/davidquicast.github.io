@@ -12,7 +12,7 @@ github: https://github.com/davidquicast/sorry-bench-translation-pipeline
 huggingface: https://huggingface.co/datasets/tiny-aya-safety/sorry-bench-202503-multilingual
 huggingface_label: Dataset
 related_publications: false
-tags: [dataset, translation, ai-safety, multilingual, tiny-aya-safety/sorry-bench-202503-multilingual]
+tags: [dataset, translation, ai-safety, multilingual, sorry-bench]
 display_tags: [dataset, translation, ai-safety, multilingual]
 project_items:
   - title: Translation pipeline

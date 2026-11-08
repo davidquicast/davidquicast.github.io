@@ -2,7 +2,8 @@ name: Verify portfolio
 
 on:
   pull_request:
-    branches: [main]
+    # Gitflow: verify feature PRs into develop and release PRs into main.
+    branches: [main, develop]
   workflow_dispatch:
   workflow_call:
     inputs:
@@ -38,6 +39,8 @@ jobs:
           docker compose exec -T jekyll python3 -m unittest discover -s tools/tests
       - name: Refresh verified repository dates
         if: inputs.refresh_activity
+        # A GitHub API hiccup must not block a deploy; committed dates remain valid.
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: docker compose exec -T -e GITHUB_TOKEN jekyll ruby scripts/refresh-project-activity.rb
