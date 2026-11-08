@@ -186,6 +186,14 @@ exclude:
   - _news/pt-br/
   - _site/
   - prueba.txt
+  # Old CV copy and template leftovers that must not be published.
+  - DAQC3_EN6.pdf
+  - _pages/en-us/about_einstein.md
+  - lighthouse_results/
+  - readme_preview/
+  - _posts_template/
+  - assets/video/
+  - assets/audio/
   - .local/
   - tools/
   - playwright.config.cjs

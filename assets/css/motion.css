@@ -1,0 +1,307 @@
+/*
+ * Motion layer. Loaded last so it can refine earlier surfaces.
+ *
+ * Principles: motion is short, it settles and it only explains structure:
+ * identity first, then the work. Every keyframe ends at full opacity and
+ * contrast. Nothing loops except the small availability signal. With
+ * prefers-reduced-motion, nothing here runs (see portfolio.css).
+ *
+ * Card positions belong to profile-feed.js (inline `transform`). Motion here
+ * uses the independent `translate`/`scale` properties so the two never fight.
+ */
+:root {
+  --motion-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-ease-soft: cubic-bezier(0.22, 0.68, 0, 1);
+  --motion-step: 70ms;
+}
+
+/* ---------- Availability signal ------------------------------------------ */
+.profile-availability {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: var(--space-3, 12px) 0 0;
+  padding: 3px 10px 3px 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--card-bg, transparent);
+}
+.profile-availability-dot {
+  position: relative;
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #1f9d55;
+}
+[data-theme="dark"] .profile-availability-dot {
+  background: #3ecf7a;
+}
+
+/* ---------- Interaction feedback (applies regardless of entrance) --------- */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .profile-feed-grid .wall-card,
+  .wall-card {
+    transition:
+      translate 320ms var(--motion-ease),
+      box-shadow 320ms var(--motion-ease),
+      border-color 200ms;
+  }
+  .profile-feed-grid .wall-card:hover,
+  .wall-grid .wall-card:hover {
+    translate: 0 -3px;
+    box-shadow: 0 14px 30px -18px rgb(0 0 0 / 0.28);
+    border-color: var(--control-border);
+  }
+  [data-theme="dark"] .profile-feed-grid .wall-card:hover,
+  [data-theme="dark"] .wall-grid .wall-card:hover {
+    box-shadow: 0 14px 30px -16px rgb(0 0 0 / 0.7);
+  }
+  .wall-card img {
+    transition: scale 600ms var(--motion-ease);
+  }
+  .wall-card:hover img {
+    scale: 1.035;
+  }
+  .profile-sidebar .profile-social-link .brand-icon,
+  .profile-sidebar .profile-resources svg {
+    transition: translate 220ms var(--motion-ease);
+  }
+  .profile-sidebar .profile-social-link:hover .brand-icon,
+  .profile-sidebar .profile-resources a:hover svg {
+    translate: 2px 0;
+  }
+  .profile-person .profile-avatar {
+    transition:
+      scale 420ms var(--motion-ease),
+      box-shadow 420ms var(--motion-ease);
+  }
+  .profile-person .profile-avatar:hover {
+    scale: 1.04;
+    box-shadow: 0 0 0 3px var(--surface-alt, rgb(0 0 0 / 0.06));
+  }
+}
+
+/* ---------- Sliding category indicator (motion.js adds it) ---------------- */
+.feed-tabs[data-indicator] {
+  position: relative;
+  isolation: isolate;
+}
+.feed-tabs[data-indicator] button[aria-pressed="true"],
+.feed-tabs[data-indicator] button:hover {
+  background: transparent;
+}
+.feed-tabs-indicator {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-radius: 5px;
+  background: var(--surface-alt);
+  pointer-events: none;
+}
+.feed-tabs[data-indicator-ready] .feed-tabs-indicator {
+  transition:
+    translate 380ms var(--motion-ease),
+    width 380ms var(--motion-ease),
+    height 380ms var(--motion-ease);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* ---------- Availability pulse ------------------------------------------ */
+  .profile-availability-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: inherit;
+    animation: availability-pulse 2.6s var(--motion-ease-soft) infinite;
+  }
+  @keyframes availability-pulse {
+    0% {
+      opacity: 0.55;
+      scale: 1;
+    }
+    70%,
+    100% {
+      opacity: 0;
+      scale: 2.8;
+    }
+  }
+
+  /* ---------- Identity entrance ------------------------------------------- */
+  .js .profile-person .profile-avatar {
+    animation: motion-avatar 900ms var(--motion-ease) both;
+  }
+  .js .profile-sidebar .profile-role,
+  .js .profile-sidebar .profile-availability,
+  .js .profile-sidebar .profile-focus,
+  .js .profile-sidebar .profile-summary,
+  .js .profile-sidebar .profile-link-list > *,
+  .js .profile-sidebar .profile-research-links > * {
+    animation: motion-rise 760ms var(--motion-ease) both;
+    animation-delay: calc(var(--motion-order, 0) * var(--motion-step) + 260ms);
+  }
+  .js .profile-sidebar .profile-role {
+    --motion-order: 1;
+  }
+  .js .profile-sidebar .profile-availability {
+    --motion-order: 2;
+  }
+  .js .profile-sidebar .profile-focus {
+    --motion-order: 3;
+  }
+  .js .profile-sidebar .profile-summary {
+    --motion-order: 4;
+  }
+  .js .profile-sidebar .profile-link-list > :nth-child(1) {
+    --motion-order: 5;
+  }
+  .js .profile-sidebar .profile-link-list > :nth-child(2) {
+    --motion-order: 5.5;
+  }
+  .js .profile-sidebar .profile-link-list > :nth-child(3) {
+    --motion-order: 6;
+  }
+  .js .profile-sidebar .profile-link-list > :nth-child(4) {
+    --motion-order: 6.5;
+  }
+  .js .profile-sidebar .profile-link-list > :nth-child(5) {
+    --motion-order: 7;
+  }
+  .js .profile-sidebar .profile-link-list > :nth-child(6) {
+    --motion-order: 7.5;
+  }
+  .js .profile-sidebar .profile-link-list > :nth-child(n + 7) {
+    --motion-order: 8;
+  }
+  .js .profile-sidebar .profile-research-links > * {
+    --motion-order: 8.5;
+  }
+  .js .catalog-controls {
+    animation: motion-rise 760ms var(--motion-ease) 420ms both;
+  }
+  @keyframes motion-avatar {
+    from {
+      opacity: 0;
+      scale: 0.86;
+      filter: blur(6px);
+    }
+    to {
+      opacity: 1;
+      scale: 1;
+      filter: none;
+    }
+  }
+  @keyframes motion-rise {
+    from {
+      opacity: 0;
+      translate: 0 14px;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  /* ---------- First catalog composition ----------------------------------- */
+  /* Only on the first composition; motion.js marks the grid settled so later
+     filter changes keep profile-feed.js's own transitions. */
+  .js .profile-feed-grid:not([data-motion-settled]) > [data-feed-item] {
+    animation: motion-card 820ms var(--motion-ease) both;
+    animation-delay: calc(var(--motion-card, 8) * 65ms + 120ms);
+  }
+  /* Hold the entrance until profile-feed.js has placed the cards, so it is
+     seen rather than spent during the first layout. motion.js settles the
+     grid after a timeout even if the feed never reports ready. */
+  .js [data-profile-feed]:not([data-feed-ready]) .profile-feed-grid:not([data-motion-settled]) > [data-feed-item] {
+    animation-play-state: paused;
+  }
+  .profile-feed-grid > [data-feed-item]:nth-child(1) {
+    --motion-card: 0;
+  }
+  .profile-feed-grid > [data-feed-item]:nth-child(2) {
+    --motion-card: 1;
+  }
+  .profile-feed-grid > [data-feed-item]:nth-child(3) {
+    --motion-card: 2;
+  }
+  .profile-feed-grid > [data-feed-item]:nth-child(4) {
+    --motion-card: 3;
+  }
+  .profile-feed-grid > [data-feed-item]:nth-child(5) {
+    --motion-card: 4;
+  }
+  .profile-feed-grid > [data-feed-item]:nth-child(6) {
+    --motion-card: 5;
+  }
+  .profile-feed-grid > [data-feed-item]:nth-child(7) {
+    --motion-card: 6;
+  }
+  .profile-feed-grid > [data-feed-item]:nth-child(8) {
+    --motion-card: 7;
+  }
+  @keyframes motion-card {
+    from {
+      opacity: 0;
+      translate: 0 28px;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  /* ---------- Directory and article pages --------------------------------- */
+  .js .page-heading .lead,
+  .js .page-heading .button,
+  .js .page-heading .project-actions {
+    animation: motion-rise 760ms var(--motion-ease) 240ms both;
+  }
+  .wall-card[data-entered] {
+    animation: motion-card 760ms var(--motion-ease) backwards;
+  }
+  [data-reveal].is-visible {
+    animation: motion-rise 640ms var(--motion-ease) both;
+  }
+
+  /* ---------- Reader overlay ---------------------------------------------- */
+  .content-overlay[open] {
+    animation: motion-reader 420ms var(--motion-ease);
+  }
+  /* No opacity here: reader text keeps full contrast throughout its entrance. */
+  @keyframes motion-reader {
+    from {
+      translate: 0 24px;
+      scale: 0.985;
+    }
+    to {
+      translate: 0 0;
+      scale: 1;
+    }
+  }
+}
+
+/* Tablet: keep the availability signal in the identity column. */
+@media (min-width: 581px) and (max-width: 1000px) {
+  .profile-sidebar:has(.profile-connections):has(.profile-availability) {
+    grid-template-rows: min-content min-content 1fr;
+  }
+  .profile-sidebar:has(.profile-connections) .profile-availability {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: start;
+    margin: 0;
+  }
+  .profile-sidebar:has(.profile-connections):has(.profile-availability) .profile-bio {
+    grid-row: 3;
+  }
+  .profile-sidebar:has(.profile-connections):has(.profile-availability) .profile-connections {
+    grid-row: 1 / span 3;
+  }
+}

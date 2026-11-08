@@ -1,5 +1,6 @@
 const { test, expect } = require("@playwright/test");
 const AxeBuilder = require("@axe-core/playwright").default;
+const { entrancesFinished } = require("./support/motion.cjs");
 const base = process.env.PORTFOLIO_URL;
 const contentCounts = require("./real-content-counts.cjs");
 test.skip(!base, "Set PORTFOLIO_URL to the production Docker preview.");
@@ -28,7 +29,13 @@ test("All groups actual content, highlights are marks, and usernames retain plat
   await expect(page.locator("[data-feed-view=all]")).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("[data-feed-view=featured]")).toHaveCount(0);
   await expect(page.locator("[data-feed-item]:not([hidden])")).toHaveCount(contentCounts.all);
+  // Under the default "Featured" order the badge would only repeat the sort.
+  await expect(page.locator(".featured-mark:visible")).toHaveCount(0);
+  await page.locator("[data-feed-sort]").selectOption("newest");
+  await settled(page);
   await expect(page.locator(".featured-mark").first()).toBeVisible();
+  await page.locator("[data-feed-sort]").selectOption("recommended");
+  await settled(page);
   const connections = await page.locator(".profile-social-link").evaluateAll((links) =>
     links.map((a) => ({
       text: a.textContent.trim(),
@@ -172,6 +179,7 @@ test("mounted project reader exposes no serious or critical accessibility findin
   await home(page, 390, 844);
   await page.locator(".project-open").first().click();
   await opened(page);
+  await entrancesFinished(page);
   const result = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
   expect(result.violations.filter((v) => ["serious", "critical"].includes(v.impact))).toEqual([]);
 });
@@ -315,7 +323,10 @@ test("server-rendered project media keeps its exact size when the catalog enhanc
 
 test("featured blog metadata stays clear of its visible action button", async ({ page }) => {
   for (const width of [320, 390, 1440]) {
-    await home(page, width, 900);
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto(base + "/?sort=newest", { waitUntil: "networkidle" });
+    await expect(page.locator("[data-profile-feed]")).toHaveAttribute("data-feed-ready", "true");
+    await settled(page);
     const card = page
       .locator(".profile-feed-grid .writing-card")
       .filter({ has: page.locator(".featured-mark") })

@@ -2,6 +2,4 @@
   <p class="research-relationship-note{% if include.paper.authorship_status == 'pending_update' %} research-status{% endif %}">
     {{ include.paper.relationship_note | escape }}
   </p>
-{% elsif include.paper.authorship_status == 'pending_update' %}
-  <p class="research-status">{{ 'research.pending_author_list' | ui_label: 'Author-list update pending' }}</p>
 {% endif %}

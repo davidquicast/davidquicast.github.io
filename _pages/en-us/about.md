@@ -9,6 +9,7 @@ profile:
   align: left
   image: prof_pic.jpg
   image_circular: true # crops the image to make it circular
+  open_to_work: true # shows the "Open to new roles" signal in the sidebar
   #more_info: >
   #  <p>555 your office number</p>
   #  <p>123 your address street</p>

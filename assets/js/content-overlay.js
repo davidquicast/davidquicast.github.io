@@ -451,6 +451,9 @@
       return;
     }
     if (!body.contains(anchor) && !host.contains(anchor) && !anchor.hasAttribute("data-content-overlay")) return;
+    // A link to the page already on screen (e.g. "About" on /about/) must not
+    // open that same page in a reader on top of itself.
+    if (!dialog.open && url.pathname === location.pathname && url.search === location.search) return;
     const kind = pathKind(url, anchor.hasAttribute("data-content-overlay"));
     if (!kind) return;
     event.preventDefault();
@@ -489,7 +492,16 @@
       base = entry.base;
       closing = false;
       show(url, pathKind(url, true), entry);
-    } else restore();
+      return;
+    }
+    // History entries from an earlier document (e.g. a reader URL that was
+    // reloaded as a full page) cannot be restored in place: once Back changes
+    // the path away from the loaded document, load the real page instead.
+    if (!dialog.open && location.pathname !== profilePath) {
+      location.reload();
+      return;
+    }
+    restore();
   });
   addEventListener("pagehide", () => {
     generation++;

@@ -18,7 +18,16 @@
 %}
 {% assign research_social_image = '' %}
 {% if page.paper %}{% assign research_social_image = site.data.research_covers[page.paper.id].image %}{% endif %}
-{% assign social_image = page.og_image | default: page.image | default: research_social_image | default: site.og_image | absolute_url %}
+{% assign media_social_image = '' %}
+{% if page.collection == 'projects' %}{% assign media_social_image = site.data.project_media[page.slug].image %}{% endif %}
+{% if page.layout == 'post' %}{% assign media_social_image = site.data.blog_covers[page.slug].image %}{% endif %}
+{% assign social_image = page.og_image
+  | default: page.image
+  | default: research_social_image
+  | default: media_social_image
+  | default: site.og_image
+  | absolute_url
+%}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>
@@ -29,7 +38,7 @@
 <meta name="author" content="{{ author_name | strip | escape }}">
 <meta name="color-scheme" content="{% if site.enable_darkmode %}light dark{% else %}light{% endif %}">
 <meta name="theme-color" content="#f9f5ef">
-{% if page.published == false %}<meta name="robots" content="noindex,nofollow">{% endif %}
+{% if page.published == false or page.page_id == 'not_found' %}<meta name="robots" content="noindex,nofollow">{% endif %}
 {% if site.serve_og_meta %}
   <meta property="og:site_name" content="David Quispe">
   <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
