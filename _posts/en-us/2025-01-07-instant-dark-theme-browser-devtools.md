@@ -92,19 +92,9 @@ document.querySelector('div[style*="mix-blend-mode: difference"]').remove();
 
 Create a bookmark with this code for one-click toggling:
 
+<!-- prettier-ignore -->
 ```javascript
-javascript: (function () {
-  var e = document.querySelector('div[style*="mix-blend-mode: difference"]');
-  if (e) e.remove();
-  else {
-    var t = document.createElement("div");
-    t.setAttribute(
-      "style",
-      "position:fixed;pointer-events:none;top:0;left:0;width:100vw;height:100vh;background-color:white;mix-blend-mode:difference;z-index:1"
-    ),
-      document.body.appendChild(t);
-  }
-})();
+javascript:(function(){var e=document.querySelector('div[style*="mix-blend-mode: difference"]');if(e)e.remove();else{var t=document.createElement("div");t.setAttribute("style","position:fixed;pointer-events:none;top:0;left:0;width:100vw;height:100vh;background-color:white;mix-blend-mode:difference;z-index:1"),document.body.appendChild(t)}})();
 ```
 
 ### **Browser Compatibility:**

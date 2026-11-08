@@ -32,9 +32,6 @@
       {% if paper.venue != '' %}
         <p class="research-venue">{{ paper.venue | escape }}</p>
       {% endif %}
-      {% if paper.authorship_status == 'pending_update' %}
-        <p class="research-status">{{ 'research.pending_author_list' | ui_label }}</p>
-      {% endif %}
       {% if paper.summary != '' and paper.summary %}
         <p class="research-summary" data-pretext>{{ paper.summary | escape }}</p>
       {% endif %}

@@ -5,9 +5,13 @@
         class="top-link"
         data-feed-link
         href="{{ '/' | relative_url }}"
-        {% unless page.url contains '/about/' or page.url contains '/resume/' %}
+        {% if page.layout == 'about' %}
           aria-current="page"
-        {% endunless %}
+        {% elsif page.url contains '/about/' or page.url contains '/resume/' %}
+
+        {% else %}
+          aria-current="true"
+        {% endif %}
       >
         {{- 'navigation.work' | ui_label: 'Work' -}}
       </a>

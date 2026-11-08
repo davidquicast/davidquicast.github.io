@@ -17,6 +17,9 @@ layout: default
       <img
         class="profile-avatar{% unless page.profile.image_circular %} profile-portrait-square{% endunless %}"
         src="{{ profile_image | relative_url | escape }}"
+        {% if profile_image == '/assets/img/prof_pic.jpg' %}
+          srcset="{{ '/assets/img/prof_pic-480.webp' | relative_url }} 480w" sizes="64px"
+        {% endif %}
         alt="David Quispe"
         width="64"
         height="64"
@@ -27,6 +30,11 @@ layout: default
         <p class="profile-role">{{ 'profile.role' | ui_label }}</p>
       </div>
     </div>
+    {% if page.profile.open_to_work %}
+      <p class="profile-availability">
+        <span class="profile-availability-dot" aria-hidden="true"></span>{{ 'profile.availability' | ui_label: 'Open to new roles' }}
+      </p>
+    {% endif %}
     <div class="profile-bio">
       <p class="profile-focus">{{ 'profile.focus' | ui_label }}</p>
       <p class="profile-summary" data-pretext>{{ 'profile.summary' | ui_label }}</p>

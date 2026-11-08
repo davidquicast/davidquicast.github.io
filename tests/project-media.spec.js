@@ -162,7 +162,7 @@ test("native detail returns and universal Work/About navigation preserve catalog
   const nav = page.locator("#main-navigation");
   await expect(nav.locator("a")).toHaveText(["Work", "About"]);
   await expect(nav.locator("a").first()).toHaveAttribute("href", "/");
-  await expect(nav.locator("a").first()).toHaveAttribute("aria-current", "page");
+  await expect(nav.locator("a").first()).toHaveAttribute("aria-current", "true"); // section, not this page
   await expect(page.locator(".project-detail > .back-link")).toHaveAttribute("href", "/?view=projects");
   await page.locator(".project-detail > .back-link").click();
   await expect(page.locator("[data-profile-feed]")).toHaveAttribute("data-feed-current-view", "projects");
