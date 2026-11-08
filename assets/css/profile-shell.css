@@ -1455,6 +1455,13 @@ body {
   line-height: 1.6;
   color: var(--muted);
 }
+/* On cards the update date is secondary metadata, not a lead line. */
+.wall-card .content-updated {
+  margin: 2px 0 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--faint);
+}
 .project-source-dates {
   margin: 12px 0;
   font-size: var(--text-ui);

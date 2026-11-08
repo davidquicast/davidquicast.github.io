@@ -17,6 +17,9 @@ layout: default
       <img
         class="profile-avatar{% unless page.profile.image_circular %} profile-portrait-square{% endunless %}"
         src="{{ profile_image | relative_url | escape }}"
+        {% if profile_image == '/assets/img/prof_pic.jpg' %}
+          srcset="{{ '/assets/img/prof_pic-480.webp' | relative_url }} 480w" sizes="64px"
+        {% endif %}
         alt="David Quispe"
         width="64"
         height="64"
