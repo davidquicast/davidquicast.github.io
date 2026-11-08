@@ -11,18 +11,35 @@
   white-space: nowrap;
 }
 @media (prefers-reduced-motion: no-preference) {
-  [data-pretext="lines"][data-pretext-ready="true"] .pretext-line {
-    animation: editorial-line-in 550ms cubic-bezier(0.2, 0.65, 0.2, 1) both;
-    animation-delay: calc(var(--line-index, 0) * 60ms);
+  /*
+   * Line-by-line masked reveal. Pretext supplies the real line breaks before
+   * paint, so each line can rise from behind its own clip edge. Until Pretext
+   * composes the heading it stays hidden; a CSS-only timeout reveals the
+   * native text if the module never runs, so content is never lost.
+   */
+  .js [data-pretext="lines"]:not([data-pretext-ready]) {
+    animation: pretext-fallback 1ms 1400ms both;
   }
-  @keyframes editorial-line-in {
+  @keyframes pretext-fallback {
     from {
-      opacity: 1;
-      transform: translateY(0.25em);
+      opacity: 0;
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+    }
+  }
+  [data-pretext="lines"][data-pretext-ready="true"] .pretext-line {
+    animation: editorial-line-in 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--line-index, 0) * 90ms + 80ms);
+  }
+  @keyframes editorial-line-in {
+    from {
+      clip-path: inset(0 -0.2em 100% -0.2em);
+      translate: 0 0.55em;
+    }
+    to {
+      clip-path: inset(-0.25em -0.2em -0.25em -0.2em);
+      translate: 0 0;
     }
   }
 }

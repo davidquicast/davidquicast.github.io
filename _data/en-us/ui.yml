@@ -193,6 +193,7 @@ types:
   research: Research
 profile:
   role: Systems engineer
+  availability: Open to new roles
   focus: Cybersecurity & AI safety
   summary: I build practical AI systems, from agent workflows and evaluation to secure,
     auditable deployment.
