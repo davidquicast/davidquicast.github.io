@@ -93,7 +93,9 @@ test("profile identity, resources and reading scale stay cohesive instead of inh
         handleLines: handleRange.getClientRects().length,
         avatar: rect(".profile-avatar").width,
         identityHeight: rect(".profile-person").height,
-        biographyGap: rect(".profile-bio").top - rect(".profile-person").bottom,
+        // The optional availability signal sits between identity and biography.
+        biographyGap:
+          rect(".profile-bio").top - rect(document.querySelector(".profile-availability") ? ".profile-availability" : ".profile-person").bottom,
         name: size(".profile-name h1"),
         role: size(".profile-role"),
         bio: size(".profile-summary"),

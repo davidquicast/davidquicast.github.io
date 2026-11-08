@@ -35,9 +35,6 @@
       <h2>
         <a href="{{ paper_url | relative_url | escape }}" data-content-overlay data-pretext>{{ paper.title | escape }}</a>
       </h2>
-      {% if paper.authorship_status == 'pending_update' %}
-        <p class="research-status">{{ 'research.pending_author_list' | ui_label: 'Author-list update pending' }}</p>
-      {% endif %}
     </div>
     <p class="paper-authors">
       {% if paper.authors_preview %}{{ paper.authors_preview | escape }}{% else %}{{ paper.authors | join: ', ' | escape }}{% endif %}

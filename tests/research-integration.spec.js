@@ -1,5 +1,6 @@
 const { test, expect } = require("@playwright/test");
 const AxeBuilder = require("@axe-core/playwright").default;
+const { entrancesFinished } = require("./support/motion.cjs");
 const counts = require("./real-content-counts.cjs");
 const base = process.env.PORTFOLIO_URL;
 test.skip(!base, "Set PORTFOLIO_URL for the Docker production preview.");
@@ -28,9 +29,8 @@ test("real research cards distinguish coauthorship, pending authorship and citat
       await expect(card).toHaveAttribute("data-feed-featured", "false");
     }
   }
-  await expect(page.locator(".paper-card").filter({ hasText: "CulturalRiddles" }).locator(".research-status")).toContainText(
-    "Author-list update pending"
-  );
+  // Internal editorial status must never be published on cards.
+  await expect(page.locator(".paper-card").filter({ hasText: "CulturalRiddles" })).not.toContainText("Author-list update pending");
   await expect(page.locator(".featured-mark:visible")).toHaveCount(0);
   await page.locator("[data-feed-view=all]").click();
   await expect(page.locator("[data-feed-visible=true]")).toHaveCount(counts.all);
@@ -143,10 +143,12 @@ test("paper records retain meaningful static content and citations without JavaS
 test("populated research archive and pending-paper reader have no serious accessibility findings", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(base + "/publications/", { waitUntil: "networkidle" });
+  await entrancesFinished(page);
   let report = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze();
   expect(report.violations.filter((v) => ["serious", "critical"].includes(v.impact))).toEqual([]);
   await page.locator(".research-paper h3 a").filter({ hasText: "CulturalRiddles" }).click();
   await expect(page.locator("[data-overlay-body] .paper-detail")).toBeVisible();
+  await entrancesFinished(page);
   report = await new AxeBuilder({ page }).include("[data-content-overlay-dialog]").withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze();
   expect(report.violations.filter((v) => ["serious", "critical"].includes(v.impact))).toEqual([]);
 });
@@ -163,7 +165,7 @@ test("reader text retains full contrast during the entrance animation in both th
     await expect(page.locator("[data-overlay-body] .paper-detail")).toBeVisible();
     const dialog = page.locator("[data-content-overlay-dialog]");
     const held = await dialog.evaluate((element) => {
-      const animations = element.getAnimations().filter((animation) => animation.animationName === "reader-enter");
+      const animations = element.getAnimations().filter((animation) => animation.animationName === "motion-reader");
       for (const animation of animations) {
         animation.pause();
         animation.currentTime = Number(animation.effect.getComputedTiming().duration) * 0.1;
@@ -172,6 +174,7 @@ test("reader text retains full contrast during the entrance animation in both th
     });
     expect(held).toBe(1);
     await expect(dialog).toHaveCSS("opacity", "1");
+    await entrancesFinished(page);
     const report = await new AxeBuilder({ page }).include("[data-content-overlay-dialog]").withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze();
     expect(report.violations.filter((violation) => ["serious", "critical"].includes(violation.impact))).toEqual([]);
     await page.keyboard.press("Escape");

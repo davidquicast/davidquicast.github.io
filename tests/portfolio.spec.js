@@ -1,5 +1,6 @@
 const { test, expect } = require("@playwright/test");
 const AxeBuilder = require("@axe-core/playwright").default;
+const { entrancesFinished } = require("./support/motion.cjs");
 const base = process.env.PORTFOLIO_URL;
 test.skip(!base, "Set PORTFOLIO_URL to audit the running Docker app.");
 test.beforeEach(async ({ page }) => {
@@ -275,6 +276,7 @@ test("main surfaces have no serious or critical axe findings in both themes at n
         await page.evaluate((next) => {
           document.documentElement.dataset.theme = next;
         }, theme);
+        await entrancesFinished(page);
         const result = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
         violations.push(
           ...result.violations

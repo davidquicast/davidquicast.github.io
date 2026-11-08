@@ -586,7 +586,11 @@ body {
   width: 12px;
   height: 12px;
 }
-[data-feed-current-view]:not([data-feed-current-view="all"]) .featured-mark {
+/* Under the default "Featured" order the badge repeats the sort itself;
+   show it only when another order mixes featured and other work. */
+[data-feed-current-view]:not([data-feed-current-view="all"]) .featured-mark,
+[data-feed-current-sort="recommended"] .featured-mark,
+[data-profile-feed]:not([data-feed-current-sort]) .featured-mark {
   display: none;
 }
 .project-destinations {
