@@ -388,7 +388,10 @@ body {
   opacity: 0.5;
   font-size: 15px;
   line-height: 1;
-  transition: opacity 160ms ease, background 160ms ease, color 160ms ease;
+  transition:
+    opacity 160ms ease,
+    background 160ms ease,
+    color 160ms ease;
 }
 .card-menu-button:hover,
 .card-menu-button[aria-expanded="true"] {
