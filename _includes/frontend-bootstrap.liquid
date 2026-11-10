@@ -16,13 +16,50 @@
       if (stored === 'light' || stored === 'dark') chosenTheme = stored;
     } catch {}
 
-    const updateTheme = () => {
-      root.dataset.theme = darkModeEnabled ? (chosenTheme || (systemTheme.matches ? 'dark' : 'light')) : 'light';
-      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', root.dataset.theme === 'dark' ? '#0c0c0b' : '#f9f5ef');
-      document
-        .querySelector('.theme-toggle')
-        ?.setAttribute('aria-label', root.dataset.theme === 'dark' ? label('theme.to_light', 'Switch to light theme') : label('theme.to_dark', 'Switch to dark theme'));
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    let themeTransition = null;
+    let themeRevision = 0;
+    const updateTheme = (animate = false) => {
+      const nextTheme = darkModeEnabled ? (chosenTheme || (systemTheme.matches ? 'dark' : 'light')) : 'light';
+      const revision = ++themeRevision;
+      const apply = () => {
+        if (revision !== themeRevision) return;
+        root.dataset.theme = nextTheme;
+        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', nextTheme === 'dark' ? '#0c0c0b' : '#f9f5ef');
+        document
+          .querySelector('.theme-toggle')
+          ?.setAttribute('aria-label', nextTheme === 'dark' ? label('theme.to_light', 'Switch to light theme') : label('theme.to_dark', 'Switch to dark theme'));
+      };
+      themeTransition?.skipTransition();
+      if (!animate || reducedMotion.matches || !document.startViewTransition || document.hidden || root.dataset.theme === nextTheme) {
+        apply();
+        return;
+      }
+      // Reveal from the control itself; pointer coordinates never drive the motion.
+      const button = document.querySelector('.theme-toggle');
+      const bounds = button?.getBoundingClientRect();
+      root.style.setProperty('--theme-origin-x', `${bounds ? bounds.left + bounds.width / 2 : innerWidth}px`);
+      root.style.setProperty('--theme-origin-y', `${bounds ? bounds.top + bounds.height / 2 : 0}px`);
+      root.dataset.themeTransition = '';
+      try {
+        const transition = document.startViewTransition(apply);
+        themeTransition = transition;
+        transition.ready.catch(() => {});
+        transition.finished.catch(() => {}).finally(() => {
+          if (themeTransition !== transition) return;
+          themeTransition = null;
+          delete root.dataset.themeTransition;
+          root.style.removeProperty('--theme-origin-x');
+          root.style.removeProperty('--theme-origin-y');
+        });
+      } catch {
+        delete root.dataset.themeTransition;
+        apply();
+      }
     };
+    reducedMotion.addEventListener('change', () => {
+      if (reducedMotion.matches) themeTransition?.skipTransition();
+    });
     const setMenu = (open, restoreFocus = false) => {
       const button = document.querySelector('.menu-toggle');
       button?.setAttribute('aria-expanded', String(open));
@@ -33,11 +70,11 @@
       const target = event.target.closest?.('button, #main-navigation a');
       if (target?.matches('.menu-toggle')) setMenu(target.getAttribute('aria-expanded') !== 'true');
       else if (target?.matches('.theme-toggle')) {
-        chosenTheme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+        chosenTheme = (chosenTheme || root.dataset.theme) === 'dark' ? 'light' : 'dark';
         try {
           localStorage.setItem('portfolio-theme', chosenTheme);
         } catch {}
-        updateTheme();
+        updateTheme(true);
       } else if (target?.matches('#main-navigation a')) setMenu(false);
       else if (event.target instanceof Element && !event.target.closest('.site-header')) setMenu(false);
     });

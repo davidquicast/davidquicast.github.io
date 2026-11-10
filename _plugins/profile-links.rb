@@ -233,7 +233,8 @@ module Portfolio
         end
         profile['aria_label'] = profile['display'] == profile['label'] ? profile['label'] : profile['label'] + ': ' + profile['display']
       end
-      result.partition { |profile| profile['group'] != 'research' }.flatten(1)
+      ordered = result.partition { |profile| profile['group'] != 'research' }.flatten(1)
+      ordered.reject { |profile| profile['id'] == 'rss' } + ordered.select { |profile| profile['id'] == 'rss' }
     end
   end
 

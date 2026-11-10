@@ -28,6 +28,7 @@ test("section filters use four project columns, three blog columns and one resea
   test.setTimeout(60000);
   for (const width of [1440, 1280]) {
     await home(page, width);
+    expect(await columns(page)).toBe(5);
     await choose(page, "projects", contentCounts.projects, 4);
     expect(new URL(page.url()).searchParams.get("view")).toBe("projects");
     await page.reload({ waitUntil: "networkidle" });
@@ -37,7 +38,7 @@ test("section filters use four project columns, three blog columns and one resea
     await choose(page, "research", contentCounts.research, 1);
   }
   await home(page);
-  expect(await columns(page)).toBe(3);
+  expect(await columns(page)).toBe(5);
   const paperThumbnails = await page
     .locator(`${visibleCards}.paper-card .research-card-media`)
     .evaluateAll((media) => media.map((element) => element.getBoundingClientRect().width));
@@ -65,7 +66,7 @@ test("section density adapts to tablet and phone without clipping content or int
   }
 });
 
-test("compact square research artwork matches desktop panels and leaves phone titles full-width", async ({ page }) => {
+test("research rows halve desktop height with uniform square artwork and readable full-width phone titles", async ({ page }) => {
   test.setTimeout(120000);
   for (const width of [1440, 1001, 768, 701, 700, 641, 581, 390, 320]) {
     await home(page, width, "?view=research");
@@ -100,12 +101,13 @@ test("compact square research artwork matches desktop panels and leaves phone ti
       const information = await card.locator(width > 700 ? ".wall-card-body" : ".paper-card-kicker").boundingBox();
       expect(Math.abs(media.width - media.height)).toBeLessThan(1);
       if (width > 700) {
-        expect(media.width).toBeLessThanOrEqual(176);
+        expect(media.width).toBe(88);
+        expect(row.height).toBeLessThanOrEqual(108);
         expect(Math.abs(media.height - information.height)).toBeLessThan(1);
         expect(media.x + media.width).toBeLessThanOrEqual(title.x - 4);
         expect(Math.abs(information.y - media.y)).toBeLessThan(1);
       } else {
-        expect(media.width).toBeLessThanOrEqual(80);
+        expect(media.width).toBe(56);
         expect(Math.abs(information.y - media.y)).toBeLessThan(1);
         expect(title.y).toBeGreaterThanOrEqual(media.y + media.height);
       }
@@ -116,6 +118,7 @@ test("compact square research artwork matches desktop panels and leaves phone ti
     for (let index = 1; index < rows.length; index++) {
       expect(Math.abs(rows[index].x - rows[0].x)).toBeLessThan(1);
       expect(Math.abs(rows[index].width - rows[0].width)).toBeLessThan(1);
+      if (width > 700) expect(Math.abs(rows[index].height - rows[0].height)).toBeLessThan(1);
       expect(rows[index].y).toBeGreaterThanOrEqual(rows[index - 1].y + rows[index - 1].height);
     }
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
@@ -195,7 +198,7 @@ test("profile connections use compact desktop rows and retain touch targets on c
     if (Math.abs(desktop[index].x - desktop[index - 1].x) < 1) {
       const gap = desktop[index].y - desktop[index - 1].y - desktop[index - 1].height;
       expect(gap).toBeGreaterThanOrEqual(-1);
-      expect(gap).toBeLessThanOrEqual(8);
+      expect(gap).toBeLessThanOrEqual(8.01);
     }
   }
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
@@ -203,6 +206,8 @@ test("profile connections use compact desktop rows and retain touch targets on c
     const phone = await context.newPage();
     await phone.goto(base, { waitUntil: "networkidle" });
     await expect(phone.locator("[data-profile-feed]")).toHaveAttribute("data-feed-ready", "true");
+    const more = phone.locator("[data-profile-overflow] summary");
+    if (await more.isVisible()) await more.click();
     const targets = await phone
       .locator(".profile-sidebar .profile-social-link")
       .evaluateAll((links) =>

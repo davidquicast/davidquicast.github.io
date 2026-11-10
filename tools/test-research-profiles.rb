@@ -35,7 +35,8 @@ verify(checks, 'Actual academic accounts preserve supplied destinations and publ
     assert(link['aria_label'].start_with?(link['label'] + ': '), 'platform identity missing from accessible name')
   end
   assert(links.length == 9, 'profile registry contains a metadata entry or misses an existing connection')
-  assert(links.last(3) == research, 'separate academic navigation and normalized account order disagree')
+  assert(links.last['id'] == 'rss', 'RSS is not the final profile destination')
+  assert(links[0...-1].last(3) == research, 'academic identities lost their canonical order')
 end
 verify(checks, 'OpenReview identifiers reject URLs, query injection, whitespace and executable input') do
   ['https://openreview.net/profile?id=~Someone1', '~Someone1&redirect=evil', '~Person1#fragment', '../../private',
@@ -66,11 +67,13 @@ verify(checks, 'Compact and full link rendering retain distinct semantic researc
       page.content = "{% include profile-links.liquid compact=#{compact} %}"
       page.data = {}
       html = Nokogiri::HTML(Jekyll::Renderer.new(site, page).run)
-      assert(html.css('nav').length == 2, 'connections and academic profiles were not separated')
-      general = html.at_css('nav:not(.profile-research-links)')
-      academic = html.at_css('nav.profile-research-links')
-      assert(general.css('.profile-social-link').length == 6 && academic.css('.profile-social-link').length == 3,
+      assert(html.css('nav').length == 1, 'profile navigation landmark duplicated')
+      general = html.at_css('[data-profile-primary]')
+      academic = html.at_css('[role=group].profile-research-links')
+      assert(general.css('.profile-social-link').length == 5 && academic.css('.profile-social-link').length == 3,
         'real groups lost links or duplicated accounts')
+      assert(html.css('.profile-social-link').last['data-profile-id'] == 'rss', 'RSS was not rendered last')
+      assert(html.at_css('details summary') && html.css('[data-profile-extra] .profile-social-link').length == 4, 'native overflow disclosure does not preserve all links')
       assert(academic['aria-label'] == 'Research profiles', 'research navigation lacks an accessible name')
       html.css('.profile-social-link').zip(links).each do |node, record|
         assert(node['href'] == record['url'] && node['aria-label'] == record['aria_label'], 'safe target/name changed in markup')
@@ -82,6 +85,31 @@ verify(checks, 'Compact and full link rendering retain distinct semantic researc
       assert(mark && mark['src'] == '/assets/icons/openreview.png' && mark['alt'] == '' && mark['aria-hidden'] == 'true',
         'OpenReview mark is missing, remote or inaccessible')
       assert(html.css('script').empty?, 'research link markup introduced a script')
+    end
+  end
+end
+verify(checks, 'Connection overflow starts above six links and preserves complete data order') do
+  [0, 1, 6, 7, 25].each do |count|
+    data = (0...count).map do |i|
+      { 'id' => "test-#{i}", 'label' => "Profile #{i}", 'display' => "@account#{i}",
+        'aria_label' => "Profile #{i}: @account#{i}", 'group' => 'general', 'url' => "https://example.org/#{i}" }
+    end
+    Dir.mktmpdir('profile-overflow-render-') do |source|
+      FileUtils.mkdir_p(File.join(source, '_includes'))
+      %w[profile-links.liquid profile-link.liquid brand-icon.liquid].each do |file|
+        FileUtils.cp(File.join(root, '_includes', file), File.join(source, '_includes', file))
+      end
+      site = Jekyll::Site.new(Jekyll.configuration('source' => source, 'destination' => File.join(source, 'output'),
+        'default_lang' => 'en-us', 'languages' => ['en-us'], 'quiet' => true, 'plugins' => []))
+      site.data['profile_links'] = data
+      page = Jekyll::PageWithoutAFile.new(site, source, '', 'profiles.html')
+      page.content = "{% include profile-links.liquid compact=true %}"
+      page.data = {}
+      html = Nokogiri::HTML(Jekyll::Renderer.new(site, page).run)
+      assert(html.css('.profile-social-link').length == count, "links lost at count #{count}")
+      assert(html.css('[data-profile-primary] a').length == (count > 6 ? 5 : count), "wrong initial count #{count}")
+      assert(html.css('details').length == (count > 6 ? 1 : 0), "wrong disclosure threshold #{count}")
+      assert(html.css('.profile-social-link').map { |link| link['href'] } == data.map { |link| link['url'] }, 'profile order changed')
     end
   end
 end

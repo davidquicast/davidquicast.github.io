@@ -31,30 +31,54 @@
     watch.observe(root, { attributes: true, attributeFilter: ["data-feed-ready"] });
   };
 
-  // A single background pill that slides between category buttons.
+  // The category marker moves with transforms; its dimensions never tween.
   const indicate = (tabs) => {
     if (tabs.hasAttribute("data-indicator")) return;
-    const pill = document.createElement("span");
-    pill.className = "feed-tabs-indicator";
-    pill.setAttribute("aria-hidden", "true");
-    tabs.prepend(pill);
+    const marker = document.createElement("span");
+    marker.className = "feed-tabs-indicator";
+    marker.setAttribute("aria-hidden", "true");
+    tabs.prepend(marker);
     tabs.setAttribute("data-indicator", "");
+    let motion = null;
+    let placed = false;
     const place = () => {
       const active = tabs.querySelector('button[aria-pressed="true"]');
-      if (!active || !active.offsetWidth) {
-        pill.style.width = "0px";
-        return;
+      if (!active || !active.offsetWidth) return;
+      // Read the interrupted visual geometry before updating the resting layout.
+      const before = marker.getBoundingClientRect();
+      const target = active.getBoundingClientRect();
+      const moved =
+        placed &&
+        (Math.abs(before.left - target.left) > 0.5 || Math.abs(before.width - target.width) > 0.5 || Math.abs(before.top - target.top) > 0.5);
+      motion?.cancel();
+      marker.style.translate = `${active.offsetLeft}px ${active.offsetTop}px`;
+      marker.style.width = `${active.offsetWidth}px`;
+      marker.style.height = `${active.offsetHeight}px`;
+      if (moved && !reduced.matches && marker.animate) {
+        const animation = marker.animate(
+          [
+            { transform: `translate(${before.left - target.left}px,${before.top - target.top}px) scaleX(${before.width / target.width})` },
+            { transform: "none" },
+          ],
+          { duration: 220, easing: "cubic-bezier(.2, 0, 0, 1)" }
+        );
+        motion = animation;
+        animation.finished
+          .then(() => {
+            if (motion === animation) motion = null;
+          })
+          .catch(() => {});
       }
-      pill.style.translate = `${active.offsetLeft}px ${active.offsetTop}px`;
-      pill.style.width = `${active.offsetWidth}px`;
-      pill.style.height = `${active.offsetHeight}px`;
+      placed = true;
+      tabs.setAttribute("data-indicator-ready", "");
     };
     place();
-    // Enable transitions only after the first placement so it does not slide in from 0.
-    requestAnimationFrame(() => requestAnimationFrame(() => tabs.setAttribute("data-indicator-ready", "")));
     new MutationObserver(place).observe(tabs, { subtree: true, attributes: true, attributeFilter: ["aria-pressed"] });
     if ("ResizeObserver" in window) new ResizeObserver(place).observe(tabs);
     document.fonts?.ready.then(place);
+    reduced.addEventListener("change", () => {
+      if (reduced.matches) motion?.cancel();
+    });
   };
 
   const init = () => {

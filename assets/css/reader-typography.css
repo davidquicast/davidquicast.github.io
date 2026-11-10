@@ -1,0 +1,307 @@
+/* The same semantic reading hierarchy applies to direct pages and native readers. */
+:is(.editorial-post, .project-detail, .paper-detail) {
+  --reader-body: color-mix(in srgb, var(--ink) 86%, var(--bg));
+  --reader-keyword: #295c70;
+  --reader-string: #466234;
+  --reader-number: #8a4c28;
+  --reader-comment: #646b68;
+}
+:root[data-theme="dark"] :is(.editorial-post, .project-detail, .paper-detail) {
+  --reader-keyword: #9fcbdc;
+  --reader-string: #b4cc97;
+  --reader-number: #e4b996;
+  --reader-comment: #afb8b1;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) :is(.editorial-post, .project-detail, .paper-detail) {
+    --reader-keyword: #9fcbdc;
+    --reader-string: #b4cc97;
+    --reader-number: #e4b996;
+    --reader-comment: #afb8b1;
+  }
+}
+.editorial-post .article-header h1,
+.project-detail .project-detail-header h1,
+.paper-detail > .page-heading h1 {
+  max-width: 36ch;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.5rem, 2.3vw, 1.875rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  overflow-wrap: break-word;
+}
+.editorial-post .article-deck,
+.project-detail .project-detail-header .lead {
+  max-width: 64ch;
+  margin-top: 16px;
+  color: var(--reader-body, var(--ink));
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose {
+  min-width: 0;
+  max-width: 68ch;
+  color: var(--reader-body, var(--ink));
+  font-size: 1rem;
+  line-height: 1.8;
+  overflow-wrap: break-word;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose > :first-child {
+  margin-top: 0;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose p {
+  margin-block: 0 1.2em;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose :is(h2, h3, h4, h5, h6),
+.paper-detail .research-evidence h2 {
+  color: var(--ink);
+  font-weight: 600;
+  line-height: 1.4;
+  scroll-margin-top: calc(var(--header-height, 64px) + 24px);
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose h2,
+.paper-detail .research-evidence h2 {
+  margin-block: 2.2em 0.7em;
+  font-size: 1.375rem;
+  letter-spacing: -0.02em;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose h3 {
+  margin-block: 1.9em 0.65em;
+  font-size: 1.125rem;
+  letter-spacing: -0.01em;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose h4 {
+  margin-block: 1.7em 0.55em;
+  font-size: 1rem;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose :is(h5, h6) {
+  margin-block: 1.6em 0.55em;
+  font-size: 0.9375rem;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose h6 {
+  color: var(--muted);
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose :is(h2, h3, h4, h5, h6) strong {
+  font-weight: inherit;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose :is(h2, h3, h4, h5, h6) + :is(p, ul, ol) {
+  margin-top: 0;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose :is(ul, ol) {
+  padding-inline-start: 1.5em;
+  margin-block: 1.2em;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose li {
+  padding-inline-start: 0.15em;
+  margin-block: 0.45em;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose li::marker {
+  color: var(--muted);
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose li :is(ul, ol) {
+  margin-block: 0.55em;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose a {
+  color: var(--ink);
+  text-decoration-line: underline;
+  text-decoration-color: var(--control-border);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  overflow-wrap: anywhere;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose a:hover {
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 2px;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose blockquote {
+  margin: 1.8em 0;
+  padding: 16px 20px;
+  border: 0;
+  border-inline-start: 3px solid var(--muted);
+  border-radius: 0 4px 4px 0;
+  background: var(--surface-alt);
+  color: var(--ink);
+  font-size: 1.0625rem;
+  font-style: italic;
+  line-height: 1.75;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose blockquote > :last-child {
+  margin-bottom: 0;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose blockquote cite {
+  display: block;
+  margin-top: 0.75em;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-style: normal;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose :is(figcaption, caption) {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose hr {
+  margin-block: 2em;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose code,
+.paper-detail .research-citation code {
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose :not(pre) > code {
+  padding: 0.12em 0.32em;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface-alt);
+  color: var(--ink);
+  font-size: 0.875em;
+  overflow-wrap: anywhere;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose pre,
+.paper-detail .research-citation pre {
+  max-width: 100%;
+  margin-block: 1.5em;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--code-bg);
+  color: var(--ink);
+  font-size: 0.8125rem;
+  line-height: 1.75;
+  tab-size: 2;
+  overflow: auto;
+  overscroll-behavior-x: contain;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose pre code,
+.paper-detail .research-citation pre code {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  white-space: pre;
+  overflow-wrap: normal;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose .code-frame {
+  margin-block: 1.5em;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose .code-frame pre {
+  margin: 0;
+  padding-top: 52px;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .highlight :is(.c, .c1, .cm, .cp, .cs) {
+  color: var(--reader-comment);
+  font-style: italic;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .highlight :is(.k, .kd, .kn, .kp, .kr, .kt, .nt, .nb) {
+  color: var(--reader-keyword);
+}
+:is(.editorial-post, .project-detail, .paper-detail) .highlight :is(.s, .s1, .s2, .sb, .sc, .sd, .se, .sh, .si, .sr, .ss) {
+  color: var(--reader-string);
+}
+:is(.editorial-post, .project-detail, .paper-detail) .highlight :is(.m, .mi, .mf, .mh, .mo, .nf, .nc, .na) {
+  color: var(--reader-number);
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose :is(table, .table-wrap) {
+  max-width: 100%;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose table {
+  margin-block: 1.5em;
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose th {
+  background: var(--surface-alt);
+  color: var(--ink);
+  font-weight: 600;
+}
+/* Numbered references and notes keep their own quieter reading rhythm. */
+:is(.editorial-post, .project-detail, .paper-detail) .prose :is(h2#references, h2#bibliography) {
+  margin-top: 2.8em;
+  padding-top: 1.5em;
+  border-top: 1px solid var(--border);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose :is(.references-list, .footnotes),
+.editorial-post .article-content > :is(h2#references, h2#bibliography) ~ p:has(> strong:first-child) {
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.75;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose .references-list {
+  padding-inline-start: 1.7em;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose .references-list li {
+  margin-block: 1em;
+  padding-inline-start: 0.2em;
+  scroll-margin-top: calc(var(--header-height, 64px) + 24px);
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose .references-list li::marker {
+  color: var(--ink);
+  font-weight: 600;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose a[href^="#ref-"] {
+  font-size: 0.875em;
+  font-variant-numeric: tabular-nums;
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose .footnotes {
+  margin-top: 2.5em;
+  padding-top: 1.2em;
+  border-top: 1px solid var(--border);
+}
+:is(.editorial-post, .project-detail, .paper-detail) .prose sup {
+  font-size: 0.75em;
+  line-height: 0;
+}
+.project-detail .project-context {
+  font-size: 0.8125rem;
+  line-height: 1.7;
+}
+.project-detail .project-context h2 {
+  margin-top: 1.5em;
+  color: var(--ink);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.paper-detail .research-evidence,
+.paper-detail .research-evidence-link,
+.paper-detail .research-author-list,
+.paper-detail .research-authors {
+  font-size: 0.875rem;
+  line-height: 1.75;
+}
+.paper-detail .research-citation > summary {
+  margin-top: 24px;
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+@media (max-width: 580px) {
+  :is(.editorial-post, .project-detail, .paper-detail) .prose h2,
+  .paper-detail .research-evidence h2 {
+    font-size: 1.25rem;
+  }
+  :is(.editorial-post, .project-detail, .paper-detail) .prose blockquote {
+    padding: 14px 16px;
+  }
+  :is(.editorial-post, .project-detail, .paper-detail) .prose pre,
+  .paper-detail .research-citation pre {
+    padding-inline: 14px;
+  }
+}

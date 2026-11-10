@@ -1,4 +1,4 @@
-/* Viewport-sized biography pages preserve the original rich HTML and links. */
+/* Native compact reading, with bounded rich-text pages on roomy desktops. */
 (() => {
   "use strict";
   const instances = new Map();
@@ -22,6 +22,12 @@
       if (!source || !view || !controls || !previous || !next) continue;
       const abort = new AbortController();
       const options = { signal: abort.signal };
+      const compact = matchMedia("(max-width: 700px), (max-height: 520px)");
+      const originalTabIndex = root.getAttribute("tabindex");
+      const restoreTabIndex = () => {
+        if (originalTabIndex === null) root.removeAttribute("tabindex");
+        else root.setAttribute("tabindex", originalTabIndex);
+      };
       let frame = 0,
         pages = [],
         current = 0,
@@ -63,6 +69,33 @@
       const compose = () => {
         frame = 0;
         if (!root.isConnected) return;
+        if (compact.matches) {
+          if (root.dataset.aboutMode !== "scroll") {
+            root.dataset.aboutMode = "scroll";
+            delete root.dataset.aboutEnhanced;
+            delete root.dataset.aboutCurrentPage;
+            delete root.dataset.aboutPageCount;
+            source.hidden = false;
+            view.hidden = true;
+            view.replaceChildren();
+            controls.hidden = true;
+            // The native overlay scrolls its body; focus within that region lets
+            // keyboard users use PageDown/Home/End without a custom key handler.
+            if (root.closest("[data-overlay-body]")) root.tabIndex = 0;
+            key = "";
+          }
+          root.dataset.aboutReady = "true";
+          return;
+        }
+        if (root.dataset.aboutMode !== "paged") {
+          root.dataset.aboutMode = "paged";
+          root.dataset.aboutEnhanced = "true";
+          source.hidden = true;
+          view.hidden = false;
+          controls.hidden = true;
+          restoreTabIndex();
+          key = "";
+        }
         const width = view.clientWidth,
           height = view.clientHeight;
         if (width < 1 || height < 1) return;
@@ -115,12 +148,9 @@
       const schedule = () => {
         if (!frame) frame = requestAnimationFrame(compose);
       };
-      source.hidden = true;
-      view.hidden = false;
-      // Do not reserve paging chrome until the first composition needs it.
-      // Otherwise short one-page biographies can be forced onto a second page by the controls themselves.
+      // The semantic source stays visible until a desktop composition is ready.
       controls.hidden = true;
-      root.dataset.aboutEnhanced = "true";
+      compact.addEventListener("change", schedule, options);
       previous.addEventListener(
         "click",
         () => {
@@ -144,7 +174,7 @@
       root.addEventListener(
         "keydown",
         (event) => {
-          if (event.target.closest("a,input,select,textarea")) return;
+          if (root.dataset.aboutMode !== "paged" || event.target.closest("a,input,select,textarea")) return;
           if (event.key === "ArrowRight" && !next.disabled) {
             event.preventDefault();
             current++;
@@ -177,6 +207,7 @@
         resize?.disconnect();
         mutations.disconnect();
         cancelAnimationFrame(frame);
+        restoreTabIndex();
         instances.delete(root);
       });
       schedule();

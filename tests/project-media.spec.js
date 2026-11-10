@@ -123,7 +123,7 @@ test("one profile feed presents every content type in independent non-overlappin
     })
   );
   expect(geometry).toHaveLength(projectCount + contentCounts.writing + contentCounts.papers);
-  expect(new Set(geometry.map((rect) => Math.round(rect.left))).size).toBe(3);
+  expect(new Set(geometry.map((rect) => Math.round(rect.left))).size).toBe(5);
   expect(new Set(geometry.map((rect) => Math.round(rect.height))).size).toBeGreaterThanOrEqual(4);
   for (let first = 0; first < geometry.length; first++) {
     for (let second = first + 1; second < geometry.length; second++) {

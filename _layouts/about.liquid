@@ -2,7 +2,8 @@
 layout: default
 ---
 {% assign catalog = site.data.profile_catalog %}
-{% assign profile_image = page.profile.image | default: 'prof_pic.jpg' %}
+{% assign portrait = site.data.profile_image %}
+{% assign profile_image = page.profile.image | default: portrait.source %}
 {% assign profile_prefix = profile_image | slice: 0, 1 %}
 {% unless profile_prefix == '/' or profile_image contains '://' %}{% assign profile_image = profile_image | prepend: '/assets/img/' %}{% endunless %}
 <div
@@ -16,13 +17,18 @@ layout: default
     <div class="profile-person{% if page.profile.align == 'right' %} profile-person-right{% endif %}">
       <img
         class="profile-avatar{% unless page.profile.image_circular %} profile-portrait-square{% endunless %}"
-        src="{{ profile_image | relative_url | escape }}"
-        {% if profile_image == '/assets/img/prof_pic.jpg' %}
-          srcset="{{ '/assets/img/prof_pic-480.webp' | relative_url }} 480w" sizes="64px"
+        {% if profile_image == portrait.source %}
+          src="{{ portrait.avatar | relative_url | escape }}"
+          srcset="{% for variant in portrait.variants %}{{ variant.path | relative_url | escape }} {{ variant.width }}w{% unless forloop.last %}, {% endunless %}{% endfor %}"
+          sizes="{{ portrait.display_size }}px"
+        {% else %}
+          src="{{ profile_image | relative_url | escape }}"
         {% endif %}
-        alt="David Quispe"
+        alt="{{ portrait.alt | default: 'David Quispe' | escape }}"
         width="64"
         height="64"
+        loading="eager"
+        decoding="async"
         fetchpriority="high"
       >
       <div class="profile-name">
@@ -30,26 +36,26 @@ layout: default
         <p class="profile-role">{{ 'profile.role' | ui_label }}</p>
       </div>
     </div>
-    {% if page.profile.open_to_work %}
-      <p class="profile-availability">
-        <span class="profile-availability-dot" aria-hidden="true"></span>{{ 'profile.availability' | ui_label: 'Open to new roles' }}
-      </p>
-    {% endif %}
-    <div class="profile-bio">
-      <p class="profile-focus">{{ 'profile.focus' | ui_label }}</p>
-      <p class="profile-summary" data-pretext>{{ 'profile.summary' | ui_label }}</p>
-    </div>
-    {% if page.social %}
-      <div class="profile-connections" id="contact">{% include profile-links.liquid compact=true resume=true %}</div>
-    {% endif %}
-    {% unless page.social %}
+    <div class="profile-status-row">
+      {% if page.profile.open_to_work %}
+        <p class="profile-availability">
+          <span class="profile-availability-dot" aria-hidden="true"></span>{{ 'profile.availability' | ui_label: 'Open to new roles' }}
+        </p>
+      {% endif %}
       <div class="profile-resources">
         <a href="{{ '/resume/' | relative_url }}" data-content-overlay>
           {%- include icon.liquid name='resume' -%}
           {{- 'navigation.cv' | ui_label: 'CV' -}}
         </a>
       </div>
-    {% endunless %}
+    </div>
+    <div class="profile-bio">
+      <p class="profile-focus">{{ 'profile.focus' | ui_label }}</p>
+      <p class="profile-summary" data-pretext>{{ 'profile.summary' | ui_label }}</p>
+    </div>
+    {% if page.social %}
+      <div class="profile-connections" id="contact">{% include profile-links.liquid compact=true %}</div>
+    {% endif %}
     {% if page.profile.more_info %}
       <div class="profile-more-info">{{ page.profile.more_info }}</div>
     {% endif %}
@@ -96,7 +102,7 @@ layout: default
           <label class="feed-sort">
             {%- include icon.liquid name='sort' -%}
             <span class="visually-hidden">{{ 'feed.sort' | ui_label }}</span
-            ><select data-feed-sort data-enable-with-js disabled>
+            ><select name="sort" data-feed-sort data-enable-with-js disabled>
               <option value="recommended">{{ 'feed.recommended' | ui_label }}</option>
               <option value="newest">{{ 'feed.newest' | ui_label }}</option>
               <option value="oldest">{{ 'feed.oldest' | ui_label }}</option>
@@ -139,7 +145,7 @@ layout: default
     <div class="profile-feed-grid frontpage-wall" data-feed-grid>
       {% for entry in catalog.items %}
         {% assign entry_loading = 'lazy' -%}
-        {%- if forloop.index <= 4 %}{% assign entry_loading = 'eager' %}{% endif %}
+        {%- if forloop.index <= 5 %}{% assign entry_loading = 'eager' %}{% endif %}
         {% case entry.kind %}
           {% when 'project' -%}
             {%- include project-card.liquid project=entry.source entry=entry selected=true loading=entry_loading priority='auto' %}

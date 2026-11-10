@@ -3,7 +3,7 @@
   <img
     src="{{ research_cover.thumbnail | relative_url }}"
     srcset="{{ research_cover.srcset }}"
-    sizes="{{ include.sizes | default: '(min-width: 1001px) 176px, (min-width: 701px) 160px, 72px' }}"
+    sizes="{{ include.sizes | default: '(max-width: 700px) 72px, (pointer: coarse) 108px, 88px' }}"
     width="{{ research_cover.width }}"
     height="{{ research_cover.height }}"
     alt="{{ research_cover.alt | escape }}"

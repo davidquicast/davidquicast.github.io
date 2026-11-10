@@ -176,7 +176,7 @@ test("legacy zoomable picture markup becomes an accessible real-image link witho
   await ready(page);
   const link = page.locator("a.native-image-link");
   await expect(link).toHaveCount(1);
-  await expect(link).toHaveAttribute("href", /prof_pic.jpg/);
+  await expect(link).toHaveAttribute("href", /\/assets\/img\/profile\/[^/]+\.webp$/u);
   await expect(link.locator("picture > img[data-zoomable]")).toHaveCount(1);
   await expect(link).toHaveAttribute("data-native-lightbox", "true");
   await link.focus();
@@ -260,7 +260,7 @@ test("all semantic links and preview content remain readable without JavaScript"
   await expect(page.locator("[data-deck-slide]")).toHaveCount(3);
   await expect(page.locator("[data-deck-slide]").last()).toBeVisible();
   await expect(page.locator("[data-deck-controls]")).toBeHidden();
-  await expect(page.locator("a[data-lightbox]").first()).toHaveAttribute("href", /prof_pic/);
+  await expect(page.locator("a[data-lightbox]").first()).toHaveAttribute("href", /\/assets\/img\/profile\/[^/]+\.webp$/u);
   await expect(page.locator("[data-search-open]")).toBeHidden();
   await context.close();
 });

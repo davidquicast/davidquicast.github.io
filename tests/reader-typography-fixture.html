@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Semantic reader typography fixture</title>
+    <link rel="stylesheet" href="/assets/css/portfolio.css" />
+    <link rel="stylesheet" href="/assets/css/wall.css" />
+    <link rel="stylesheet" href="/assets/css/profile-shell.css" />
+    <link rel="stylesheet" href="/assets/css/reader-typography.css" />
+    <style>
+      main {
+        width: min(760px, calc(100% - 32px));
+        margin: 24px auto;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <article class="editorial-post">
+        <header class="article-header">
+          <h1>Semantic reading hierarchy</h1>
+          <p class="article-deck">A test fixture for authored text, citations and examples.</p>
+        </header>
+        <div class="prose article-content">
+          <h2 id="section">Section heading</h2>
+          <p id="body">
+            Body text has a regular reading rhythm and an <a href="#ref-1">inline citation [1]</a>. A <strong>selected phrase</strong> and
+            <code>inline_code()</code> remain selectable.
+          </p>
+          <h3>Subsection heading</h3>
+          <p>A subsection follows the main section.</p>
+          <h4>Supporting heading</h4>
+          <p>The supporting level uses weight and spacing.</p>
+          <blockquote>
+            <p>A quotation has its own visible treatment.</p>
+            <cite>Authored quotation attribution</cite>
+          </blockquote>
+          <div class="highlight">
+            <pre><code><span class="k">const</span> example = <span class="s">"a code sample"</span>;
+<span class="c1">// A comment remains readable in each theme.</span>
+<span class="mi">12345</span>;
+const veryLongLine = "This intentionally long code line should scroll inside the code panel, while the page itself keeps the available reading width.";</code></pre>
+          </div>
+          <h2 id="references">References</h2>
+          <ol class="references-list">
+            <li id="ref-1">Reference information. <a href="https://example.com/reference">https://example.com/reference</a></li>
+          </ol>
+        </div>
+      </article>
+    </main>
+  </body>
+</html>

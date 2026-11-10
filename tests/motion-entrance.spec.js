@@ -11,7 +11,7 @@ async function open(page, reducedMotion) {
   await expect(page.locator("[data-profile-feed]")).toHaveAttribute("data-feed-ready", "true");
 }
 
-test("profile identity, name lines and first catalog composition enter, then settle at full opacity", async ({ page }) => {
+test("unscaled portrait stays visible while name lines and first catalog composition enter and settle", async ({ page }) => {
   const names = [];
   await page.exposeFunction("recordAnimation", (name) => names.push(name));
   await page.addInitScript(() => {
@@ -20,7 +20,10 @@ test("profile identity, name lines and first catalog composition enter, then set
   await open(page, "no-preference");
   await expect(page.locator(".profile-feed-grid")).toHaveAttribute("data-motion-settled", "", { timeout: 10000 });
   await entrancesFinished(page);
-  for (const name of ["motion-avatar", "motion-rise", "editorial-line-in", "motion-card"]) expect(names).toContain(name);
+  for (const name of ["motion-rise", "editorial-line-in", "motion-card"]) expect(names).toContain(name);
+  expect(names).not.toContain("motion-avatar");
+  await expect(page.locator(".profile-avatar")).toHaveCSS("scale", "none");
+  expect(await page.locator(".profile-avatar").evaluate((image) => image.getAnimations().length)).toBe(0);
   // Pretext composed the name into real lines that animate individually.
   await expect(page.locator(".profile-name h1")).toHaveAttribute("data-pretext-ready", "true");
   await expect(page.locator(".profile-name h1 .pretext-line").first()).toBeVisible();

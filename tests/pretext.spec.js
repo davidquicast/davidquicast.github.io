@@ -197,3 +197,108 @@ test("hidden ancestor changes compose on reveal and preserve newly inserted sema
     await page.evaluate(() => window.portfolioPretext.snapshot().elements.some((element) => element.text.includes("Semantic project link")))
   ).toBe(false);
 });
+
+async function boundaryFont(page) {
+  await page.addStyleTag({
+    content:
+      '@font-face { font-family: Inter; font-style: normal; font-weight: 500; src: url(/assets/fonts/editorial/inter-latin-500-normal.woff2) format("woff2"); }',
+  });
+  await page.evaluate(async () => {
+    await document.fonts.load("500 15px Inter", "Private Synthetic Data Generation Open Deep Research");
+    await document.fonts.ready;
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  });
+}
+async function boundaryTitle(page, text, width) {
+  return page.evaluate(
+    ({ text, width }) => {
+      const section = document.createElement("section");
+      section.id = "boundary-scope";
+      section.style.width = `${width}px`;
+      const heading = document.createElement("h2");
+      Object.assign(heading.style, { font: "500 15px Inter", lineHeight: "21.75px", letterSpacing: "normal", margin: "0" });
+      const link = document.createElement("a");
+      link.href = "#project";
+      link.dataset.pretext = "";
+      link.id = "boundary-title";
+      link.textContent = text;
+      heading.append(link);
+      section.append(heading);
+      document.querySelector("main").append(section);
+      const before = { height: heading.getBoundingClientRect().height, width: heading.getBoundingClientRect().width };
+      window.dispatchEvent(new Event("portfolio:content-updated"));
+      return before;
+    },
+    { text, width }
+  );
+}
+
+test("fractional CSS budgets never round a narrower card up to a clipped model width", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("http://127.0.0.1:8091/");
+  await ready(page);
+  await boundaryFont(page);
+  const text = "Open Deep Research for Vulnerability Intelligence";
+  const before = await boundaryTitle(page, text, 176.65625);
+  const title = page.locator("#boundary-title");
+  await expect(title).toHaveAttribute("data-pretext-ready", "true");
+  await expect(title).toHaveAttribute("data-pretext-lines", "3");
+  const metrics = await title.evaluate((element) => {
+    const wrapper = element.querySelector(".pretext-composition");
+    return {
+      width: wrapper.getBoundingClientRect().width,
+      predictedWidth: Number(element.dataset.pretextWidth),
+      height: element.parentElement.getBoundingClientRect().height,
+    };
+  });
+  expect(metrics.width).toBeLessThanOrEqual(before.width);
+  expect(metrics.predictedWidth).toBe(metrics.width);
+  expect(metrics.height).toBe(before.height);
+  const record = await page.evaluate((text) => window.portfolioPretext.snapshot().elements.find((item) => item.text === text), text);
+  expect(record.availableWidth).toBe(176.65625);
+  await expect(page.getByRole("link", { name: text, exact: true })).toHaveAttribute("href", "#project");
+});
+
+test("native fitting fallback preserves hyphenated title height, caches checks and recovers compatible widths", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("http://127.0.0.1:8091/");
+  await ready(page);
+  await boundaryFont(page);
+  const text = "Private Synthetic Data Generation Made Easy: Out-of-the-Box with Docker, Argilla & Ollama";
+  const before = await boundaryTitle(page, text, 150);
+  const title = page.locator("#boundary-title");
+  await expect(title).toHaveAttribute("data-pretext-ready", "native");
+  await expect(title).toHaveAttribute("data-pretext-fallback", "browser-line-fit");
+  expect(await title.getAttribute("data-pretext-lines")).toBeNull();
+  expect(await title.getAttribute("data-pretext-width")).toBeNull();
+  expect(await title.locator("..").evaluate((heading) => heading.getBoundingClientRect().height)).toBe(before.height);
+  const first = await page.evaluate(() => window.portfolioPretext.snapshot());
+  const fallback = first.elements.find((item) => item.text === text);
+  expect(fallback.lines).toBeUndefined();
+  expect(fallback.error).toBeNull();
+  expect(fallback.fallbackReason).toBe("browser-line-fit");
+  expect(fallback.nativeFit.original).toBe(5);
+  await page.locator("#boundary-scope").evaluate((section) => {
+    section.style.width = "176.65625px";
+  });
+  await expect(title).toHaveAttribute("data-pretext-ready", "true");
+  const compatible = await page.evaluate(() => window.portfolioPretext.snapshot());
+  expect(compatible.preparations).toBe(first.preparations);
+  await page.locator("#boundary-scope").evaluate((section) => {
+    section.style.width = "150px";
+  });
+  await expect(title).toHaveAttribute("data-pretext-ready", "native");
+  const cached = await page.evaluate(() => window.portfolioPretext.snapshot());
+  expect(cached.nativeMeasurements).toBe(compatible.nativeMeasurements);
+  expect(cached.nativeFitCacheEntries).toBeLessThanOrEqual(384);
+  expect(await title.locator("..").evaluate((heading) => heading.getBoundingClientRect().height)).toBe(before.height);
+  await expect(page.getByRole("link", { name: text, exact: true })).toHaveAttribute("href", "#project");
+  const selected = await title.evaluate((element) => {
+    const range = document.createRange();
+    range.selectNodeContents(element);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    return window.getSelection().toString();
+  });
+  expect(selected).toBe(text);
+});
