@@ -7,7 +7,7 @@ subtitle: "" #<a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc.
 
 profile:
   align: left
-  image: prof_pic.jpg
+  image: profile/david-quispe.png
   image_circular: true # crops the image to make it circular
   open_to_work: true # shows the "Open to new roles" signal in the sidebar
   #more_info: >

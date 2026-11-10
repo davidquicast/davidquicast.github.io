@@ -99,7 +99,7 @@ test("overlay backdrop and nested gallery recover focus and the original board",
   await expect(page.locator(overlay)).not.toBeVisible();
   await expect(link).toBeFocused();
 });
-test("About fits viewport and pagination retains the entire original biography", async ({ page }) => {
+test("About keeps bounded desktop pages and native compact reading with the complete biography", async ({ page }) => {
   test.setTimeout(90000);
   for (const dimensions of [
     [1440, 900],
@@ -113,6 +113,20 @@ test("About fits viewport and pagination retains the entire original biography",
     await page.goto(new URL("/about/", base).href, { waitUntil: "networkidle" });
     const reader = page.locator("[data-about-reader]");
     await expect(reader).toHaveAttribute("data-about-ready", "true");
+    const compact = width <= 700 || height <= 520;
+    if (compact) {
+      await expect(reader).toHaveAttribute("data-about-mode", "scroll");
+      const source = reader.locator("[data-about-source]");
+      await expect(source).toBeVisible();
+      await expect(reader.locator("[data-about-view]")).toBeHidden();
+      await expect(reader.locator("[data-about-controls]")).toBeHidden();
+      expect(await source.evaluate((element) => element.scrollHeight - element.clientHeight)).toBeLessThanOrEqual(1);
+      await source.locator("p").last().scrollIntoViewIfNeeded();
+      await expect(source.locator("p").last()).toBeInViewport();
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+      continue;
+    }
+    await expect(reader).toHaveAttribute("data-about-mode", "paged");
     expect(await page.evaluate(() => document.documentElement.scrollHeight - innerHeight)).toBeLessThanOrEqual(1);
     const original = await page.locator("[data-about-source]").textContent();
     const expected = original.match(/\S+/gu);
@@ -184,66 +198,120 @@ test("mounted project reader exposes no serious or critical accessibility findin
   expect(result.violations.filter((v) => ["serious", "critical"].includes(v.impact))).toEqual([]);
 });
 
-test("About recomposes at 200 percent text while keeping rich biography links", async ({ page }) => {
-  await page.setViewportSize({ width: 320, height: 844 });
-  await page.goto(new URL("/about/", base).href, { waitUntil: "networkidle" });
-  const root = page.locator("[data-about-reader]");
-  await expect(root).toHaveAttribute("data-about-ready", "true");
-  const before = await root.locator("h1").evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
-  await page.evaluate(() => {
-    const targets = [...document.querySelectorAll("body,body *")];
-    const sizes = targets.map((el) => getComputedStyle(el).fontSize);
-    targets.forEach((el, index) => {
-      el.style.fontSize = `${parseFloat(sizes[index]) * 2}px`;
+test("compact About uses native full-text scrolling at 200 percent text with intact rich links", async ({ page }) => {
+  for (const width of [320, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto(new URL("/about/", base).href, { waitUntil: "networkidle" });
+    const root = page.locator("[data-about-reader]");
+    await expect(root).toHaveAttribute("data-about-mode", "scroll");
+    const source = root.locator("[data-about-source]");
+    const original = await source.innerHTML();
+    const before = await root.locator("h1").evaluate((element) => parseFloat(getComputedStyle(element).fontSize));
+    const expectedLinks = await source.locator("a").evaluateAll((nodes) => nodes.map((anchor) => anchor.href));
+    await page.evaluate(() => {
+      const targets = [...document.querySelectorAll("body,body *")];
+      const sizes = targets.map((element) => getComputedStyle(element).fontSize);
+      targets.forEach((element, index) => (element.style.fontSize = `${parseFloat(sizes[index]) * 2}px`));
     });
-  });
-  await expect.poll(() => root.locator("h1").evaluate((el) => parseFloat(getComputedStyle(el).fontSize))).toBe(before * 2);
-  await page.waitForTimeout(300);
-  expect(await page.evaluate(() => document.documentElement.scrollHeight - innerHeight)).toBeLessThanOrEqual(1);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
-  const expectedLinks = await page.locator("[data-about-source] a").evaluateAll((nodes) => nodes.map((a) => a.href));
-  const actualLinks = new Set();
-  const count = Number(await root.getAttribute("data-about-page-count"));
-  expect(count).toBeGreaterThan(1);
-  for (let n = 0; n < count; n++) {
-    const view = page.locator("[data-about-view]");
-    expect(await view.evaluate((el) => el.scrollHeight - el.clientHeight)).toBeLessThanOrEqual(1);
-    for (const href of await view.locator("a").evaluateAll((nodes) => nodes.map((a) => a.href))) actualLinks.add(href);
-    if (n < count - 1) await page.locator("[data-about-next]").click();
+    await expect.poll(() => root.locator("h1").evaluate((element) => parseFloat(getComputedStyle(element).fontSize))).toBe(before * 2);
+    await expect(root.locator("[data-about-controls]")).toBeHidden();
+    expect(await source.locator("a").evaluateAll((nodes) => nodes.map((anchor) => anchor.href))).toEqual(expectedLinks);
+    // Inline font declarations are the only changes; no paging clone replaces the original rich DOM.
+    expect(
+      await source.evaluate((element) => {
+        const clone = element.cloneNode(true);
+        clone.querySelectorAll("[style]").forEach((node) => node.removeAttribute("style"));
+        return clone.innerHTML;
+      })
+    ).toBe(original);
+    expect(await source.evaluate((element) => element.scrollHeight - element.clientHeight)).toBeLessThanOrEqual(1);
+    expect(await page.evaluate(() => document.documentElement.scrollHeight - innerHeight)).toBeGreaterThan(100);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+    const download = root.locator(".about-reader-actions a[download]");
+    await download.focus();
+    await expect(download).toBeFocused();
+    await expect(download).toBeInViewport();
+    await expect(download).toHaveAttribute("href", "/assets/pdf/en-us/cv.pdf");
   }
-  expect([...actualLinks].sort()).toEqual([...new Set(expectedLinks)].sort());
 });
 
-test("short landscape About retains readable enlarged lines in both normal and overlay views", async ({ page }) => {
+test("short landscape About scrolls the original biography in direct and overlay views", async ({ page }) => {
   test.setTimeout(60000);
   for (const overlayMode of [false, true]) {
-    await page.setViewportSize({ width: 568, height: 320 });
+    await page.setViewportSize({ width: 844, height: 390 });
     await page.goto(new URL(overlayMode ? "/" : "/about/", base).href, { waitUntil: "networkidle" });
     if (overlayMode) await page.locator('.main-navigation a[href="/about/"]').click();
-    await expect(page.locator("[data-about-reader]")).toHaveAttribute("data-about-ready", "true");
+    const reader = page.locator("[data-about-reader]");
+    await expect(reader).toHaveAttribute("data-about-ready", "true");
+    await expect(reader).toHaveAttribute("data-about-mode", "scroll");
     await page.evaluate(() => {
       const nodes = [...document.querySelectorAll("body,body *")],
-        sizes = nodes.map((el) => getComputedStyle(el).fontSize);
-      nodes.forEach((el, index) => (el.style.fontSize = parseFloat(sizes[index]) * 2 + "px"));
+        sizes = nodes.map((element) => getComputedStyle(element).fontSize);
+      nodes.forEach((element, index) => (element.style.fontSize = parseFloat(sizes[index]) * 2 + "px"));
     });
-    await page.waitForTimeout(300);
-    const view = page.locator("[data-about-view]");
-    const measure = await view.evaluate((el) => ({
-      height: el.clientHeight,
-      line: parseFloat(getComputedStyle(el).lineHeight),
-      overflow: el.scrollHeight - el.clientHeight,
-    }));
-    expect(measure.height).toBeGreaterThanOrEqual(measure.line);
-    expect(measure.overflow).toBeLessThanOrEqual(1);
+    await expect(reader.locator("[data-about-source]")).toBeVisible();
+    await expect(reader.locator("[data-about-controls]")).toBeHidden();
+    const download = reader.locator(".about-reader-actions a[download]");
+    await download.focus();
+    await expect(download).toBeInViewport();
     if (overlayMode) {
       expect(await page.evaluate(() => getComputedStyle(document.documentElement).overflowY)).toBe("hidden");
-      expect(await page.locator("[data-overlay-body]").evaluate((el) => el.scrollHeight - el.clientHeight)).toBeLessThanOrEqual(1);
-    } else expect(await page.evaluate(() => document.documentElement.scrollHeight - innerHeight)).toBeLessThanOrEqual(1);
+      expect(await page.locator("[data-overlay-body]").evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+      await page.keyboard.press("Escape");
+      await expect(page.locator(overlay)).not.toBeVisible();
+    } else expect(await page.evaluate(() => scrollY)).toBeGreaterThan(0);
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
-    await expect(page.locator("[data-about-next]")).toBeEnabled();
-    await page.locator("[data-about-next]").click();
-    await expect(page.locator("[data-about-reader]")).toHaveAttribute("data-about-current-page", "2");
   }
+});
+
+test("phone About overlays scroll natively by keyboard and retain CV actions and history", async ({ page }) => {
+  test.setTimeout(60000);
+  for (const width of [320, 390]) {
+    await home(page, width, 568);
+    const about = page.locator('.main-navigation a[href="/about/"]');
+    await about.focus();
+    await page.keyboard.press("Enter");
+    const reader = page.locator("[data-about-reader]");
+    await expect(reader).toHaveAttribute("data-about-mode", "scroll");
+    await expect(reader.locator("[data-about-controls]")).toBeHidden();
+    await reader.focus();
+    await page.keyboard.press("PageDown");
+    await expect.poll(() => page.locator("[data-overlay-body]").evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+    const lastParagraph = reader.locator("[data-about-source] p").last();
+    await lastParagraph.scrollIntoViewIfNeeded();
+    await expect(lastParagraph).toBeInViewport();
+    const cv = reader.locator(".about-reader-actions a[data-content-overlay]");
+    await cv.focus();
+    await expect(cv).toBeInViewport();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/\/resume\/$/);
+    await expect(page.locator("[data-overlay-body] .resume-preview-image").first()).toBeVisible();
+    await page.goBack();
+    await expect(reader).toHaveAttribute("data-about-mode", "scroll");
+    await page.keyboard.press("Escape");
+    await expect(page.locator(overlay)).not.toBeVisible();
+    await expect(about).toBeFocused();
+  }
+});
+
+test("About changes between desktop paging and compact native reading without losing source text", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(new URL("/about/", base).href, { waitUntil: "networkidle" });
+  const reader = page.locator("[data-about-reader]");
+  await expect(reader).toHaveAttribute("data-about-mode", "scroll");
+  const source = reader.locator("[data-about-source]");
+  const original = await source.innerHTML();
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await expect(reader).toHaveAttribute("data-about-mode", "paged");
+  await expect(source).toBeHidden();
+  await expect(reader.locator("[data-about-view]")).toBeVisible();
+  await expect(reader.locator("[data-about-view]")).not.toBeEmpty();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(reader).toHaveAttribute("data-about-mode", "scroll");
+  await expect(source).toBeVisible();
+  expect(await source.innerHTML()).toBe(original);
+  await expect(reader.locator("[data-about-view]")).toBeEmpty();
+  await expect(reader.locator("[data-about-controls]")).toBeHidden();
 });
 
 async function unchangedBackground(page) {

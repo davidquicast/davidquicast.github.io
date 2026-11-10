@@ -7,8 +7,8 @@ subtitle: <a href='#'>Afiliações</a>. Endereço. Contatos. Lema. Etc.
 
 profile:
   align: right
-  image: prof_pic.jpg
-  image_circular: false # crops the image to make it circular
+  image: profile/david-quispe.png
+  image_circular: true # crops the image to make it circular
   more_info: >
     <p>555 seu telefone do trabalho</p>
     <p>123 seu endereço</p>

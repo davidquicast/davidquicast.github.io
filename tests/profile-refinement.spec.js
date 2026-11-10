@@ -13,7 +13,7 @@ async function visit(page, suffix = "") {
 const visible = "[data-feed-item][data-feed-visible=true]";
 test("identity, search and category labels each have one visible home location", async ({ page }) => {
   await visit(page);
-  await expect(page.locator("img[src*='prof_pic']")).toHaveCount(1);
+  await expect(page.locator("img.profile-avatar")).toHaveCount(1);
   await expect(page.locator(".site-header img, .profile-handle, .profile-about-actions")).toHaveCount(0);
   await expect(page.locator("[data-search-open]")).toHaveCount(0);
   await expect(page.locator("input[type=search]:visible")).toHaveCount(1);
@@ -28,7 +28,7 @@ test("identity, search and category labels each have one visible home location",
   await expect(page.locator("[data-overlay-title]")).toHaveCSS("clip", "rect(0px, 0px, 0px, 0px)");
   await expect(page.getByRole("dialog", { name: "David Quispe", exact: true })).toBeVisible();
   await expect(page.locator("[data-overlay-body] .section-label")).toHaveCount(0);
-  await expect(page.locator("img[src*='prof_pic']")).toHaveCount(1);
+  await expect(page.locator("img.profile-avatar")).toHaveCount(1);
 });
 test("original ownership groups combine with query and ordering without replacing the document", async ({ page }) => {
   await visit(page);

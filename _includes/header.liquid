@@ -40,8 +40,12 @@
         </button>
       {%- endif %}
       {% if site.enable_darkmode -%}
-        <button class="theme-toggle header-tool" type="button" aria-label="{{ 'theme.to_dark' | ui_label }}" hidden>
-          {% include icon.liquid name='theme' %}
+        <button class="theme-toggle header-tool theme-switch" type="button" aria-label="{{ 'theme.to_dark' | ui_label }}" hidden>
+          <span class="theme-switch-track" aria-hidden="true">
+            <span class="theme-switch-thumb"></span>
+            <span class="theme-switch-icon theme-switch-sun">{% include icon.liquid name='sun' %}</span>
+            <span class="theme-switch-icon theme-switch-moon">{% include icon.liquid name='theme' %}</span>
+          </span>
         </button>
       {%- endif %}
       {% include language-switcher.liquid %}

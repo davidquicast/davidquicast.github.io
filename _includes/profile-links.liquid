@@ -1,23 +1,56 @@
-<nav class="profile-link-list{% if include.compact %} profile-social-links{% endif %}" aria-label="{{ 'navigation.profile' | ui_label }}">
-  {% for profile in site.data.profile_links %}
-    {% unless profile.group == 'research' %}
-      {% include profile-link.liquid profile=profile %}
-    {% endunless %}
-  {% endfor %}
-  {% if include.resume %}
-    <div class="profile-resources">
-      <a href="{{ '/resume/' | relative_url }}" data-content-overlay>
-        {%- include icon.liquid name='resume' -%}
-        {{- 'navigation.cv' | ui_label: 'CV' -}}
-      </a>
-    </div>
-  {% endif %}
-</nav>
-{% assign research_profiles = site.data.profile_links | where: 'group', 'research' %}
-{% if research_profiles.size > 0 %}
-  <nav class="profile-link-list profile-research-links" aria-label="{{ 'labels.research_profiles' | ui_label: 'Research profiles' }}">
-    {% for profile in research_profiles %}
+{% assign connections = site.data.profile_links %}
+{% assign connection_count = connections.size %}
+{% assign initial_count = connection_count %}
+{% if connection_count > 6 %}{% assign initial_count = 5 %}{% endif %}
+<nav
+  class="profile-link-list{% if include.compact %} profile-social-links{% endif %} profile-connections-list"
+  aria-label="{{ 'navigation.profile' | ui_label }}"
+  data-profile-links
+  data-link-count="{{ connection_count }}"
+>
+  <div class="profile-links-primary" data-profile-primary>
+    {% for profile in connections limit: initial_count %}
       {% include profile-link.liquid profile=profile %}
     {% endfor %}
-  </nav>
-{% endif %}
+  </div>
+  {% if connection_count > 6 %}
+    <details class="profile-links-overflow" data-profile-overflow>
+      <summary>
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <circle cx="4" cy="10" r="1.2"/><circle cx="10" cy="10" r="1.2"/><circle cx="16" cy="10" r="1.2"/>
+        </svg>
+        <span data-profile-toggle-label>{{ 'profile.more_links' | ui_label: 'More links' }}</span>
+        <span class="profile-links-count">{{ connection_count | minus: initial_count }}</span>
+        <svg
+          class="profile-links-chevron"
+          width="12"
+          height="12"
+          viewBox="0 0 20 20"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          aria-hidden="true"
+        >
+          <path d="m6 8 4 4 4-4"/>
+        </svg>
+      </summary>
+      <div class="profile-links-extra" data-profile-extra>
+        {% assign remaining = connections | slice: initial_count, connection_count %}
+        {% for profile in remaining %}
+          {% if profile.group != 'research' and profile.id != 'rss' %}{% include profile-link.liquid profile=profile %}{% endif %}
+        {% endfor %}
+        {% assign research_profiles = remaining | where: 'group', 'research' %}
+        {% if research_profiles.size > 0 %}
+          <div class="profile-research-links" role="group" aria-label="{{ 'labels.research_profiles' | ui_label: 'Research profiles' }}">
+            {% for profile in research_profiles -%}
+              {%- include profile-link.liquid profile=profile -%}
+            {%- endfor %}
+          </div>
+        {% endif %}
+        {% for profile in remaining %}
+          {% if profile.id == 'rss' %}{% include profile-link.liquid profile=profile %}{% endif %}
+        {% endfor %}
+      </div>
+    </details>
+  {% endif %}
+</nav>

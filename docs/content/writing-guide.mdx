@@ -1,0 +1,303 @@
+---
+title: Blog — guía de escritura académico-editorial
+description: Instrucciones operativas para escribir posts del blog personal con rigor académico real. Incluye patrones de IA a evitar y reglas de citación.
+---
+
+Esta guía es **vinculante** para cualquier post académico o editorial de largo formato publicado en `_posts/en-us/`. Para posts introductorios, la guía es referencia recomendada pero no obligatoria.
+
+Lee esto antes de redactar una sola línea. Si la pieza no puede cumplir estos criterios, no se publica como tier académico.
+
+---
+
+## Principios
+
+1. **Investigación real, no fabricación.** Todo claim no trivial debe estar respaldado por una fuente verificable. No inventar autores, papers, DOI ni enlaces. Si no puedes verificar una fuente, no la uses.
+2. **Densidad sin padding.** Cada párrafo debe avanzar el argumento. Eliminar oraciones que sólo introducen lo que vas a decir o resumen lo que acabas de decir.
+3. **Conexión con Personaxis sin invasión.** Puedes referenciar Personaxis, `persona.md`, o decisiones de diseño del producto cuando el argumento lo pida. **No documentes código del CLI ni campos exactos del spec en el blog**: ambos están en cambio continuo y el contenido se vuelve stale. Trata la spec como inspiración conceptual.
+4. **Sin claims metafísicas no respaldadas.** Nunca afirmar que el agente "tiene conciencia", "siente", "experimenta". Usar siempre framing funcional: "estados funcionales", "monitoreo arquitectónico", "patrones de comportamiento".
+5. **Evita los tells de IA generativa.** Ver [sección dedicada](#patrones-de-ia-a-evitar) abajo. Esta es la diferencia entre un post que se siente humano y uno que el lector descarta a la tercera oración.
+
+---
+
+## Estructura canónica de un post académico
+
+```
+1. Apertura provocadora (1-2 párrafos)
+   ↳ Un problema concreto y reconocible para el lector.
+   ↳ Una afirmación que desafía la intuición común.
+
+2. Tesis explícita (1 párrafo)
+   ↳ Qué argumenta el post y por qué importa.
+
+3. Fundamentación teórica (3-5 secciones)
+   ↳ Las fuentes académicas relevantes.
+   ↳ Cada teoría introducida con autor + año + claim central.
+   ↳ Citación numérica al final de cada claim derivado.
+
+4. Aplicación al dominio de agentes IA
+   ↳ Cómo la teoría se traduce en arquitectura.
+   ↳ Referencia a las 10 capas de Personaxis sin profundizar en código.
+
+5. Implicación práctica (1-2 secciones)
+   ↳ Qué pasa si se ignora.
+   ↳ Qué arquitectura emerge cuando se toma en serio.
+
+6. Conclusión (1-2 párrafos)
+   ↳ Recapitular sin repetir.
+   ↳ Cerrar con una frase que sostenga la tesis del inicio.
+
+7. Referencias
+   ↳ Numéricas, con enlaces verificables.
+```
+
+Longitud típica: 2.500 a 3.500 palabras. Más corto se siente superficial; más largo cansa.
+
+---
+
+## Frontmatter requerido para esta repo
+
+```yaml
+---
+layout: post
+title: "Título descriptivo y específico (no clickbait)"
+date: 2026-MM-DD 09:00:00 -0500
+description: "Una oración que captura la tesis. Entre 140 y 220 caracteres."
+tags: [tag-1, tag-2, tag-3]
+categories: [notes]
+featured: false
+image: assets/img/blog/YYYY-MM-DD-slug_1.png
+---
+```
+
+Reglas:
+
+- `title`: específico y argumentativo. Bien: _"Personhood Without Consciousness: The Case for Functional Identity in AI Agents"_. Mal: _"Why Persona Design Matters"_.
+- `date`: ISO `YYYY-MM-DD`. Posterior al último post publicado.
+- `image`: debe apuntar a un PNG real en `assets/img/blog/` y seguir `docs/blogs/image-generation-rules.md`.
+- `description`: la apertura provocadora condensada. Visible en cards de listado.
+- `tags`: 3-5 tags. Mezclar disciplina (`philosophy-of-mind`, `cognitive-science`) y dominio (`ai-agents`, `persona-design`).
+
+---
+
+## Sistema de citación
+
+### En el cuerpo del texto
+
+```mdx
+La identidad personal no puede reducirse únicamente a continuidad factual,
+porque también depende de patrones narrativos y disposiciones afectivas [[1]](#ref-1).
+```
+
+Cuando una oración usa varias fuentes, encadenar:
+
+```mdx
+Tulving [[3]](#ref-3) introdujo la distinción episódica-semántica;
+Conway [[5]](#ref-5) extendió esto al sistema autobiográfico.
+```
+
+### Sección de referencias
+
+```mdx
+## References
+
+<a id="ref-1"></a>
+**[1]** Locke, J. (1975). *An Essay Concerning Human Understanding*.
+Oxford: Clarendon Press. (Original work published 1689.)
+[Project Gutenberg edition](https://www.gutenberg.org/ebooks/10615)
+
+<a id="ref-2"></a>
+**[2]** Parfit, D. (1984). *Reasons and Persons*. Oxford: Oxford University Press.
+[DOI: 10.1093/019824908X.001.0001](https://doi.org/10.1093/019824908X.001.0001)
+```
+
+### Reglas de enlaces verificables
+
+Orden de preferencia:
+
+1. **DOI canónico** (`https://doi.org/...`).
+2. **Página del editor** (MIT Press, Oxford Academic, Cambridge, Springer).
+3. **Archivo abierto verificable** (Frontiers, PMC, PhilPapers, repositorios institucionales).
+4. **Project Gutenberg / SEP** para clásicos de dominio público.
+5. **WorldCat** como último recurso para libros antiguos sin presencia digital del editor.
+
+Nunca enlazar a:
+
+- Sci-Hub ni copias piratas.
+- Resúmenes de blog secundarios como fuente primaria.
+- Wikipedia como cita académica (puede usarse para definiciones en `<KeyConcept>`, no como fuente).
+
+---
+
+## Fuentes recomendadas por dominio
+
+Lista pre-verificada. Toda fuente nueva debe verificarse contra DOI o página del editor antes de citarse.
+
+### Filosofía de la mente / identidad personal
+
+| Autor (año) | Obra | Enlace verificable |
+| --- | --- | --- |
+| Locke (1689) | *An Essay Concerning Human Understanding* | [Project Gutenberg](https://www.gutenberg.org/ebooks/10615) |
+| Parfit (1984) | *Reasons and Persons* | [DOI](https://doi.org/10.1093/019824908X.001.0001) |
+| Strawson (1959) | *Individuals* | [PhilPapers](https://philpapers.org/rec/STRINS) |
+| Frankfurt (1971) | Freedom of the Will and the Concept of a Person | [DOI](https://doi.org/10.2307/2024717) |
+| Shoemaker (1984) | Personal Identity: A Materialist's Account | [PhilPapers](https://philpapers.org/rec/SHOPIA-3) |
+| Metzinger (2003) | *Being No One* | [MIT Press](https://mitpress.mit.edu/9780262633086/being-no-one/) |
+
+### Affective computing / emoción
+
+| Autor (año) | Obra | Enlace verificable |
+| --- | --- | --- |
+| Russell (1980) | A circumplex model of affect | [DOI](https://doi.org/10.1037/h0077714) |
+| Mehrabian & Russell (1974) | *An Approach to Environmental Psychology* (PAD) | [WorldCat](https://www.worldcat.org/title/805106) |
+| Lazarus (1991) | *Emotion and Adaptation* | [Oxford Academic](https://global.oup.com/academic/product/emotion-and-adaptation-9780195092660) |
+| Ortony, Clore & Collins (1988) | *The Cognitive Structure of Emotions* | [DOI](https://doi.org/10.1017/CBO9780511571299) |
+| Scherer (2001) | Appraisal as multilevel sequential checking | Oxford Handbook chapter |
+| Picard (1997) | *Affective Computing* | [MIT Press](https://mitpress.mit.edu/9780262661157/affective-computing/) |
+
+### Metacognición / autorregulación
+
+| Autor (año) | Obra | Enlace verificable |
+| --- | --- | --- |
+| Flavell (1979) | Metacognition and cognitive monitoring | [DOI](https://doi.org/10.1037/0003-066X.34.10.906) |
+| Fleming & Lau (2014) | How to measure metacognition | [DOI (open access)](https://doi.org/10.3389/fnhum.2014.00443) |
+| Higgins (1987) | Self-discrepancy theory | [DOI](https://doi.org/10.1037/0033-295X.94.3.319) |
+| Flanagan (1991) | Multiple roles of self-regulation | Standard cognitive science reference |
+
+### Memoria / identidad narrativa
+
+| Autor (año) | Obra | Enlace verificable |
+| --- | --- | --- |
+| Tulving (1972) | Episodic and semantic memory | Capítulo en *Organization of Memory* |
+| Tulving (1985) | Memory and consciousness | [DOI](https://doi.org/10.1037/h0080017) |
+| Conway (2005) | Memory and the self | [DOI](https://doi.org/10.1016/j.jml.2005.08.005) |
+
+### Personalidad / valores / motivación
+
+| Autor (año) | Obra | Enlace verificable |
+| --- | --- | --- |
+| McCrae & Costa (1987) | Validation of the five-factor model | [DOI](https://doi.org/10.1037/0022-3514.52.1.81) |
+| Lee & Ashton (2004) | HEXACO Personality Inventory | [DOI](https://doi.org/10.1207/s15327906mbr3902_8) |
+| Schwartz (1992) | Universals in values | [DOI](https://doi.org/10.1016/S0065-2601(08)60281-6) |
+| Deci & Ryan (2000) | Self-determination theory | [DOI](https://doi.org/10.1207/S15327965PLI1104_01) |
+
+### AI alignment / agency
+
+| Autor (año) | Obra | Enlace verificable |
+| --- | --- | --- |
+| Gabriel (2020) | AI, values, and alignment | [DOI (open access)](https://doi.org/10.1007/s11023-020-09539-2) |
+| Russell, S. (2019) | *Human Compatible* | [Penguin](https://www.penguinrandomhouse.com/books/566677/) |
+| Bratman (1987) | *Intention, Plans, and Practical Reason* | Harvard University Press |
+| Bratman (1999) | *Faces of Intention* | [Cambridge](https://www.cambridge.org/core/books/faces-of-intention/) |
+
+### Historia y crítica de IA conversacional
+
+| Autor (año) | Obra | Enlace verificable |
+| --- | --- | --- |
+| Weizenbaum (1966) | ELIZA | [DOI](https://doi.org/10.1145/365153.365168) |
+| Nass & Moon (2000) | Machines and mindlessness | [DOI](https://doi.org/10.1111/0022-4537.00153) |
+| Bender et al. (2021) | On the dangers of stochastic parrots | [DOI](https://doi.org/10.1145/3442188.3445922) |
+
+---
+
+## Uso de componentes
+
+Esta repo usa posts Jekyll Markdown (`.md`) en `_posts/en-us/`. No asumir soporte MDX ni importar componentes React/MDX en un post salvo que el sitio se haya migrado explícitamente.
+
+Regla de oro: **un elemento visual sólo se usa si aporta valor pedagógico real**. No decoración. Por post académico:
+
+- 1 imagen hero generada según `docs/blogs/`.
+- 1 cita textual breve de un autor citado, si aporta al argumento.
+- 1-2 definiciones breves en prosa para términos que el lector necesita anclar.
+
+Más es ruido. Si una sección no necesita visual, no la fuerces.
+
+---
+
+## Patrones de IA a evitar
+
+Aplica esta lista local como regla editorial: palabras prohibidas (delve, leverage, robust, tapestry, realm, landscape, etc.), patrones sintácticos prohibidos (em dash, "not X, but Y", triadas, aperturas cliché, meta-commentary), capitalización inflada y cierres tipo CTA.
+
+### Adiciones específicas para el tier académico
+
+Los siguientes patrones son particulares de prosa argumentativa larga y no están explícitamente en `ai-tells.md`:
+
+| Patrón | Por qué falla en blog académico | Sustituir por |
+| --- | --- | --- |
+| **Aposición en cada nombre propio** ("Frankfurt, the influential philosopher, argued...") | Cliché de divulgación; trata al lector como ignorante | "Frankfurt argued..." y dejar que la cita lo identifique |
+| **Adverbios de intensidad** (truly, really, incredibly, remarkably, fundamentally) | Reemplazo de argumentación por énfasis verbal | Eliminar; si la afirmación necesita el adverbio, falta evidencia |
+| **Hedge + claim** ("It could be argued that personhood is constitutive of...") | Postergar el compromiso debilita el argumento | Afirmación directa o cita explícita del autor que hedge |
+| **Rule of three en oración corta** ("The agent thinks, feels, and responds") | Patrón retórico sobreajustado del RLHF | Listas de 2, 4 o prosa |
+| **Restatement de la tesis en la conclusión** | Asume que el lector no recordó | Sostener la tesis con una frase nueva que la implica |
+| **"As we've seen..." / "As discussed above..."** | Meta-referencia al texto mismo | Pasar al siguiente argumento sin anunciar la transición |
+| **"In this post, I will argue..."** | Anuncio de intenciones; mata el ritmo | Empezar el argumento directamente |
+
+### Test del lector escéptico
+
+Antes de publicar, lee el post completo preguntándote: **¿qué fracción de las oraciones podría aparecer idéntica en cualquier otro blog tech?** Si la respuesta es más del 20%, el post carece de voz propia y necesita reescritura.
+
+### Pre-ship grep adicional para blog académico
+
+Sumar al grep documentado en `marketing/ai-tells.md`:
+
+```
+truly
+incredibly
+remarkably
+fundamentally
+arguably
+it could be argued
+as we've seen
+as discussed
+in this post
+as mentioned
+in this article
+let me argue
+let us examine
+```
+
+Si cualquiera de estos aparece, reescribir antes de mergear.
+
+---
+
+## Reglas de lenguaje general
+
+- **Inglés** como locale canónico (`.en.mdx`).
+- **No primera persona del autor** ("I argue", "I think") salvo cuando es genuinamente personal. La voz argumentativa directa es más fuerte: "The argument is", "On this view".
+- **No marketing.** Prohibido: _"revolutionary", "game-changing", "powerful", "robust", "best-in-class"_. Si una afirmación necesita un adjetivo así, probablemente no está demostrada.
+- **No teaser endings.** Prohibido cerrar con "_to learn more, browse the registry_". Si el lector llegó al final, mereció un cierre, no un CTA.
+
+---
+
+## Checklist antes de publicar
+
+```
+[ ] Frontmatter completo y schema válido (date posterior al último post).
+[ ] Tesis explícita en los primeros 3 párrafos.
+[ ] Todas las fuentes verificadas contra DOI / publisher / archivo abierto.
+[ ] Citación numérica con anclas internas (`[[N]](#ref-N)`).
+[ ] Sección References con enlaces clicables a cada fuente.
+[ ] Cero em dashes (—).
+[ ] Cero patrones "It's not X, it's Y" / "Not X. Y."
+[ ] Cero palabras de la lista E (delve, tapestry, realm, robust, etc.).
+[ ] Cero aperturas/cierres de la lista B / F.
+[ ] Headers solo donde cambia el argumento.
+[ ] Sin claims metafísicas ("sentir", "conciencia subjetiva").
+[ ] Sin código del CLI ni campos exactos del spec.
+[ ] 1 visualización conceptual + Pullquote + KeyConcept si aportan valor.
+[ ] Validación estática de frontmatter y rutas de imagen.
+[ ] No correr Docker desde Codex; el usuario valida el servidor local.
+```
+
+---
+
+## Anti-patrones específicos del proyecto
+
+| Anti-patrón | Por qué falla |
+| --- | --- |
+| Citar a un autor sin DOI ni enlace verificable | El lector no puede comprobar; erosiona confianza |
+| Usar `font-mono` para párrafos largos | Viola DESIGN.md §10.2; ilegible |
+| Hacer marketing del producto al final | El blog ya legitima el producto por su rigor; el CTA sobra |
+| Documentar código del CLI o spec | Se vuelve stale en semanas |
+| Listar 10 conceptos sin argumento que los hile | Listicles son otro género, no académico |
+| Pullquote con frase del autor del post | Es un altavoz, no una autoridad citable |
+| Reusar la misma visualización en dos posts | Cada `<Visual />` es para un argumento específico |

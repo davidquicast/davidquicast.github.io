@@ -1,5 +1,6 @@
 <a
   class="profile-social-link"
+  data-profile-group="{{ include.profile.group | escape }}"
   data-profile-id="{{ include.profile.id | escape }}"
   href="{{ include.profile.url | escape }}"
   {% unless include.profile.url contains 'mailto:' %}

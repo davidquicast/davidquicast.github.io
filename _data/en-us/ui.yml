@@ -192,6 +192,8 @@ types:
   action: Action
   research: Research
 profile:
+  more_links: More links
+  fewer_links: Fewer links
   role: Systems engineer
   availability: Open to new roles
   focus: Cybersecurity & AI safety
@@ -259,7 +261,7 @@ feed:
   newest: Newest
   oldest: Oldest
   search: Search this profile
-  search_placeholder: Search…
+  search_placeholder: Search work…
   items: items
   count_singular: "{count} item"
   count_plural: "{count} items"
