@@ -1,6 +1,7 @@
 const { test, expect } = require("@playwright/test");
 const base = process.env.PORTFOLIO_URL;
 const activity = require("../_data/project_activity.json");
+const contentCounts = require("./real-content-counts.cjs");
 test.skip(!base, "Set PORTFOLIO_URL to the Docker production preview.");
 async function ready(page, suffix = "") {
   await page.goto(base + "/" + suffix, { waitUntil: "networkidle" });
@@ -16,7 +17,7 @@ test("paper and blog cards show full verified dates while month-only sources sta
   await expect(include.locator(".wall-meta time")).toHaveAttribute("datetime", "2026-10");
   await expect(include.locator(".wall-meta time")).toHaveText("October 2026");
   await page.locator("[data-feed-view=blogs]").click();
-  await expect(page.locator(".writing-card:visible .wall-meta time")).toHaveCount(6);
+  await expect(page.locator(".writing-card:visible .wall-meta time")).toHaveCount(contentCounts.writing);
   for (const date of await page.locator(".writing-card:visible .wall-meta time").all()) {
     expect(await date.innerText()).toMatch(/\w+ \d{1,2}, \d{4}/);
   }

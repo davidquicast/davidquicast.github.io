@@ -286,7 +286,7 @@ begin
       full_profile = render_variant(fixture_site, 'page', {}, profile_source)
       assert(full_profile.at_css('[data-about-source]').text.include?('Real owner biography fixture.'), 'About reader lost the actual owner content')
       assert(full_profile.at_css('.about-reader-actions a[download]')['href'] == '/fixture-base/assets/pdf/en-us/cv.pdf', 'About reader lost native CV download')
-      assert(full_profile.css('.main-navigation > a').map { |link| link.text.strip } == %w[Work About], 'About page changed universal navigation')
+      assert(full_profile.css('.main-navigation > a').map { |link| link.text.strip } == %w[Work Talks About], 'About page changed universal navigation')
       assert(full_profile.text.include?('Full profile extra detail.'), 'full About page lost profile more_info')
       owner.data['social'] = false
       private_profile = render_variant(fixture_site, 'page', {}, profile_source)
@@ -294,11 +294,11 @@ begin
     ensure
       fixture_site.pages.delete(owner)
     end
-    assert(doc.css('.main-navigation > a').map { |link| link.text.strip } == %w[Work About], 'home changed universal navigation')
+    assert(doc.css('.main-navigation > a').map { |link| link.text.strip } == %w[Work Talks About], 'home changed universal navigation')
     project_document = fixture_site.collections['projects'].docs.find { |item| item.data['page_id'] == 'fixture-project' }
     assert(project_document && project_document.data['destinations'].length == 2, 'project destination generator did not attach real source links')
     project_page = render_variant(fixture_site, 'project', project_document.data.merge('layout' => 'project', 'destinations' => project_document.data['destinations']), '<p>Real project body fixture.</p>')
-    assert(project_page.css('.main-navigation > a').map { |link| link.text.strip } == %w[Work About], 'project detail changed universal navigation')
+    assert(project_page.css('.main-navigation > a').map { |link| link.text.strip } == %w[Work Talks About], 'project detail changed universal navigation')
     assert(project_page.css('.project-destinations-detail a').map { |link| link['href'] } == project_document.data['destinations'].map { |item| item['url'] }, 'detail actions lost or invented authored project destinations')
     assert(project_page.css('.project-destinations-detail a').map { |link| link.text.strip } == ['GitHub repository', 'Hugging Face dataset'], 'detail actions lost contextual resource labels')
     assert(doc.at_css('body')['data-image-zoom'] == 'true', 'enabled zoom did not reach native controller')

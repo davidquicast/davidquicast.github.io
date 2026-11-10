@@ -228,7 +228,7 @@ test.describe("live progressive enhancement", () => {
     await page.goto(base);
     const nav = page.locator("#main-navigation");
     await expect(nav).toBeVisible();
-    await expect(nav.locator("a")).toHaveText(["Work", "About"]);
+    await expect(nav.locator("a")).toHaveText(["Work", "Talks", "About"]);
     await expect(page.locator(".menu-toggle")).toHaveCount(0);
     const about = nav.getByRole("link", { name: "About", exact: true });
     await about.focus();

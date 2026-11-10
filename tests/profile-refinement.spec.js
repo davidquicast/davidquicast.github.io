@@ -99,7 +99,7 @@ test("ownership deep links survive reload, back/forward and the contextual conte
   expect(new URL(page.url()).searchParams.get("utm_source")).toBe("test");
   await page.locator("[data-feed-view=blogs]").click();
   await settled(page);
-  await expect(page.locator(visible)).toHaveCount(6);
+  await expect(page.locator(visible)).toHaveCount(contentCounts.writing);
   await expect(page.locator("[data-project-filters]")).toBeHidden();
   expect(new URL(page.url()).searchParams.has("project")).toBe(false);
 });

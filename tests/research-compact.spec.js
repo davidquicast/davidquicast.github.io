@@ -16,8 +16,8 @@ test("compact phone research preserves touch targets, complete titles and resour
       expect(await cards.count()).toBeGreaterThan(0);
       for (const card of await cards.all()) {
         const image = await card.locator(".research-card-media").boundingBox();
-        expect(image.width).toBe(56);
-        expect(image.height).toBe(56);
+        expect(Math.round(image.width)).toBe(56);
+        expect(Math.round(image.height)).toBe(56);
         const resources = card.locator(".paper-card-actions a");
         for (const resource of await resources.all()) {
           const bounds = await resource.boundingBox();

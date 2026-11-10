@@ -160,7 +160,7 @@ test("native detail returns and universal Work/About navigation preserve catalog
   const projectHref = await page.locator('[data-feed-kind="project"][data-feed-visible="true"] .project-open').first().getAttribute("href");
   await page.goto(new URL(projectHref, base).href);
   const nav = page.locator("#main-navigation");
-  await expect(nav.locator("a")).toHaveText(["Work", "About"]);
+  await expect(nav.locator("a")).toHaveText(["Work", "Talks", "About"]);
   await expect(nav.locator("a").first()).toHaveAttribute("href", "/");
   await expect(nav.locator("a").first()).toHaveAttribute("aria-current", "true"); // section, not this page
   await expect(page.locator(".project-detail > .back-link")).toHaveAttribute("href", "/?view=projects");
@@ -170,7 +170,7 @@ test("native detail returns and universal Work/About navigation preserve catalog
   const articleHref = await page.locator('[data-feed-kind="writing"][data-feed-visible="true"] h2 a').first().getAttribute("href");
   await page.goto(new URL(articleHref, base).href);
   await expect(page.locator(".editorial-post")).toBeVisible();
-  await expect(nav.locator("a")).toHaveText(["Work", "About"]);
+  await expect(nav.locator("a")).toHaveText(["Work", "Talks", "About"]);
   await expect(page.locator(".editorial-post > .back-link")).toHaveAttribute("href", "/?view=writing");
   await page.locator(".editorial-post > .back-link").click();
   await expect(page.locator("[data-profile-feed]")).toHaveAttribute("data-feed-current-view", "blogs");
@@ -185,7 +185,7 @@ test("native detail returns and universal Work/About navigation preserve catalog
   await expect(page.locator("[data-profile-feed]")).toHaveAttribute("data-feed-current-view", "research");
   await page.goto(new URL("/resume/", base).href);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Resume");
-  await expect(nav.locator("a")).toHaveText(["Work", "About"]);
+  await expect(nav.locator("a")).toHaveText(["Work", "Talks", "About"]);
   await expect(nav.locator('a[href="/about/"]')).toHaveAttribute("aria-current", "page");
   await page.goto(base);
   await page.setViewportSize({ width: 844, height: 390 });

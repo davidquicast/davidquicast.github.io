@@ -1,11 +1,10 @@
 ---
 page_id: teaching
 layout: page
-title: Teaching
+title: Talks
 permalink: /teaching/
-# Template stub without content: kept for later, not published.
-published: false
+redirect: /talks/
 sitemap: false
 ---
 
-No teaching materials are listed here yet. You can find practical tutorials in the [journal](/blog/).
+This page has moved to [Talks](/talks/).

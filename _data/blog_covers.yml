@@ -17,6 +17,15 @@
       "width": 1440,
       "height": 960,
     },
+  "can-hugging-face-manipulate-antigravity":
+    {
+      "image": "/assets/img/editorial/can-hugging-face-manipulate-antigravity-1440.webp",
+      "thumbnail": "/assets/img/editorial/can-hugging-face-manipulate-antigravity-480.webp",
+      "srcset": "/assets/img/editorial/can-hugging-face-manipulate-antigravity-480.webp 480w, /assets/img/editorial/can-hugging-face-manipulate-antigravity-960.webp 960w, /assets/img/editorial/can-hugging-face-manipulate-antigravity-1440.webp 1440w",
+      "alt": "Two papercraft sailing ships navigate layered waves as paper scrolls drift between them, illustrating the Ship of Theseus paradox in AI agent security.",
+      "width": 1440,
+      "height": 960,
+    },
   "instant-dark-theme-browser-devtools":
     {
       "image": "/assets/img/editorial/instant-dark-theme-browser-devtools-1440.webp",

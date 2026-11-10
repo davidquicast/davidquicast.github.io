@@ -7,13 +7,22 @@
         href="{{ '/' | relative_url }}"
         {% if page.layout == 'about' %}
           aria-current="page"
-        {% elsif page.url contains '/about/' or page.url contains '/resume/' %}
+        {% elsif page.url contains '/about/' or page.url contains '/resume/' or page.url contains '/talks/' %}
 
         {% else %}
           aria-current="true"
         {% endif %}
       >
         {{- 'navigation.work' | ui_label: 'Work' -}}
+      </a>
+      <a
+        class="top-link"
+        href="{{ '/talks/' | relative_url }}"
+        {% if page.url contains '/talks/' %}
+          aria-current="page"
+        {% endif %}
+      >
+        {{- 'navigation.talks' | ui_label: 'Talks' -}}
       </a>
       <a
         class="top-link"
