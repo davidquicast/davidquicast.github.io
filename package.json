@@ -18,7 +18,7 @@
     "watch": "npm run build -- --watch",
     "test": "playwright test",
     "test:pretext": "playwright test tests/pretext.spec.js tests/editorial-edge.spec.js",
-    "check:js": "node --check assets/js/src/editorial.js && node --check assets/js/portfolio.js && node --check assets/js/readcv-interactions.js && node --check assets/js/optional-features.js && node --check assets/js/site-chrome.js && node --check assets/js/card-menu.js && node --check assets/js/wall.js && node --check assets/js/profile-feed.js && node --check assets/js/about-reader.js && node --check assets/js/content-overlay.js && node --check assets/js/motion.js",
+    "check:js": "node --check assets/js/src/editorial.js && node --check assets/js/portfolio.js && node --check assets/js/readcv-interactions.js && node --check assets/js/optional-features.js && node --check assets/js/site-chrome.js && node --check assets/js/card-menu.js && node --check assets/js/wall.js && node --check assets/js/profile-feed.js && node --check assets/js/about-reader.js && node --check assets/js/profile-links.js && node --check assets/js/content-overlay.js && node --check assets/js/motion.js",
     "dev": "npm run watch",
     "test:portfolio": "playwright test tests/portfolio.spec.js tests/project-media.spec.js tests/motion.spec.js tests/readcv-interactions.spec.js",
     "test:content": "playwright test tests/content.spec.js",

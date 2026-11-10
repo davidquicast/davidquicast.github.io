@@ -13,7 +13,8 @@
         <p id="site-search-help">{{ 'search.hint' | ui_label: 'Projects, writing and pages. Use the arrow keys to move through results.' }}</p>
       </div>
       <button type="button" class="dialog-close" data-search-close aria-label="{{ "search.close" | ui_label: "Close search" }}">
-        {{ 'search.close' | ui_label: 'Close' }}
+        {% include icon.liquid name='close' -%}
+        <span>{{ 'overlay.close' | ui_label: 'Close' }}</span>
         <kbd>Esc</kbd>
       </button>
     </header>

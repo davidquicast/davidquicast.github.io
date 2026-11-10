@@ -4,7 +4,8 @@
       <span class="visually-hidden" id="content-overlay-title" data-overlay-title>{{ 'overlay.title' | ui_label: 'Content' }}</span
       ><span class="overlay-context" data-overlay-context>{{ 'overlay.title' | ui_label: 'Content' }}</span>
       <button type="button" data-overlay-close aria-label="{{ 'overlay.close' | ui_label: 'Close content' }}">
-        {{ 'overlay.close' | ui_label: 'Close' }}
+        {% include icon.liquid name='close' -%}
+        <span>{{ 'overlay.close' | ui_label: 'Close' }}</span>
       </button>
     </header>
     <p class="content-overlay-status" data-overlay-status role="status" aria-live="polite"></p>

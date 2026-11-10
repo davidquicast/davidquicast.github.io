@@ -1,0 +1,174 @@
+/* Profile actions and progressive connections share one compact reading order. */
+.profile-status-row {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-top: 12px;
+}
+.profile-status-row .profile-availability {
+  margin: 0;
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  white-space: nowrap;
+}
+.profile-status-row .profile-resources {
+  margin: 0;
+}
+.profile-status-row .profile-resources a {
+  min-height: 32px;
+  gap: 6px;
+  padding: 4px 9px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--ink);
+  font-size: 12px;
+  transition:
+    background-color 180ms ease-out,
+    border-color 180ms ease-out;
+}
+.profile-status-row .profile-resources a:hover {
+  background: var(--surface-alt);
+  border-color: var(--control-border);
+}
+.profile-status-row .profile-resources svg {
+  width: 14px;
+  height: 14px;
+}
+.profile-sidebar .profile-social-links.profile-connections-list {
+  display: block;
+}
+.profile-links-primary,
+.profile-links-extra {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0 16px;
+}
+.profile-links-overflow {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.profile-links-overflow > summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 4px 0;
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+  list-style: none;
+  border-radius: 4px;
+  transition: color 180ms ease-out;
+}
+.profile-links-overflow > summary::-webkit-details-marker {
+  display: none;
+}
+.profile-links-overflow > summary:hover {
+  color: var(--ink);
+}
+.profile-links-count {
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+.profile-links-chevron {
+  transition: transform 180ms ease-out;
+}
+.profile-links-overflow[open] .profile-links-chevron {
+  transform: rotate(180deg);
+}
+[data-profile-foldable="false"] .profile-links-overflow > summary {
+  display: none;
+}
+.profile-connections-list [data-profile-id="rss"] {
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+  padding-top: 9px;
+}
+.profile-connections-list [data-profile-group="research"] .profile-link-label {
+  font-size: 12px;
+}
+.profile-connections-list [data-profile-id="orcid_id"] {
+  grid-column: 1 / -1;
+}
+/* The owner's supplied frame stays intact, including during entrance and hover. */
+.profile-person .profile-avatar,
+.js .profile-person .profile-avatar,
+.profile-person .profile-avatar:hover {
+  border-radius: 50%;
+  object-fit: contain;
+  animation: none;
+  transition: none;
+  scale: none;
+  transform: none;
+  translate: none;
+  box-shadow: none;
+}
+@media (min-width: 581px) and (max-width: 1000px) {
+  .profile-sidebar:has(.profile-connections) {
+    grid-template-rows: repeat(3, min-content);
+    row-gap: 12px;
+  }
+  .profile-sidebar:has(.profile-connections) .profile-status-row {
+    grid-column: 1;
+    grid-row: 2;
+    margin: 0;
+  }
+  .profile-sidebar:has(.profile-connections) .profile-bio {
+    grid-column: 1;
+    grid-row: 3;
+    margin: 12px 0 0;
+  }
+  .profile-sidebar:has(.profile-connections) .profile-connections {
+    grid-row: 1 / span 3;
+  }
+}
+@media (max-width: 580px) {
+  .profile-links-primary,
+  .profile-links-extra {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .profile-links-primary [href^="mailto:"],
+  .profile-links-extra [href^="mailto:"],
+  .profile-links-extra [data-profile-group="research"],
+  .profile-links-extra [data-profile-id="rss"] {
+    grid-column: 1 / -1;
+  }
+  .profile-status-row .profile-availability,
+  .profile-status-row .profile-resources a,
+  .profile-links-overflow > summary {
+    min-height: 44px;
+  }
+}
+@media (pointer: coarse) {
+  .profile-status-row .profile-availability,
+  .profile-status-row .profile-resources a,
+  .profile-links-overflow > summary {
+    min-height: 44px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .profile-status-row .profile-resources a,
+  .profile-links-overflow > summary,
+  .profile-links-chevron {
+    transition: none;
+  }
+}
+
+.profile-links-extra .profile-research-links {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  margin: 0;
+}
+
+/* Connection disclosure responds immediately rather than replaying the intro. */
+.js .profile-sidebar .profile-connections-list > *,
+.js .profile-sidebar .profile-connections-list .profile-research-links > * {
+  animation: none;
+}

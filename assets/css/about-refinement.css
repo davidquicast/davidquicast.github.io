@@ -157,3 +157,40 @@
     display: none;
   }
 }
+
+/* Compact About is the original rich document in the native page/reader flow. */
+.about-reader[data-about-mode="scroll"] {
+  display: block;
+  height: auto;
+  min-height: 0;
+  max-width: 660px;
+}
+.about-reader[data-about-mode="scroll"] .about-reader-body,
+.about-reader[data-about-mode="scroll"] [data-about-source] {
+  display: block;
+  height: auto;
+  max-height: none;
+  overflow: visible;
+}
+.about-reader[data-about-mode="scroll"] .prose {
+  column-count: 1;
+}
+.about-reader[data-about-mode="scroll"] .about-reader-heading {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip-path: none;
+  white-space: normal;
+}
+.about-reader[data-about-mode="scroll"] .about-reader-heading p {
+  display: block;
+}
+.about-reader[data-about-mode="scroll"] [data-about-controls] {
+  display: none;
+}
+.content-overlay-body[data-overlay-kind="about"]:has([data-about-mode="scroll"]) {
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-gutter: auto;
+}

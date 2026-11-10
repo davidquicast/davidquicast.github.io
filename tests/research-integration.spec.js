@@ -94,6 +94,8 @@ test("academic identities use supplied profile links and remain readable at brea
   for (const width of [1440, 768, 640, 600, 581, 390, 320]) {
     await page.setViewportSize({ width, height: 1000 });
     await home(page);
+    const details = page.locator("[data-profile-overflow]");
+    if ((await details.count()) && !(await details.evaluate((node) => node.open))) await details.locator("summary").click();
     const group = page.locator(".profile-research-links");
     await expect(group.locator("a")).toHaveCount(3);
     await expect(group.getByRole("link", { name: /ORCID/ })).toHaveAttribute("href", "https://orcid.org/0009-0004-6602-2218");
@@ -104,7 +106,7 @@ test("academic identities use supplied profile links and remain readable at brea
     );
     await expect(group).not.toContainText("G8ea1KMAAAAJ");
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
-    await expect(page.locator("img[src*=prof_pic]")).toHaveCount(1);
+    await expect(page.locator("img.profile-avatar")).toHaveCount(1);
   }
 });
 test("research search keeps coauthored and cited-work sections distinct and global search finds papers", async ({ page }) => {

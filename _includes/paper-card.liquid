@@ -9,7 +9,7 @@
 >
   {% if site.data.research_covers[paper.id] %}
     <a class="research-card-media" href="{{ paper_url | relative_url | escape }}" tabindex="-1" aria-hidden="true" data-content-overlay>
-      {% include research-image.liquid paper=paper loading=include.loading sizes="(min-width: 1001px) 176px, (min-width: 701px) 160px, 72px" %}
+      {% include research-image.liquid paper=paper loading=include.loading sizes="(max-width: 700px) 72px, (pointer: coarse) 108px, 88px" %}
     </a>
   {% endif %}
   <div class="wall-card-body">

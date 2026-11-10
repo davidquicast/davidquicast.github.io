@@ -1,5 +1,7 @@
 # Compact Research and complete editorial covers
 
+Historical release record. Current density, controls, full-frame portrait and varied Research illustrations are documented in [interface refinement](interface-refinement.md).
+
 Updated 2026-11-06 on `redesign/portfolio`. Preview [Research](http://localhost:8080/?view=research) and [Blog](http://localhost:8080/?view=blogs).
 
 ## Changes

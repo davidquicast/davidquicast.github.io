@@ -9,8 +9,8 @@ from pathlib import Path
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--originals", type=Path, default=Path(".local/redesign/compact-editorial/originals/research"))
-    parser.add_argument("--manifest", type=Path, default=Path(".local/redesign/compact-editorial/research-image-manifest.json"))
+    parser.add_argument("--originals", type=Path, default=Path(".local/redesign/interface-refinement/originals/research"))
+    parser.add_argument("--manifest", type=Path, default=Path(".local/redesign/interface-refinement/research-image-manifest.json"))
     args = parser.parse_args()
     covers = json.loads(subprocess.check_output([
         "ruby", "-rjson", "-ryaml", "-e", "puts JSON.generate(YAML.safe_load_file(ARGV[0]))",

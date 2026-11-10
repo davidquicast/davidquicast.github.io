@@ -148,15 +148,16 @@
   align-items: center;
 }
 :is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card {
-  --paper-edge: 176px;
-  gap: 0 20px;
+  --paper-edge: 88px;
+  gap: 0 12px;
+  padding: 8px;
 }
 :is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card .wall-card-body {
   grid-column: 2;
   grid-row: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 1px;
   min-width: 0;
   min-height: var(--paper-edge);
   padding: 0;
@@ -164,29 +165,70 @@
 :is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card .paper-card-heading {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 1px;
 }
 :is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card .paper-card-kicker {
   min-height: 0;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: baseline;
+  gap: 2px 10px;
+}
+:is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card :is(.wall-meta, .content-updated) {
+  font-size: 11px;
+  line-height: 1.2;
+}
+:is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card .wall-card-body h2 {
+  font-size: 12.5px;
+  line-height: 1.22;
 }
 :is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card .wall-excerpt {
-  max-width: 70ch;
-  font-size: 12px;
-  line-height: 1.5;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.2;
+  color: var(--muted);
+}
+:is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card .wall-excerpt * {
+  display: inline;
+  white-space: nowrap;
 }
 :is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card .paper-card-actions {
   margin-top: auto;
-  padding-top: 4px;
+  padding: 0;
+  gap: 6px 10px;
+}
+:is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card .project-destinations-card {
+  gap: 6px;
+}
+:is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card .project-destination {
+  width: 24px;
+  min-height: 20px;
+  padding: 1px 2px;
+  justify-content: center;
+}
+:is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card .project-destination > span {
+  display: none;
+}
+:is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card .paper-citation {
+  min-height: 20px;
+  padding-block: 1px;
+  font-size: 11px;
+  line-height: 1.2;
 }
 /* Full attribution and citation disclosures remain outside compact archive previews. */
 .research-page .research-paper {
   display: block;
 }
 .research-record-preview {
-  --paper-edge: 176px;
+  --paper-edge: 88px;
   display: grid;
   grid-template-columns: var(--paper-edge) minmax(0, 1fr);
-  gap: 20px;
+  gap: 12px;
   align-items: start;
 }
 .research-record-body {
@@ -202,35 +244,38 @@
 }
 .research-record-kicker {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 12px;
+}
+.research-record-kicker > * {
+  font-size: 12px;
+  line-height: 1.4;
 }
 .research-record-body h3 {
   margin: 0;
-  font-size: 15px;
-  line-height: 1.45;
+  font-size: 14px;
+  line-height: 1.4;
 }
 .research-record-body :is(.research-authors, .research-venue) {
   display: none;
 }
 .research-record-body .research-summary {
-  font-size: 12px;
-  line-height: 1.5;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 2px 0 0;
+  font-size: 11px;
+  line-height: 1.2;
+  color: var(--muted);
+}
+.research-record-body .research-summary * {
+  display: inline;
+  white-space: nowrap;
 }
 .research-record-extra {
   margin-top: 12px;
-}
-@media (max-width: 1100px) {
-  :is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card .wall-excerpt,
-  .research-record-body .research-summary {
-    display: none;
-  }
-}
-@media (max-width: 1000px) {
-  :is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card,
-  .research-record-preview {
-    --paper-edge: 160px;
-  }
 }
 @media (max-width: 1200px) {
   [data-feed-current-view="projects"] .profile-feed-grid,
@@ -261,10 +306,19 @@
     --wall-columns: 1;
   }
 }
+@media (pointer: coarse) {
+  :is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card {
+    --paper-edge: 108px;
+  }
+  :is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card :is(.project-destination, .paper-citation) {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
 @media (max-width: 700px) {
   :is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card {
-    --paper-edge: 72px;
-    gap: 12px;
+    --paper-edge: 56px;
+    gap: 8px;
   }
   :is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card .wall-card-body,
   :is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card .paper-card-heading {
@@ -272,17 +326,17 @@
   }
   :is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card .paper-card-kicker {
     min-height: var(--paper-edge);
-  }
-  :is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card .wall-excerpt {
-    display: block;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
   }
   :is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card .paper-card-actions {
     margin: 0;
     padding: 0;
   }
   .research-record-preview {
-    --paper-edge: 72px;
-    gap: 12px;
+    --paper-edge: 56px;
+    gap: 8px;
   }
   .research-record-body {
     display: contents;
@@ -294,14 +348,13 @@
   .research-record-kicker {
     grid-column: 2;
     grid-row: 1;
+    flex-direction: column;
     justify-content: center;
+    align-items: flex-start;
     min-height: var(--paper-edge);
   }
   .research-record-body :is(h3, .research-status, .research-summary) {
     grid-column: 1 / -1;
-  }
-  .research-record-body .research-summary {
-    display: block;
   }
 }
 /* Missing optional artwork leaves a full-width readable text preview. */

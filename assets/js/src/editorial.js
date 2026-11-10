@@ -3,14 +3,19 @@ import { clearCache, layout, layoutWithLines, prepareWithSegments, setLocale } f
 
 const records = new Map();
 const pending = new Set();
+// Browser-fit verification is cached by text/typography/width, never run on scroll.
+const nativeFits = new Map();
+const NATIVE_FIT_LIMIT = 384;
 let frame = 0;
 let preparations = 0;
 let layouts = 0;
+let nativeMeasurements = 0;
 let locale = "";
 const normalize = (text) => text.replace(/\s+/gu, " ").trim();
 
 function invalidate() {
   clearCache();
+  nativeFits.clear();
   for (const record of records.values()) {
     record.key = "";
     queue(record);
@@ -29,13 +34,16 @@ function flush() {
   if (nextLocale !== locale) {
     locale = nextLocale;
     setLocale(locale);
+    nativeFits.clear();
     for (const record of records.values()) record.key = "";
   }
   // Read the whole batch before committing any widths or line spans. This avoids
   // forcing browser layout once for every editorial title in a list.
   const measurements = [...pending].map((record) => [record, inspect(record)]);
   pending.clear();
-  for (const [record, measurement] of measurements) compose(record, measurement);
+  const plans = measurements.map(([record, measurement]) => preparePlan(record, measurement)).filter(Boolean);
+  verifyNativeFits(plans);
+  for (const plan of plans) compose(plan);
 }
 
 /** Search the narrowest width retaining the browser's original line count. */
@@ -53,6 +61,40 @@ export function balancedWidth(prepared, available, lineHeight) {
   return Math.min(available, Math.ceil(high + 1));
 }
 
+function typography(style) {
+  const font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+  const spacing = Number.parseFloat(style.letterSpacing) || 0;
+  const lineHeight = Number.parseFloat(style.lineHeight) || Number.parseFloat(style.fontSize) * 1.2;
+  const nativeStyle = {};
+  for (const property of [
+    "fontKerning",
+    "fontVariant",
+    "fontFeatureSettings",
+    "fontVariationSettings",
+    "fontOpticalSizing",
+    "fontStretch",
+    "wordSpacing",
+    "wordBreak",
+    "overflowWrap",
+    "whiteSpace",
+    "textTransform",
+    "textIndent",
+    "direction",
+    "hyphens",
+    "textWrap",
+  ]) {
+    nativeStyle[property] = style[property];
+  }
+  return {
+    font,
+    spacing,
+    lineHeight,
+    wordBreak: style.wordBreak,
+    nativeStyle,
+    styleKey: JSON.stringify([font, spacing, lineHeight, style.wordBreak, nativeStyle]),
+  };
+}
+
 function inspect(record) {
   const { element, wrapper } = record;
   if (!element.isConnected) {
@@ -62,26 +104,33 @@ function inspect(record) {
   if (element.closest("[hidden]")) return;
   const style = getComputedStyle(element);
   if (style.display === "none") return;
-  const available = element.clientWidth - parseFloat(style.paddingLeft || 0) - parseFloat(style.paddingRight || 0);
+  // clientWidth rounds fractional columns to an integer. Recover the CSS layout
+  // unit from the resolved, untransformed width so max-inline-size cannot clamp
+  // a 177px model to a 176.65625px browser box after composition.
+  const padding = parseFloat(style.paddingLeft || 0) + parseFloat(style.paddingRight || 0);
+  const borders = parseFloat(style.borderLeftWidth || 0) + parseFloat(style.borderRightWidth || 0);
+  const resolved = parseFloat(style.width);
+  const content = Number.isFinite(resolved)
+    ? resolved - (style.boxSizing === "border-box" ? padding + borders : 0)
+    : element.getBoundingClientRect().width - padding - borders;
+  const available = Math.round(content * 64) / 64;
   if (available <= 0) return;
-  const font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-  const spacing = Number.parseFloat(style.letterSpacing) || 0;
-  const lineHeight = Number.parseFloat(style.lineHeight) || Number.parseFloat(style.fontSize) * 1.2;
   const text = normalize(wrapper.textContent || "");
   if (!text) return;
-  return { available, font, spacing, lineHeight, text, wordBreak: style.wordBreak };
+  return { available, ...typography(style), text, language: element.closest("[lang]")?.lang || locale };
 }
 
-function compose(record, measurement) {
+function preparePlan(record, measurement) {
   if (!measurement) return;
-  const { element, wrapper } = record;
-  const { available, font, spacing, lineHeight, text, wordBreak } = measurement;
+  const { element } = record;
+  const { available, font, spacing, lineHeight, text, wordBreak, styleKey } = measurement;
   const key = JSON.stringify([text, font, spacing, locale, wordBreak]);
-  const measurementKey = JSON.stringify([key, available, lineHeight, element.dataset.pretext]);
+  const measurementKey = JSON.stringify([key, available, styleKey, element.dataset.pretext]);
   if (record.key === key && record.measurementKey === measurementKey) {
     record.dirty = false;
     return;
   }
+  const plan = { record, measurement, key, measurementKey };
   try {
     if (record.key !== key || !record.prepared) {
       record.prepared = prepareWithSegments(text, font, {
@@ -89,12 +138,138 @@ function compose(record, measurement) {
         wordBreak: wordBreak === "keep-all" ? "keep-all" : "normal",
       });
       record.key = key;
-      record.text = text;
       preparations += 1;
     }
-    const width = balancedWidth(record.prepared, available, lineHeight);
-    const result = layoutWithLines(record.prepared, width, lineHeight);
+    plan.width = balancedWidth(record.prepared, available, lineHeight);
+    plan.originalLines = layout(record.prepared, available, lineHeight).lineCount;
+    plan.result = layoutWithLines(record.prepared, plan.width, lineHeight);
     layouts += 1;
+  } catch (error) {
+    plan.error = error;
+  }
+  return plan;
+}
+
+function nativeFitKey(measurement, width, balanced) {
+  return JSON.stringify([
+    measurement.text,
+    measurement.font,
+    measurement.spacing,
+    measurement.lineHeight,
+    measurement.nativeStyle,
+    measurement.language,
+    width,
+    balanced ? "wrap" : measurement.nativeStyle.textWrap,
+  ]);
+}
+
+function verifyNativeFits(plans) {
+  // Canvas and Blink's paragraph shaper can differ at exact break thresholds,
+  // especially when a line starts within a hyphenated word. Never invent a
+  // count or widen the actual text box to hide that platform limit. One isolated
+  // batch checks new signatures; all matching signatures reuse bounded results.
+  const probes = new Map();
+  for (const plan of plans) {
+    if (plan.error) continue;
+    for (const [width, balanced] of [
+      [plan.measurement.available, false],
+      [plan.width, true],
+    ]) {
+      const key = nativeFitKey(plan.measurement, width, balanced);
+      if (nativeFits.has(key) || probes.has(key)) continue;
+      const probe = document.createElement("div");
+      Object.assign(probe.style, plan.measurement.nativeStyle, {
+        font: plan.measurement.font,
+        lineHeight: `${plan.measurement.lineHeight}px`,
+        letterSpacing: `${plan.measurement.spacing}px`,
+        boxSizing: "content-box",
+        width: `${width}px`,
+        margin: "0",
+        padding: "0",
+        border: "0",
+      });
+      // font shorthand resets variant/stretch; restore the actual separate CSS.
+      Object.assign(probe.style, plan.measurement.nativeStyle);
+      if (balanced) probe.style.textWrap = "wrap";
+      probe.lang = plan.measurement.language;
+      probe.textContent = plan.measurement.text;
+      probes.set(key, { probe, lineHeight: plan.measurement.lineHeight });
+    }
+  }
+  if (probes.size) {
+    nativeMeasurements += probes.size;
+    const host = document.createElement("div");
+    host.setAttribute("aria-hidden", "true");
+    host.inert = true;
+    Object.assign(host.style, {
+      position: "fixed",
+      left: "-100000px",
+      top: "0",
+      width: "0",
+      height: "0",
+      visibility: "hidden",
+      overflow: "hidden",
+      contain: "strict",
+      pointerEvents: "none",
+    });
+    host.append(...[...probes.values()].map(({ probe }) => probe));
+    document.body.append(host);
+    // Read every probe after the single write batch, before touching live text.
+    for (const [key, { probe, lineHeight }] of probes)
+      nativeFits.set(key, Math.max(1, Math.round(probe.getBoundingClientRect().height / lineHeight)));
+    host.remove();
+  }
+  for (const plan of plans) {
+    if (plan.error) continue;
+    const original = nativeFits.get(nativeFitKey(plan.measurement, plan.measurement.available, false));
+    const balanced = nativeFits.get(nativeFitKey(plan.measurement, plan.width, true));
+    plan.nativeFit = { original, balanced };
+  }
+  while (nativeFits.size > NATIVE_FIT_LIMIT) nativeFits.delete(nativeFits.keys().next().value);
+}
+
+function nativeFallback(plan, reason, error = null) {
+  const { record, measurement, key, measurementKey } = plan;
+  const { element, wrapper } = record;
+  const selection = saveSelection(wrapper);
+  if (wrapper.children.length || wrapper.textContent !== measurement.text) wrapper.textContent = measurement.text;
+  restoreSelection(wrapper, selection);
+  for (const property of ["inline-size", "max-inline-size", "display", "vertical-align", "text-wrap"]) wrapper.style.removeProperty(property);
+  element.dataset.pretextReady = error ? "fallback" : "native";
+  element.dataset.pretextFallback = reason;
+  delete element.dataset.pretextLines;
+  delete element.dataset.pretextWidth;
+  element.style.removeProperty("--pretext-lines");
+  element.style.removeProperty("--pretext-height");
+  if (error) record.prepared = null;
+  record.key = key;
+  record.text = measurement.text;
+  record.measurementKey = measurementKey;
+  record.styleKey = measurement.styleKey;
+  record.mode = element.dataset.pretext;
+  record.width = measurement.available;
+  record.rendered = "";
+  record.result = null;
+  record.nativeFit = plan.nativeFit;
+  record.fallbackReason = reason;
+  record.dirty = false;
+  record.error = error ? String(error) : null;
+}
+
+function compose(plan) {
+  const { record, measurement, key, measurementKey, width, result } = plan;
+  const { element, wrapper } = record;
+  const { available, font, spacing, lineHeight, text, wordBreak } = measurement;
+  if (plan.error) return nativeFallback(plan, "measurement-error", plan.error);
+  if (
+    plan.nativeFit.original !== plan.originalLines ||
+    plan.nativeFit.balanced !== result.lineCount ||
+    plan.nativeFit.original !== plan.nativeFit.balanced
+  ) {
+    nativeFallback(plan, "browser-line-fit");
+    return;
+  }
+  try {
     wrapper.style.inlineSize = `${width}px`;
     wrapper.style.maxInlineSize = "100%";
     wrapper.style.display = "inline-block";
@@ -126,35 +301,18 @@ function compose(record, measurement) {
     element.dataset.pretextWidth = String(width);
     element.style.setProperty("--pretext-lines", result.lineCount);
     element.style.setProperty("--pretext-height", `${result.height}px`);
-    record.styleKey = JSON.stringify([font, spacing, lineHeight, wordBreak]);
+    record.styleKey = measurement.styleKey;
     record.width = available;
     record.result = result;
     record.measurementKey = measurementKey;
     record.mode = element.dataset.pretext;
     record.dirty = false;
     record.error = null;
+    record.fallbackReason = null;
+    record.nativeFit = plan.nativeFit;
+    delete element.dataset.pretextFallback;
   } catch (error) {
-    // Cache this failed signature as native text. Repeated observer callbacks
-    // must not turn a missing Canvas context into an animation-frame retry loop.
-    const selection = saveSelection(wrapper);
-    if (wrapper.children.length || wrapper.textContent !== text) wrapper.textContent = text;
-    restoreSelection(wrapper, selection);
-    wrapper.style.removeProperty("inline-size");
-    element.dataset.pretextReady = "fallback";
-    delete element.dataset.pretextLines;
-    delete element.dataset.pretextWidth;
-    element.style.removeProperty("--pretext-lines");
-    element.style.removeProperty("--pretext-height");
-    record.prepared = null;
-    record.key = key;
-    record.text = text;
-    record.measurementKey = measurementKey;
-    record.styleKey = JSON.stringify([font, spacing, lineHeight, wordBreak]);
-    record.mode = element.dataset.pretext;
-    record.rendered = "";
-    record.result = null;
-    record.dirty = false;
-    record.error = String(error);
+    nativeFallback(plan, "measurement-error", error);
   }
 }
 
@@ -262,12 +420,15 @@ const mutation = new MutationObserver((entries) => {
     const current = normalize(record.wrapper.textContent || "");
     let changedStyle = false;
     if (target.nodeType === Node.ELEMENT_NODE && target === element) {
-      const style = getComputedStyle(element);
-      const font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-      const lineHeight = Number.parseFloat(style.lineHeight) || Number.parseFloat(style.fontSize) * 1.2;
-      changedStyle = JSON.stringify([font, Number.parseFloat(style.letterSpacing) || 0, lineHeight, style.wordBreak]) !== record.styleKey;
+      changedStyle = typography(getComputedStyle(element)).styleKey !== record.styleKey;
     }
-    if (current !== record.text || (!record.result && !record.error) || !record.key || changedStyle || element.dataset.pretext !== record.mode)
+    if (
+      current !== record.text ||
+      (!record.result && !record.error && !record.fallbackReason) ||
+      !record.key ||
+      changedStyle ||
+      element.dataset.pretext !== record.mode
+    )
       queue(record);
   }
 });
@@ -310,7 +471,9 @@ window.portfolioPretext = Object.freeze({
     version: "1.0.0",
     preparations,
     layouts,
-    elements: [...records.values()].map(({ element, width, result, error }) => ({
+    nativeMeasurements,
+    nativeFitCacheEntries: nativeFits.size,
+    elements: [...records.values()].map(({ element, width, result, error, fallbackReason, nativeFit }) => ({
       tag: element.tagName,
       text: element.textContent,
       availableWidth: width,
@@ -318,6 +481,8 @@ window.portfolioPretext = Object.freeze({
       lines: result?.lineCount,
       height: result?.height,
       error,
+      fallbackReason,
+      nativeFit,
     })),
   }),
 });

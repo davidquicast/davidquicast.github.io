@@ -155,7 +155,7 @@ test("the same frame and profile remain readable without JavaScript", async ({ b
       expect(Math.abs(f.workspace - f.main.start)).toBeLessThan(1);
       expect(f.overflow).toBeLessThanOrEqual(1);
       await expect(page.locator(".profile-resources a")).toHaveAttribute("href", "/resume/");
-      await expect(page.locator("img[src*=prof_pic]")).toHaveCount(1);
+      await expect(page.locator("img.profile-avatar")).toHaveCount(1);
     }
   } finally {
     await context.close();

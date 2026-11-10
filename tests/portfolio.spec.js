@@ -68,7 +68,7 @@ test("live homepage, work, writing and detail surfaces preserve calculated text 
   expect(errors).toEqual([]);
 });
 
-test("compact Work/About navigation supports keyboard, paginated biography and persisted theme", async ({ page }) => {
+test("compact Work/About navigation supports keyboard, native biography reading and persisted theme", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await loaded(page, "/");
   const originalURL = page.url();
@@ -83,25 +83,26 @@ test("compact Work/About navigation supports keyboard, paginated biography and p
   await expect(dialog).toBeVisible();
   const reader = dialog.locator("[data-about-reader]");
   await expect(reader).toHaveAttribute("data-about-ready", "true");
-  const pages = Number(await reader.getAttribute("data-about-page-count"));
-  expect(pages).toBeGreaterThan(0);
-  if (pages > 1) {
-    await reader.locator("[data-about-next]").click();
-    await expect(reader).toHaveAttribute("data-about-current-page", "2");
-    await reader.locator("[data-about-previous]").focus();
-    await page.keyboard.press("ArrowLeft");
-    await expect(reader).toHaveAttribute("data-about-current-page", "1");
-  }
-  expect(await reader.locator("[data-about-view]").evaluate((element) => element.scrollHeight - element.clientHeight)).toBeLessThanOrEqual(1);
+  await expect(reader).toHaveAttribute("data-about-mode", "scroll");
+  await expect(reader.locator("[data-about-controls]")).toBeHidden();
+  const source = reader.locator("[data-about-source]");
+  await expect(source).toBeVisible();
+  await source.locator("p").last().scrollIntoViewIfNeeded();
+  await expect(source.locator("p").last()).toBeInViewport();
   await page.keyboard.press("Escape");
   await expect(dialog).toBeHidden();
   await expect(page).toHaveURL(originalURL);
   await expect(about).toBeFocused();
   const theme = page.locator(".theme-toggle");
+  const previous = await page.locator("html").getAttribute("data-theme");
+  const selected = previous === "dark" ? "light" : "dark";
   await theme.focus();
   await page.keyboard.press("Enter");
-  const selected = await page.locator("html").getAttribute("data-theme");
-  expect(["light", "dark"]).toContain(selected);
+  // Native View Transitions apply the new theme after capturing the old view.
+  await expect(page.locator("html")).toHaveAttribute("data-theme", selected);
+  await expect(page.locator("html")).not.toHaveAttribute("data-theme-transition", "");
+  await expect(theme).toBeFocused();
+  expect(await page.evaluate(() => localStorage.getItem("portfolio-theme"))).toBe(selected);
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-theme", selected);
 });

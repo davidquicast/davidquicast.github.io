@@ -1,0 +1,43 @@
+{
+  "source": "/assets/img/profile/david-quispe.png",
+  "source_sha256": "4674f9faa95b4b35d16adc3577d42020283615b25b3d71abb34f3cbbd6b1e80c",
+  "width": 1024,
+  "height": 1024,
+  "alt": "David Quispe",
+  "avatar_crop": null,
+  "avatar": "/assets/img/profile/david-quispe-128.webp",
+  "display_size": 64,
+  "srcset": "/assets/img/profile/david-quispe-64.webp 64w, /assets/img/profile/david-quispe-128.webp 128w, /assets/img/profile/david-quispe-256.webp 256w",
+  "variants":
+    [
+      {
+        "path": "/assets/img/profile/david-quispe-64.webp",
+        "width": 64,
+        "height": 64,
+        "bytes": 1228,
+        "sha256": "1437ef748ce7bdf7befde97adda6389a28f2de3d479137726551d5bf08e4f82d",
+      },
+      {
+        "path": "/assets/img/profile/david-quispe-128.webp",
+        "width": 128,
+        "height": 128,
+        "bytes": 4280,
+        "sha256": "9ddc88599bb29b85d7289738df733fd91f5a54ae8fad9fcad60ea0356cf3d5be",
+      },
+      {
+        "path": "/assets/img/profile/david-quispe-256.webp",
+        "width": 256,
+        "height": 256,
+        "bytes": 13286,
+        "sha256": "085e48b3878116f640cf35dea05fda9295f90c7536705e35757c5d51c194fe6d",
+      },
+    ],
+  "og":
+    {
+      "path": "/assets/img/profile/david-quispe-og.jpg",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 137696,
+      "sha256": "d02cf0aa6d02144504b2c3f2007f99e5753f1970cd361aee457bd7effa88c522",
+    },
+}
