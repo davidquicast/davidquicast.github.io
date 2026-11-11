@@ -43,7 +43,11 @@ layout: default
         </p>
       {% endif %}
       <div class="profile-resources">
-        <a href="{{ '/resume/' | relative_url }}" data-content-overlay>
+        <a href="{{ '/about/' | relative_url }}" data-content-overlay class="profile-resource-link">
+          {%- include icon.liquid name='profile' -%}
+          {{- 'navigation.about' | ui_label: 'About' -}}
+        </a>
+        <a href="{{ '/resume/' | relative_url }}" data-content-overlay class="profile-resource-link">
           {%- include icon.liquid name='resume' -%}
           {{- 'navigation.cv' | ui_label: 'CV' -}}
         </a>
@@ -75,6 +79,11 @@ layout: default
             <button type="button" data-feed-view="research" aria-pressed="false" data-enable-with-js disabled>
               {{ 'navigation.research' | ui_label }}
             </button>
+            {% if catalog.counts.talks and catalog.counts.talks > 0 %}
+            <button type="button" data-feed-view="talks" aria-pressed="false" data-enable-with-js disabled>
+              {{ 'navigation.talks' | ui_label: 'Talks' }}
+            </button>
+            {% endif %}
           </div>
         </div>
         <div class="catalog-search-row">
@@ -139,7 +148,8 @@ layout: default
       <nav class="feed-fallback" aria-label="{{ 'feed.browse' | ui_label }}">
         <a href="{{ '/projects/' | relative_url }}">{{ 'navigation.projects' | ui_label }}</a
         ><a href="{{ '/blog/' | relative_url }}">{{ 'navigation.writing' | ui_label }}</a
-        ><a href="{{ '/publications/' | relative_url }}">{{ 'navigation.research' | ui_label }}</a>
+        ><a href="{{ '/publications/' | relative_url }}">{{ 'navigation.research' | ui_label }}</a
+        ><a href="{{ '/talks/' | relative_url }}">{{ 'navigation.talks' | ui_label: 'Talks' }}</a>
       </nav>
     </noscript>
     <div class="profile-feed-grid frontpage-wall" data-feed-grid>
@@ -153,6 +163,8 @@ layout: default
             {%- include writing-card.liquid post=entry.source entry=entry loading=entry_loading priority='auto' %}
           {% when 'paper' -%}
             {%- include paper-card.liquid paper=entry.source entry=entry loading=entry_loading %}
+          {% when 'talk' -%}
+            {%- include talk-card.liquid talk=entry.source entry=entry loading=entry_loading %}
         {% endcase %}
       {% endfor %}
     </div>

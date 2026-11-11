@@ -69,12 +69,13 @@
     if (/\/projects\/[^/]+\/?$/.test(path)) return "project";
     if (/\/blog\/\d{4}\/[^/]+\/?$/.test(path)) return "writing";
     if (/\/research\/[^/]+\/?$/.test(path)) return "paper";
+    if (/\/talks\/[^/]+\/?$/.test(path)) return "talk";
     if (/\/about\/?$/.test(path)) return "about";
     if (/\/resume\/?$/.test(path)) return "resume";
     // Explicit hooks can support localized/baseurl content without opening lists/assets.
     if (
       explicit &&
-      !/\/(?:assets|blog|projects|research|publications)\/?$|\/(?:assets|tag|category|page)\//.test(path) &&
+      !/\/(?:assets|blog|projects|research|publications|talks)\/?$|\/(?:assets|tag|category|page)\//.test(path) &&
       !/\.[a-z0-9]+$/i.test(path)
     )
       return "page";
@@ -308,10 +309,10 @@
     currentURL = url.href;
     currentKind = kind;
     if (contextLabel) {
-      const key = { project: "projects", writing: "writing", paper: "research", about: "about", resume: "cv" }[kind];
+      const key = { project: "projects", writing: "writing", paper: "research", talk: "talks", about: "about", resume: "cv" }[kind];
       contextLabel.textContent =
         ui.navigation?.[key] ||
-        { project: "Projects", writing: "Blog", paper: "Research", about: "About", resume: "CV" }[kind] ||
+        { project: "Projects", writing: "Blog", paper: "Research", talk: "Talks", about: "About", resume: "CV" }[kind] ||
         label("title", "Content");
     }
     title.textContent = label("loading_title", "Loading content");

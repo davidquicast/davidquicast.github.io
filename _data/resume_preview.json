@@ -1,5 +1,5 @@
 {
-  "source": { "path": "/assets/pdf/en-us/cv.pdf", "sha256": "58cf683fbb59052b17708a23bddfa6ae86864f22acf7bbfa42cfb629472d9b71", "bytes": 119108 },
+  "source": { "path": "/assets/pdf/en-us/cv.pdf", "sha256": "252a306b6fb20aaaedd93faa2f3dce1a69cece57de2e3155fec40e0d6b030325", "bytes": 126434 },
   "settings": { "version": 2, "widths": [800, 1600], "webp": "lossless", "extraction": "layout" },
   "tools": {
     "pdftoppm": "pdftoppm version 22.12.0",
@@ -11,30 +11,30 @@
     {
       "number": 1,
       "image": {
-        "src": "/assets/img/resume/en-us/cv-page-1-1600-570ac7a2766a.webp",
+        "src": "/assets/img/resume/en-us/cv-page-1-1600-7ffc206edb64.webp",
         "width": 1600,
         "height": 2263,
-        "bytes": 176226,
-        "sha256": "570ac7a2766a4ee29378900957e943a47d6f36b9c9c38d5e2fe597f9348a2b06"
+        "bytes": 176126,
+        "sha256": "7ffc206edb642d86b1c6bed475382c0622e0c1dc21233ede3fdb9073cd957c57"
       },
       "variants": [
         {
-          "src": "/assets/img/resume/en-us/cv-page-1-800-0fb2cf6fbf6e.webp",
+          "src": "/assets/img/resume/en-us/cv-page-1-800-186e9fddc1b3.webp",
           "width": 800,
           "height": 1132,
-          "bytes": 75476,
-          "sha256": "0fb2cf6fbf6e438bc0542374fe5f91aba385f08884116e1100f56e891e03642e"
+          "bytes": 75624,
+          "sha256": "186e9fddc1b311231e77523f26a1d6f37dfc350b19530ed2e84ce0cf8622ea2f"
         },
         {
-          "src": "/assets/img/resume/en-us/cv-page-1-1600-570ac7a2766a.webp",
+          "src": "/assets/img/resume/en-us/cv-page-1-1600-7ffc206edb64.webp",
           "width": 1600,
           "height": 2263,
-          "bytes": 176226,
-          "sha256": "570ac7a2766a4ee29378900957e943a47d6f36b9c9c38d5e2fe597f9348a2b06"
+          "bytes": 176126,
+          "sha256": "7ffc206edb642d86b1c6bed475382c0622e0c1dc21233ede3fdb9073cd957c57"
         }
       ],
-      "srcset": "/assets/img/resume/en-us/cv-page-1-800-0fb2cf6fbf6e.webp 800w, /assets/img/resume/en-us/cv-page-1-1600-570ac7a2766a.webp 1600w",
-      "text": "David Quispe\nSystems Engineer • AI Engineering & Cybersecurity\nda.qc@outlook.com • Cusco, Peru (Open to Remote / Relocation) • davidquicast.github.io\ngithub.com/davidquicast • huggingface.co/davidquicast • linkedin.com/in/davidquicast\n\nPROFESSIONAL SUMMARY\nSystems Engineer with professional experience building AI applications, fine-tuning open-source models, and supporting\nenterprise cybersecurity operations. Practical background includes developing Retrieval-Augmented Generation (RAG)\npipelines, tool-calling agentic workflows, and implementing vulnerability intelligence and organizational security controls\n(NIST CSF, ENS, ISO 27001).\n\nTECHNICAL SKILLS\nAI & Machine Learning: PyTorch, Hugging Face, Transformers, PEFT (LoRA/QLoRA), RAG, LangChain, Langroid,\nsmolagents, Vector Databases (Qdrant, FAISS), Model Quantization, Synthetic Data Generation.\nCybersecurity & Cloud: Vulnerability Intelligence, Threat Intelligence (CTI), EDR Platforms, Fortinet, Microsoft 365\nDefender, CCN-CERT Tools, Zero Trust Architecture.\nEngineering & Systems: Python, FastAPI, Docker, SQL (PostgreSQL, MySQL), Git, Linux/Bash, React, Laravel.\nStandards & Frameworks: NIST CSF, ENS (Esquema Nacional de Seguridad), MITRE ATT&CK, OWASP Top 10,\nSTRIDE, ISO 27001.\nLanguages: Spanish (Native), English (C1 Professional Working Proficiency).\n\nPROFESSIONAL EXPERIENCE\nFIAP – International and Ibero-American Foundation for Public Policy Sep 2024 – Jun 2025\nCybersecurity Technician Madrid, Spain (Hybrid)\n• Spearheaded an internal vulnerability intelligence program across organizational assets to proactively detect, catalog,\nand prioritize remediation of critical CVEs.\n• Developed cyber threat intelligence (CTI) proof-of-concept workflows leveraging open-source LLMs and Microsoft Copilot\nto automate alert triaging and IOC correlation.\n• Coordinated asset inventory, security audits, and threat detection utilizing enterprise EDR and CCN-CERT security\nsolutions.\n• Configured and hardened Fortinet firewalls and Microsoft 365 security controls, authoring organizational security policies\naligned with Spanish National Security Framework (ENS) and NIST standards.\nPlawLabs Ltd. Jul 2024 – Sep 2024\nAI/ML Engineer London, UK (Remote)\n• Fine-tuned open-source foundation models (LLaMA-3.1 8B and 70B) utilizing parameter-efficient fine-tuning\n(PEFT/QLoRA) and 4-bit quantization, merging adapter checkpoints for optimized production inference.\n• Architected and deployed an end-to-end Retrieval-Augmented Generation (RAG) system with dense vector embeddings\nand vector databases, enhancing factual grounding for domain queries.\n• Built and benchmarked autonomous tool-calling agents using LangChain and Langroid; evaluated latency, cost, and\nreasoning accuracy between open-weight and proprietary models.\nHAMB Ingeniería y Construcción S.A.C. Jan 2022 – Sep 2022\nFull Stack Web Developer (Internship) Cusco, Peru (On-site)\n• Led full-stack web application development with Laravel, React, and MySQL, delivering feature enhancements that\ncontributed to a 25% increase in the active customer base.\n• Designed and integrated SAP inventory management workflows, reducing inventory process inefficiencies by 30%.\n• Rolled out enterprise CRM software and trained technical and sales teams, increasing staff productivity by 20%."
+      "srcset": "/assets/img/resume/en-us/cv-page-1-800-186e9fddc1b3.webp 800w, /assets/img/resume/en-us/cv-page-1-1600-7ffc206edb64.webp 1600w",
+      "text": "David Quispe\nSystems Engineer • AI Engineering & Cybersecurity\ndavidq@personaxis.com • Cusco, Peru (Open to Remote / Relocation) • davidquicast.github.io\ngithub.com/davidquicast • huggingface.co/davidquicast • linkedin.com/in/davidquicast\n\nPROFESSIONAL SUMMARY\nSystems Engineer with professional experience building AI applications, fine-tuning open-source models, and supporting\nenterprise cybersecurity operations. Practical background includes developing Retrieval-Augmented Generation (RAG)\npipelines, tool-calling agentic workflows, and implementing vulnerability intelligence and organizational security controls\n(NIST CSF, ENS, ISO 27001).\n\nTECHNICAL SKILLS\nAI & Machine Learning: PyTorch, Hugging Face, Transformers, PEFT (LoRA/QLoRA), RAG, LangChain, Langroid,\nsmolagents, Vector Databases (Qdrant, FAISS), Model Quantization, Synthetic Data Generation.\nCybersecurity & Cloud: Vulnerability Intelligence, Threat Intelligence (CTI), EDR Platforms, Fortinet, Microsoft 365\nDefender, CCN-CERT Tools, Zero Trust Architecture.\nEngineering & Systems: Python, FastAPI, Docker, SQL (PostgreSQL, MySQL), Git, Linux/Bash, React, Laravel.\nStandards & Frameworks: NIST CSF, ENS (Esquema Nacional de Seguridad), MITRE ATT&CK, OWASP Top 10,\nSTRIDE, ISO 27001.\nLanguages: Spanish (Native), English (C1 Professional Working Proficiency).\n\nPROFESSIONAL EXPERIENCE\nFIAP – International and Ibero-American Foundation for Public Policy Sep 2024 – Jun 2025\nCybersecurity Technician Madrid, Spain (Hybrid)\n• Spearheaded an internal vulnerability intelligence program across organizational assets to proactively detect, catalog,\nand prioritize remediation of critical CVEs.\n• Developed cyber threat intelligence (CTI) proof-of-concept workflows leveraging open-source LLMs and Microsoft Copilot\nto automate alert triaging and IOC correlation.\n• Coordinated asset inventory, security audits, and threat detection utilizing enterprise EDR and CCN-CERT security\nsolutions.\n• Configured and hardened Fortinet firewalls and Microsoft 365 security controls, authoring organizational security policies\naligned with Spanish National Security Framework (ENS) and NIST standards.\nPlawLabs Ltd. Jul 2024 – Sep 2024\nAI/ML Engineer London, UK (Remote)\n• Fine-tuned open-source foundation models (LLaMA-3.1 8B and 70B) utilizing parameter-efficient fine-tuning\n(PEFT/QLoRA) and 4-bit quantization, merging adapter checkpoints for optimized production inference.\n• Architected and deployed an end-to-end Retrieval-Augmented Generation (RAG) system with dense vector embeddings\nand vector databases, enhancing factual grounding for domain queries.\n• Built and benchmarked autonomous tool-calling agents using LangChain and Langroid; evaluated latency, cost, and\nreasoning accuracy between open-weight and proprietary models.\nHAMB Ingeniería y Construcción S.A.C. Jan 2022 – Sep 2022\nFull Stack Web Developer (Internship) Cusco, Peru (On-site)\n• Led full-stack web application development with Laravel, React, and MySQL, delivering feature enhancements that\ncontributed to a 25% increase in the active customer base.\n• Designed and integrated SAP inventory management workflows, reducing inventory process inefficiencies by 30%.\n• Rolled out enterprise CRM software and trained technical and sales teams, increasing staff productivity by 20%."
     },
     {
       "number": 2,

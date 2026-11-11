@@ -255,6 +255,8 @@ feed:
   all: All
   papers: Research
   paper: Paper
+  talks: Talks
+  talk: Talk
   article: Article
   sort: Sort content
   recommended: Featured
@@ -272,6 +274,8 @@ feed:
   papers_empty_title: Research
   papers_empty_description: Publication details will be added here. Research projects
     are available in Projects.
+  talks_empty_title: Talks & Workshops
+  talks_empty_description: Technical workshops and conference presentations will be added here.
   reset: Show all work
   browse: Browse all content
   citation: BibTeX citation
@@ -283,6 +287,7 @@ feed:
     writing: Technical articles and field notes.
     papers: Coauthored papers and research citing my work.
     blogs: Technical articles and field notes.
+    talks: Technical workshops, conference talks and presentations.
     research: Coauthored papers and research citing my work.
 overlay:
   title: Content

@@ -1,0 +1,64 @@
+talks:
+  - id: devfest-cusco-2026-agentic-security
+    title: "Can Hugging Face Manipulate Antigravity? Lessons in Agentic AI Security"
+    title_es: "¿Puede Hugging Face manipular a Antigravity? Lecciones de Seguridad en IA Agéntica"
+    event: "GDG DevFest Cusco 2026"
+    role: "Workshop Speaker"
+    badge: "Workshop"
+    venue: "Auditorio, Universidad Andina del Cusco (Cusco, Peru)"
+    location: "Cusco, Peru"
+    date: "2026-11-07 14:00:00 -0500"
+    published_at: "2026-11-07"
+    year: 2026
+    language: "Spanish (delivered live in Spanish in Cusco, Peru)"
+    speaker: "David Quispe"
+    affiliation: "Systems Engineering & AI Security"
+    featured: true
+    image: "/assets/img/talks/devfest-cusco-2026-slide-1280.webp"
+    thumbnail: "/assets/img/talks/devfest-cusco-2026-slide-960.webp"
+    slide_image: "/assets/img/talks/devfest-cusco-2026-slide-1280.webp"
+    slide_srcset: "/assets/img/talks/devfest-cusco-2026-slide-960.webp 960w, /assets/img/talks/devfest-cusco-2026-slide-1280.webp 1280w"
+    image_alt: "DevFest Cusco 2026 keynote slide: ¿Puede Hugging Face manipular a Antigravity? por David Quispe."
+    language: "Spanish (delivered live in Spanish in Cusco, Peru)"
+    language_short: "Spanish"
+    description: "Empirical security evaluation testing whether third-party MCP tools can manipulate autonomous coding agents."
+    summary: "An empirical security evaluation testing whether indirect prompt injections and altered tool parameters can manipulate autonomous coding agents like Google Antigravity, featuring live MCP telemetry and deterministic PreToolUse defenses."
+    abstract: "Can third-party tools and MCP servers hosted across public registries manipulate autonomous coding agents? At GDG DevFest Cusco 2026, we presented an empirical security evaluation testing whether indirect prompt injections and altered tool parameters can redirect Google Antigravity. Evaluating Gemini Flash across controlled conditions, overt instructions to alter agent rules or recommend packages yielded 0/50 successes (with 1/50 test command executed in high effort). However, documentation-style contextual notes drifted package recommendations by 25%–40% (Wilson 95% CI: 14.5%–61.3%). End-to-end telemetry across 63 completed MCP calls verified 3 destination-confirmed canary exfiltrations. A deterministic PreToolUse policy intercepted and denied 100% (5/5) of unauthorized rule modification attempts."
+    key_findings:
+      - metric: "0 / 50"
+        label: "Overt Package & Rule Injections"
+        detail: "0/50 across low/medium/high effort for package recommendation and agent rules; 1/50 test command executed in high."
+      - metric: "25% – 40%"
+        label: "Contextual Note Drift Rate"
+        detail: "Documentation notes achieved 30% (simple), 25% (tagged), and 40% (interleaved) recommendation drift versus 0% baseline (Wilson 95% CI)."
+      - metric: "63 Calls / 3 Confirmed"
+        label: "End-to-End MCP Audit Trace"
+        detail: "63 completed MCP calls across 5 series verified 6 records and 3 destination-matched canary exfiltrations."
+      - metric: "5 / 5 Denied (100%)"
+        label: "PreToolUse Runtime Defense"
+        detail: "Deterministic native PreToolUse policy intercepted and denied all 5 rule write attempts observed across 10 evaluation runs."
+    destinations:
+      - icon: github
+        label: Code
+        detail_label: Code (reproduction harness)
+        url: https://github.com/davidquicast/workshop-hf-antigravity
+      - icon: huggingface
+        label: Slides
+        detail_label: Slides (interactive presentation)
+        url: https://huggingface.co/spaces/davidquicast/devfest-cusco-2026-ai-security
+    slides_url: "https://huggingface.co/spaces/davidquicast/devfest-cusco-2026-ai-security"
+    code_url: "https://github.com/davidquicast/workshop-hf-antigravity"
+    space_url: "https://huggingface.co/spaces/davidquicast/generador-imagenes-2"
+    collection_url: "https://huggingface.co/collections/davidquicast/gdg-devfest-cusco-2026-agentic-ai-security"
+    event_url: "https://gdgcusco.com/devfest2026"
+    announcement_url: "https://es.linkedin.com/posts/gdgcusco_gdgcusco-devfestcusco-googleantigravity-activity-7524596454246612992-wl2W"
+    article_url: "/blog/2026/can-hugging-face-manipulate-antigravity/"
+    detail_url: "/talks/devfest-cusco-2026-agentic-security/"
+    tags:
+      - ai-safety
+      - ai-agents
+      - mcp
+      - security
+      - prompt-injection
+      - gdg-cusco
+      - devfest-2026

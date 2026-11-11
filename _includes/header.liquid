@@ -1,41 +1,31 @@
 <header class="site-header" data-ui>
   <div class="site-header-inner">
-    <nav class="main-navigation" id="main-navigation" aria-label="{{ 'navigation.main' | ui_label }}">
-      <a
-        class="top-link"
-        data-feed-link
-        href="{{ '/' | relative_url }}"
-        {% if page.layout == 'about' %}
-          aria-current="page"
-        {% elsif page.url contains '/about/' or page.url contains '/resume/' or page.url contains '/talks/' %}
-
-        {% else %}
-          aria-current="true"
-        {% endif %}
-      >
-        {{- 'navigation.work' | ui_label: 'Work' -}}
-      </a>
-      <a
-        class="top-link"
-        href="{{ '/talks/' | relative_url }}"
-        {% if page.url contains '/talks/' %}
-          aria-current="page"
-        {% endif %}
-      >
-        {{- 'navigation.talks' | ui_label: 'Talks' -}}
-      </a>
-      <a
-        class="top-link"
-        href="{{ '/about/' | relative_url }}"
-        data-content-overlay
-        {% if page.url contains '/about/' or page.url contains '/resume/' %}
-          aria-current="page"
-        {% endif %}
-      >
-        {{- 'navigation.about' | ui_label -}}
-      </a>
-    </nav>
+    {% if page.layout != 'about' %}
+      <nav class="main-navigation" id="main-navigation" aria-label="{{ 'navigation.main' | ui_label }}">
+        <a
+          class="top-link header-home-link"
+          data-feed-link
+          href="{{ '/' | relative_url }}"
+          aria-label="David Quispe"
+        >
+          <span class="header-name">David Quispe</span>
+        </a>
+      </nav>
+    {% else %}
+      <div class="header-lead-space" aria-hidden="true"></div>
+    {% endif %}
     <div class="rail-tools">
+      {% if page.layout != 'about' %}
+        <a
+          class="header-tool header-about-tool"
+          href="{{ '/about/' | relative_url }}"
+          data-content-overlay
+          aria-label="{{ 'navigation.about' | ui_label }}"
+          title="{{ 'navigation.about' | ui_label }}"
+        >
+          {% include icon.liquid name='profile' %}
+        </a>
+      {% endif %}
       {% if site.search_enabled and page.layout != 'about' -%}
         <button
           class="search-toggle header-tool"

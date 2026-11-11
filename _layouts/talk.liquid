@@ -1,0 +1,155 @@
+---
+layout: default
+---
+{% assign talk = page.talk %}
+{% assign talk_dates = talk | content_timeline: 'talk' %}
+<article class="talk-detail paper-detail general-page">
+  <a class="back-link" href="{{ '/' | relative_url }}?view=talks">← {{ 'navigation.talks' | ui_label: 'Talks' }}</a>
+
+  <header class="page-heading">
+    <p class="post-meta">
+      <span class="talk-badge">{{ talk.badge | default: 'Workshop Speaker' | escape }}</span>
+      · {% include content-date.liquid value=talk_dates.primary %}
+      {% if talk.venue != '' %} · {{ talk.venue | escape }}{% endif %}
+    </p>
+    {% include content-updated.liquid item=talk kind='talk' %}
+    <h1 data-pretext="lines">{{ talk.title | escape }}</h1>
+    {% if talk.title_es %}
+      <p class="talk-subtitle-es">
+        <em>{{ talk.title_es | escape }}</em>
+      </p>
+    {% endif %}
+    <p class="paper-authors">
+      <strong>{{ talk.speaker | default: 'David Quispe' | escape }}</strong>
+      {% if talk.affiliation %}
+        <span class="talk-affiliation">· {{ talk.affiliation | escape }}</span>
+      {% endif %}
+      {% if talk.language %}
+        <span class="talk-lang-tag">({{ talk.language | escape }})</span>
+      {% endif %}
+    </p>
+  </header>
+
+  <nav class="research-links talk-links-nav" aria-label="Talk materials and links">
+    {% if talk.slides_url %}
+      <a class="talk-link-btn primary" href="{{ talk.slides_url | escape }}" target="_blank" rel="noopener noreferrer">
+        {% include brand-icon.liquid name='huggingface' colored=true %}
+        <span>Interactive Slides</span>
+        {% include icon.liquid name='arrow' %}
+      </a>
+    {% endif %}
+    {% if talk.code_url %}
+      <a class="talk-link-btn" href="{{ talk.code_url | escape }}" target="_blank" rel="noopener noreferrer">
+        {% include brand-icon.liquid name='github' colored=true %}
+        <span>Code & Harness</span>
+        {% include icon.liquid name='arrow' %}
+      </a>
+    {% endif %}
+    {% if talk.space_url %}
+      <a class="talk-link-btn" href="{{ talk.space_url | escape }}" target="_blank" rel="noopener noreferrer">
+        {% include brand-icon.liquid name='huggingface' colored=true %}
+        <span>Gradio MCP Space</span>
+        {% include icon.liquid name='arrow' %}
+      </a>
+    {% endif %}
+    {% if talk.collection_url %}
+      <a class="talk-link-btn" href="{{ talk.collection_url | escape }}" target="_blank" rel="noopener noreferrer">
+        {% include brand-icon.liquid name='huggingface' colored=true %}
+        <span>HF Collection</span>
+        {% include icon.liquid name='arrow' %}
+      </a>
+    {% endif %}
+    {% if talk.announcement_url %}
+      <a class="talk-link-btn" href="{{ talk.announcement_url | escape }}" target="_blank" rel="noopener noreferrer">
+        {% include brand-icon.liquid name='linkedin' colored=true %}
+        <span>GDG Announcement</span>
+        {% include icon.liquid name='arrow' %}
+      </a>
+    {% endif %}
+    {% if talk.event_url %}
+      <a class="talk-link-btn" href="{{ talk.event_url | escape }}" target="_blank" rel="noopener noreferrer">
+        {% include icon.liquid name='home' %}
+        <span>DevFest 2026 Site</span>
+        {% include icon.liquid name='arrow' %}
+      </a>
+    {% endif %}
+    {% if talk.article_url %}
+      <a class="talk-link-btn" href="{{ talk.article_url | relative_url | escape }}" data-content-overlay>
+        {% include icon.liquid name='writing' %}
+        <span>Technical Article</span>
+        {% include icon.liquid name='arrow' %}
+      </a>
+    {% endif %}
+  </nav>
+
+  {% if talk.slide_image or talk.image %}
+    {% assign artwork_src = talk.slide_image | default: talk.image %}
+    <div class="talk-featured-artwork">
+      <img
+        src="{{ artwork_src | relative_url }}"
+        srcset="{{ artwork_src | relative_url }} 1280w, {{ talk.image | relative_url }} 640w"
+        sizes="(max-width: 768px) 100vw, 860px"
+        alt="{{ talk.image_alt | default: talk.title | escape }}"
+        width="1280"
+        height="720"
+        class="talk-artwork-img"
+        loading="eager"
+      >
+      {% if talk.image_alt %}
+        <p class="talk-artwork-caption">{{ talk.image_alt | escape }}</p>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% if talk.summary != '' and talk.summary %}
+    <section class="prose talk-section" aria-labelledby="talk-overview">
+      <h2 id="talk-overview">Overview</h2>
+      <p data-pretext>{{ talk.summary | escape }}</p>
+    </section>
+  {% endif %}
+
+  {% if talk.abstract != '' %}
+    <section class="prose talk-section" aria-labelledby="talk-abstract">
+      <h2 id="talk-abstract">Abstract & Laboratory Context</h2>
+      <p>{{ talk.abstract | escape | newline_to_br }}</p>
+    </section>
+  {% endif %}
+
+  {% if talk.key_findings %}
+    <section class="prose talk-section" aria-labelledby="talk-findings">
+      <h2 id="talk-findings">Empirical Metrics & Defense Outcomes</h2>
+      <div class="talk-metrics-grid">
+        {% for item in talk.key_findings %}
+          <div class="talk-metric-card">
+            <span class="talk-metric-value">{{ item.metric | escape }}</span>
+            <span class="talk-metric-label">{{ item.label | escape }}</span>
+            <p class="talk-metric-detail">{{ item.detail | escape }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  <section class="prose talk-section" aria-labelledby="talk-resources">
+    <h2 id="talk-resources">Session Resources & Verification</h2>
+    <ul class="talk-resource-list">
+      <li>
+        <strong>Interactive 22-Slide React Presentation:</strong> Hosted publicly on Hugging Face Spaces at
+        <a href="{{ talk.slides_url | escape }}" target="_blank" rel="noopener noreferrer">{{ talk.slides_url | escape }}</a>. Includes interactive
+        slide viewer, live WandaVision paradox explanation, and raw telemetry payloads.
+      </li>
+      <li>
+        <strong>Open Source Reproduction Repository:</strong> Code, MCP server definitions, and test runs available at
+        <a href="{{ talk.code_url | escape }}" target="_blank" rel="noopener noreferrer">{{ talk.code_url | escape }}</a>.
+      </li>
+      <li>
+        <strong>Live MCP Gradio Server:</strong> Exposing the <code>generar_imagen</code> tool with tool parameter inspection at
+        <a href="{{ talk.space_url | escape }}" target="_blank" rel="noopener noreferrer">{{ talk.space_url | escape }}</a>.
+      </li>
+      <li>
+        <strong>Official GDG DevFest Cusco Announcement:</strong> Verified speaker and workshop profile published on LinkedIn at
+        <a href="{{ talk.announcement_url | escape }}" target="_blank" rel="noopener noreferrer">{{ talk.announcement_url | escape }}</a>.
+      </li>
+    </ul>
+  </section>
+</article>

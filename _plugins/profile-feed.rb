@@ -58,7 +58,7 @@ module Portfolio
         'search' => [data['title'], data['description'], data['abstract'], data['tags'], data['venue'], data['authors'], data['summary'], data['relationship_note'], data['relationship'], data['category'], ownership].flatten.compact.join(' ') }
     end
 
-    def prepare(projects:, posts:, papers:, config:, latest_limit:, selected_papers: true)
+    def prepare(projects:, posts:, papers:, talks: [], config:, latest_limit:, selected_papers: true)
       selected = Array(config['featured_projects'])
       spotlight = Array(config['spotlight_projects'])
       spotlight_items = spotlight.filter_map { |id| projects.find { |project| slug(project) == id } }.uniq { |project| project.url }
@@ -79,11 +79,12 @@ module Portfolio
       paper_records = papers.sort_by.with_index do |paper, index|
         [paper_order.index(paper['id']) || paper_order.length, index]
       end.map { |paper| entry(paper, 'paper', selected_papers == true && paper['selected'] == true) }
+      talk_records = Array(talks).map { |talk| entry(talk, 'talk', talk['featured'] == true) }
       # All keeps current work first and writing chronological. Featured filters
       # those same records rather than altering the complete catalog's order.
       # Round-robin keeps content types distinguishable without visitor tracking.
       selected_paper_records = paper_records.sort_by.with_index { |record, index| [record['featured'] ? 0 : 1, index] }
-      groups = [selected_paper_records, project_records.dup, post_records.dup]
+      groups = [selected_paper_records, project_records.dup, post_records.dup, talk_records.dup]
       ordered = []
       until groups.all?(&:empty?)
         groups.each { |group| ordered << group.shift unless group.empty? }
@@ -91,7 +92,7 @@ module Portfolio
       ordered = ordered.each_with_index.sort_by { |record, index| [record['featured'] ? 0 : 1, index] }.map(&:first)
       ordered.each_with_index { |record, index| record['rank'] = index }
       { 'items' => ordered, 'counts' => { 'all' => ordered.size, 'projects' => project_records.size,
-        'writing' => post_records.size, 'papers' => paper_records.size,
+        'writing' => post_records.size, 'papers' => paper_records.size, 'talks' => talk_records.size,
         'coauthored_papers' => paper_records.count { |record| record['source']['relationship'] != 'cited_work' },
         'cited_work' => paper_records.count { |record| record['source']['relationship'] == 'cited_work' },
         'independent' => project_records.count { |record| record['project_type'] == 'independent' },
@@ -121,7 +122,9 @@ module Portfolio
       limit = posts.size if limit.negative?
       projects = site.collections.fetch('projects').docs.reject { |project| project.data['published'] == false }
       site.data['profile_catalog'] = ProfileFeed.prepare(projects: projects, posts: posts,
-        papers: site.data.dig('research', 'entries') || site.data.dig('research', 'publications') || [], config: site.data['profile_feed'] || {}, latest_limit: limit,
+        papers: site.data.dig('research', 'entries') || site.data.dig('research', 'publications') || [],
+        talks: site.data['talks_catalog'] || [],
+        config: site.data['profile_feed'] || {}, latest_limit: limit,
         selected_papers: home.data['selected_papers'])
     end
   end

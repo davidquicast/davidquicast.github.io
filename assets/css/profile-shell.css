@@ -1496,3 +1496,145 @@ body {
     grid-column: 1 / -1;
   }
 }
+
+/* Talk Detail Page Luxury Styling */
+.talk-links-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+  margin-bottom: 28px;
+}
+.talk-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    transform 150ms ease,
+    box-shadow 150ms ease;
+}
+.talk-link-btn svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+.talk-link-btn svg:last-child {
+  width: 12px;
+  height: 12px;
+  color: var(--muted);
+  transition: transform 140ms ease;
+}
+.talk-link-btn:hover svg:last-child {
+  transform: translate(1px, -1px);
+  color: currentColor;
+}
+.talk-link-btn:hover {
+  background: var(--surface-alt);
+  border-color: var(--ink);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+.talk-link-btn.primary {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+.talk-link-btn.primary:hover {
+  background: var(--accent, #000);
+  color: var(--on-accent, #fff);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+}
+.talk-featured-artwork {
+  margin: 32px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+.talk-artwork-img {
+  width: 100%;
+  height: auto;
+  max-height: 480px;
+  object-fit: cover;
+  display: block;
+}
+.talk-artwork-caption {
+  padding: 10px 16px;
+  font-size: 12px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  margin: 0;
+  background: var(--surface-alt);
+}
+.talk-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+  margin-bottom: 28px;
+}
+.talk-metric-card {
+  padding: 18px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  transition:
+    border-color 160ms,
+    box-shadow 160ms;
+}
+.talk-metric-card:hover {
+  border-color: var(--border-hover, var(--ink));
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+.talk-metric-val,
+.talk-metric-value {
+  display: block;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 4px;
+}
+.talk-metric-lbl,
+.talk-metric-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.talk-metric-det,
+.talk-metric-detail {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0;
+}
+.talk-badge {
+  display: inline-block;
+  font-weight: 600;
+  color: var(--ink);
+}
+.talk-lang-tag {
+  color: var(--muted);
+  font-size: 0.85em;
+  margin-left: 4px;
+}
+.talk-subtitle-es {
+  color: var(--muted);
+  font-size: 15px;
+  margin-top: 4px;
+  margin-bottom: 12px;
+}

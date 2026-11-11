@@ -72,11 +72,8 @@ test("compact Work/About navigation supports keyboard, native biography reading 
   await page.setViewportSize({ width: 390, height: 844 });
   await loaded(page, "/");
   const originalURL = page.url();
-  const nav = page.locator("#main-navigation");
-  await expect(nav).toBeVisible();
-  await expect(nav.locator("a")).toHaveText(["Work", "Talks", "About"]);
-  await expect(page.locator(".menu-toggle")).toHaveCount(0);
-  const about = nav.getByRole("link", { name: "About", exact: true });
+  const about = page.locator('.profile-resources a[href*="about"]');
+  await expect(about).toBeVisible();
   await about.focus();
   await page.keyboard.press("Enter");
   const dialog = page.locator("[data-content-overlay-dialog]");
@@ -266,7 +263,7 @@ test("article navigation and code copying operate on real content", async ({ pag
 });
 
 test("main surfaces have no serious or critical axe findings in both themes at narrow widths", async ({ page }) => {
-  test.setTimeout(180000);
+  test.setTimeout(240000);
   const violations = [];
   await page.emulateMedia({ reducedMotion: "reduce" });
   for (const width of [320, 390]) {

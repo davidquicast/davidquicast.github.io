@@ -53,7 +53,7 @@ test("All groups actual content, highlights are marks, and usernames retain plat
     await expect(page.locator(`[data-feed-view=${view}]`)).toHaveAttribute("aria-pressed", "true");
     if (view !== "all") await expect(page.locator(".featured-mark:visible")).toHaveCount(0);
   }
-  await expect(page.locator(".site-header .main-navigation a")).toHaveText(["Work", "Talks", "About"]);
+  await expect(page.locator(".site-header .main-navigation a")).toHaveText(["Work", "About"]);
 });
 test("content overlays preserve document, filters, history and normal reloadable URLs", async ({ page }) => {
   await home(page);
@@ -83,7 +83,7 @@ test("content overlays preserve document, filters, history and normal reloadable
   await expect(page.locator(overlay)).not.toBeVisible();
   await expect(page.locator("#main .project-detail h1")).toBeVisible();
   expect(await page.evaluate(() => window.documentIdentity)).toBeUndefined();
-  await expect(page.locator(".site-header .main-navigation a")).toHaveText(["Work", "Talks", "About"]);
+  await expect(page.locator(".site-header .main-navigation a")).toHaveText(["Work", "About"]);
 });
 test("overlay backdrop and nested gallery recover focus and the original board", async ({ page }) => {
   await home(page);

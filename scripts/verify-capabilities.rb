@@ -262,7 +262,7 @@ begin
     assert(doc.at_css('.profile-person-right .profile-avatar.profile-portrait-square')['src'] == '/fixture-base/assets/img/fixture-portrait.png', 'profile filename/align/shape flags ignored')
     assert(doc.at_css('.profile-sidebar .profile-more-info').text.include?('Fixture profile detail.'), 'profile extra information missing')
     assert(doc.css('.profile-sidebar .profile-social-link').length == fixture_site.data['profile_links'].length, 'real sidebar account connections missing')
-    assert(doc.css('.profile-sidebar .profile-resources a').length == 1, 'profile resource CV link missing or duplicated')
+    assert(doc.css('.profile-sidebar .profile-resources a[href*="resume"]').length == 1, 'profile resource CV link missing or duplicated')
     assert(doc.css('.identity-card').empty?, 'unified profile was incorrectly rendered as a feed tile')
     assert(doc.css('[data-feed-kind="paper"]').length == 1 && doc.at_css('[data-feed-kind="paper"]')['data-feed-featured'] == 'true', 'selected papers flag did not enable Featured paper')
     assert(doc.css('.paper-card .project-destinations-card a').map { |link| link['href'] } == [paper['code'], paper['url']], 'paper card omitted shared real GitHub/HF actions')
@@ -270,7 +270,7 @@ begin
     assert(doc.css('[data-feed-item]:not([data-feed-only-featured])').length == catalog['counts']['all'], 'rendered catalog and data counts diverged')
     assert(doc.at_css('[data-feed-count]').text.to_i == catalog['counts']['all'], 'All count does not match actual catalog data')
     assert(doc.at_css('[data-profile-feed]')['data-feed-default'] == 'all', 'default view is not the complete catalog')
-    assert(doc.css('.feed-tabs [data-feed-view]').map { |button| button['data-feed-view'] } == %w[all projects blogs research], 'shell has missing or extra category tabs')
+    assert(doc.css('.feed-tabs [data-feed-view]').map { |button| button['data-feed-view'] } == %w[all projects blogs research talks], 'shell has missing or extra category tabs')
     assert(doc.at_css('.feed-tabs [data-feed-view="all"]')['aria-pressed'] == 'true', 'default All control is not selected')
     assert(doc.css('[data-feed-item][hidden]').empty? && doc.css('[data-feed-only-featured]').empty?, 'SSR catalog hid real records or duplicated spotlight')
     assert(doc.css('.featured-mark').length == catalog['counts']['featured'], 'selected metadata and visible marks diverged')
@@ -286,7 +286,7 @@ begin
       full_profile = render_variant(fixture_site, 'page', {}, profile_source)
       assert(full_profile.at_css('[data-about-source]').text.include?('Real owner biography fixture.'), 'About reader lost the actual owner content')
       assert(full_profile.at_css('.about-reader-actions a[download]')['href'] == '/fixture-base/assets/pdf/en-us/cv.pdf', 'About reader lost native CV download')
-      assert(full_profile.css('.main-navigation > a').map { |link| link.text.strip } == %w[Work Talks About], 'About page changed universal navigation')
+      assert(full_profile.css('.main-navigation > a').map { |link| link.text.strip } == ['David Quispe'], 'About page changed universal navigation')
       assert(full_profile.text.include?('Full profile extra detail.'), 'full About page lost profile more_info')
       owner.data['social'] = false
       private_profile = render_variant(fixture_site, 'page', {}, profile_source)
@@ -294,11 +294,11 @@ begin
     ensure
       fixture_site.pages.delete(owner)
     end
-    assert(doc.css('.main-navigation > a').map { |link| link.text.strip } == %w[Work Talks About], 'home changed universal navigation')
+    assert(doc.css('.main-navigation > a').empty?, 'home changed universal navigation')
     project_document = fixture_site.collections['projects'].docs.find { |item| item.data['page_id'] == 'fixture-project' }
     assert(project_document && project_document.data['destinations'].length == 2, 'project destination generator did not attach real source links')
     project_page = render_variant(fixture_site, 'project', project_document.data.merge('layout' => 'project', 'destinations' => project_document.data['destinations']), '<p>Real project body fixture.</p>')
-    assert(project_page.css('.main-navigation > a').map { |link| link.text.strip } == %w[Work Talks About], 'project detail changed universal navigation')
+    assert(project_page.css('.main-navigation > a').map { |link| link.text.strip } == ['David Quispe'], 'project detail changed universal navigation')
     assert(project_page.css('.project-destinations-detail a').map { |link| link['href'] } == project_document.data['destinations'].map { |item| item['url'] }, 'detail actions lost or invented authored project destinations')
     assert(project_page.css('.project-destinations-detail a').map { |link| link.text.strip } == ['GitHub repository', 'Hugging Face dataset'], 'detail actions lost contextual resource labels')
     assert(doc.at_css('body')['data-image-zoom'] == 'true', 'enabled zoom did not reach native controller')

@@ -402,7 +402,7 @@ test("late enhancement keeps sidebar, catalog and compact header geometry stable
           };
         });
       // Essential compact navigation and theme do not depend on this deferred download.
-      await expect(page.locator("#main-navigation a")).toHaveText(["Work", "Talks", "About"]);
+      await expect(page.locator("#main-navigation a")).toHaveText(["Work", "About"]);
       const about = page.locator('#main-navigation a[href$="/about/"]');
       await about.focus();
       await expect(about).toBeFocused();

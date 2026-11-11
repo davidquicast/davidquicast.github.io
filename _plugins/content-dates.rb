@@ -120,7 +120,7 @@ module Portfolio
       return data['timeline'] if data['timeline']
       site = @context.registers[:site]
       case kind
-      when 'paper' then ContentDates.paper(data)
+      when 'paper', 'talk' then ContentDates.paper(data)
       when 'writing' then ContentDates.article(data, data['date'])
       else ContentDates.project(data, site.data.dig('project_activity', 'projects', data['page_id']) || {}, owner: site.data.dig('socials', 'github_username'))
       end
@@ -137,6 +137,7 @@ module Portfolio
       end
       site.posts.docs.each { |post| post.data['timeline'] = ContentDates.article(post.data, post.date) }
       Array(site.data.dig('research', 'entries')).each { |paper| paper['timeline'] = ContentDates.paper(paper) }
+      Array(site.data['talks_catalog']).each { |talk| talk['timeline'] = ContentDates.paper(talk) }
     rescue ArgumentError => error
       raise Jekyll::Errors::FatalException, "Content dates: #{error.message}"
     end

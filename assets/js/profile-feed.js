@@ -20,7 +20,7 @@
       .normalize("NFKD")
       .replace(/\p{M}/gu, "")
       .toLocaleLowerCase(document.documentElement.lang || "en");
-  const views = new Set(["featured", "all", "projects", "writing", "papers", "blogs", "research"]);
+  const views = new Set(["featured", "all", "projects", "writing", "papers", "blogs", "research", "talks"]);
   const sorts = new Set(["recommended", "newest", "oldest", "updated"]);
   const projectTypes = new Set(["all", "independent", "contributions"]);
   document.querySelectorAll("[data-profile-feed]").forEach((root) => {
@@ -266,7 +266,7 @@
     };
     const apply = (mode, animated = true) => {
       const words = normalize(state.query.trim()).split(/\s+/u).filter(Boolean);
-      const kind = { projects: "project", writing: "writing", blogs: "writing", papers: "paper", research: "paper" }[state.view];
+      const kind = { projects: "project", writing: "writing", blogs: "writing", papers: "paper", research: "paper", talks: "talk" }[state.view];
       selected = cards
         .filter(
           (item) =>
@@ -342,18 +342,24 @@
             blogs: "Articles and field notes.",
             papers: "Research papers and publications.",
             research: "Research papers and publications.",
+            talks: "Workshops, keynotes, and technical presentations.",
           }[state.view]
         );
       const noPapers = ["papers", "research"].includes(state.view) && !state.query.trim() && !cards.some((item) => item.dataset.feedKind === "paper");
+      const noTalks = state.view === "talks" && !state.query.trim() && !cards.some((item) => item.dataset.feedKind === "talk");
       if (emptyTitle)
         emptyTitle.textContent = label(
-          noPapers ? "feed.papers_empty_title" : "feed.empty_title",
-          noPapers ? "Research publications" : "No matching items"
+          noTalks ? "feed.talks_empty_title" : noPapers ? "feed.papers_empty_title" : "feed.empty_title",
+          noTalks ? "Talks & Workshops" : noPapers ? "Research publications" : "No matching items"
         );
       if (emptyDescription)
         emptyDescription.textContent = label(
-          noPapers ? "feed.papers_empty_description" : "feed.empty_description",
-          noPapers ? "Publication details will appear here when they are added." : "Try another search or choose a different category."
+          noTalks ? "feed.talks_empty_description" : noPapers ? "feed.papers_empty_description" : "feed.empty_description",
+          noTalks
+            ? "Technical workshops and conference presentations will be added here."
+            : noPapers
+              ? "Publication details will appear here when they are added."
+              : "Try another search or choose a different category."
         );
       if (empty) empty.hidden = selected.length !== 0;
       const scrollWriting = root.dataset.feedWritingScroll === "true" && ["writing", "blogs"].includes(state.view) && selected.length > 0;
@@ -492,6 +498,102 @@
       control.disabled = false;
       control.hidden = false;
     });
+    const initLuxurySort = () => {
+      const sortContainer = sort.closest(".feed-sort");
+      if (!sortContainer || sortContainer.querySelector(".luxury-sort-dropdown")) return;
+      const dropdown = document.createElement("div");
+      dropdown.className = "luxury-sort-dropdown";
+      dropdown.setAttribute("role", "listbox");
+      dropdown.setAttribute("aria-label", label("feed.sort", "Sort content"));
+      dropdown.hidden = true;
+
+      const options = [...sort.options];
+      const items = options.map((opt) => {
+        const item = document.createElement("button");
+        item.type = "button";
+        item.className = "luxury-sort-item";
+        item.setAttribute("role", "option");
+        item.dataset.value = opt.value;
+        item.setAttribute("aria-selected", String(opt.value === sort.value));
+        item.innerHTML = `
+          <span class="luxury-sort-item-label">${opt.textContent}</span>
+          <svg class="luxury-sort-check" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="4 11 8 15 16 6"></polyline>
+          </svg>
+        `;
+        item.addEventListener("click", (e) => {
+          e.stopPropagation();
+          sort.value = opt.value;
+          sort.dispatchEvent(new Event("change", { bubbles: true }));
+          close();
+          sort.focus({ preventScroll: true });
+        });
+        dropdown.appendChild(item);
+        return item;
+      });
+
+      sortContainer.appendChild(dropdown);
+
+      const syncActive = () => {
+        items.forEach((item) => {
+          item.setAttribute("aria-selected", String(item.dataset.value === sort.value));
+        });
+      };
+
+      const open = () => {
+        syncActive();
+        dropdown.hidden = false;
+        sortContainer.dataset.open = "true";
+        document.addEventListener("pointerdown", onDocPointerDown);
+        document.addEventListener("keydown", onDocKey);
+      };
+
+      const close = () => {
+        dropdown.hidden = true;
+        sortContainer.dataset.open = "false";
+        document.removeEventListener("pointerdown", onDocPointerDown);
+        document.removeEventListener("keydown", onDocKey);
+      };
+
+      const onDocPointerDown = (e) => {
+        if (!sortContainer.contains(e.target)) {
+          close();
+        }
+      };
+
+      const onDocKey = (e) => {
+        if (e.key === "Escape") {
+          e.preventDefault();
+          close();
+          sort.focus({ preventScroll: true });
+        } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+          e.preventDefault();
+          const curIndex = items.findIndex((it) => it.getAttribute("aria-selected") === "true");
+          const nextIndex = e.key === "ArrowDown" ? (curIndex + 1) % items.length : (curIndex - 1 + items.length) % items.length;
+          sort.value = items[nextIndex].dataset.value;
+          sort.dispatchEvent(new Event("change", { bubbles: true }));
+          syncActive();
+        }
+      };
+
+      sortContainer.addEventListener("pointerdown", (e) => {
+        if (dropdown.contains(e.target)) return;
+        e.preventDefault();
+        if (dropdown.hidden) open();
+        else close();
+      });
+
+      sort.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " " || (e.altKey && e.key === "ArrowDown")) {
+          e.preventDefault();
+          if (dropdown.hidden) open();
+          else close();
+        }
+      });
+
+      sort.addEventListener("change", syncActive);
+    };
+    initLuxurySort();
     state = read();
     apply(null, false);
   });

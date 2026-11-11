@@ -1,0 +1,99 @@
+{% assign talk = include.talk %}
+{% assign talk_dates = talk | content_timeline: 'talk' %}
+{% assign talk_url = talk.detail_url | default: talk.url %}
+<article
+  class="wall-card talk-card"
+  data-wall-card
+  {% include feed-attributes.liquid entry=include.entry %}
+  data-filter-item
+  data-topics="{{ talk.tags | join:' ' | downcase | escape }} talk workshop gdg devfest"
+  data-search-text="{{ talk.title | append:' ' | append:talk.summary | append:' ' | append:talk.venue | append:' ' | append:talk.event | downcase | escape }}"
+>
+  {% if talk.slide_image or talk.image %}
+    <a
+      class="wall-media talk-media"
+      href="{{ talk_url | relative_url | escape }}"
+      data-content-overlay
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <img
+        src="{{ talk.slide_image | default: talk.image | relative_url }}"
+        {% if talk.slide_srcset %}
+          srcset="{{ talk.slide_srcset }}"
+          sizes="{{ include.sizes | default: '(min-width: 1400px) 460px, (min-width: 900px) 42vw, 92vw' }}"
+        {% elsif talk.srcset %}
+          srcset="{{ talk.srcset }}"
+          sizes="{{ include.sizes | default: '(min-width: 1400px) 460px, (min-width: 900px) 42vw, 92vw' }}"
+        {% endif %}
+        width="1280"
+        height="720"
+        alt="{{ talk.image_alt | default: talk.title | escape }}"
+        loading="{{ include.loading | default: 'lazy' }}"
+        decoding="async"
+      >
+    </a>
+  {% endif %}
+
+  <div class="wall-card-body talk-card-body">
+    <div class="talk-card-heading">
+      <p class="wall-meta">
+        {% include icon.liquid name='talk' -%}
+        <span>{{ talk.badge | default: 'Talk' | escape }}</span>
+        <span aria-hidden="true">·</span>
+        <span class="talk-year">{% include content-date.liquid value=talk_dates.primary %}</span>
+        {%- if include.entry.featured -%}
+          <span class="featured-mark">
+            {%- include icon.liquid name="star" -%}
+            {{- 'feed.featured' | ui_label -}}
+          </span>
+        {%- endif %}
+      </p>
+      <h2>
+        <a class="talk-open" data-content-overlay href="{{ talk_url | relative_url | escape }}" data-pretext>{{ talk.title | escape }}</a>
+      </h2>
+    </div>
+
+    <p class="talk-event-line">
+      {% if talk.event_url %}
+        <a class="talk-event-link" href="{{ talk.event_url | escape }}" target="_blank" rel="noopener noreferrer">{{ talk.event }}</a>
+      {% else %}
+        <span class="talk-event">{{ talk.event }}</span>
+      {% endif %}
+      {% if talk.location or talk.venue %}
+        <span class="talk-location">, {{ talk.location | default: talk.venue }}</span>
+      {% endif %}
+    </p>
+
+    {% assign talk_blurb = talk.description | default: talk.summary %}
+    {% if talk_blurb %}
+      <p class="wall-excerpt talk-summary" data-pretext>{{ talk_blurb | escape }}</p>
+    {% endif %}
+
+    <!-- Key empirical findings: dynamically shown in dedicated talks view via CSS -->
+    {% if talk.key_findings %}
+      <div class="talk-metric-strip" aria-label="Key empirical findings">
+        {% for finding in talk.key_findings limit:4 %}
+          <div class="metric-pill">
+            <span class="metric-num">{{ finding.metric }}</span>
+            <span class="metric-desc">{{ finding.label }}</span>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Action links -->
+    <div class="talk-card-actions">
+      {% include project-destinations.liquid project=talk context='card' %}
+      {% if talk.article_url %}
+        <a class="talk-article-action" href="{{ talk.article_url | relative_url }}" data-content-overlay>
+          Article
+          {% include icon.liquid name='arrow' -%}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+  {% assign menu_key = talk.id | prepend: 'talk-' %}
+  {% include card-actions.liquid key=menu_key title=talk.title url=talk_url image=talk.slide_image alt=talk.image_alt %}
+</article>

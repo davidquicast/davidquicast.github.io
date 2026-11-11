@@ -77,6 +77,23 @@ module Portfolio
         paper['destinations'] = ProjectDestinations.build(paper, fields: %w[code dataset url])
         paper['destination_fields'] = %w[code dataset url].select { |field| ProjectDestinations.destination(paper[field]) }
       end
+      Array(site.data['talks_catalog']).each do |talk|
+        if talk['destinations'].is_a?(Array) && !talk['destinations'].empty?
+          talk['destination_fields'] = %w[destinations]
+        else
+          destinations = []
+          if talk['code_url'] && (dest = ProjectDestinations.destination(talk['code_url']))
+            dest['label'] = 'Code'
+            destinations << dest
+          end
+          if talk['slides_url'] && (dest = ProjectDestinations.destination(talk['slides_url']))
+            dest['label'] = 'Slides'
+            destinations << dest
+          end
+          talk['destinations'] = destinations
+          talk['destination_fields'] = %w[code_url slides_url].select { |field| talk[field] }
+        end
+      end
     end
   end
 end

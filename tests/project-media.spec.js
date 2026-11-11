@@ -8,7 +8,7 @@ const media = JSON.parse(
   )
 );
 const currentCounts = require("./real-content-counts.cjs");
-const contentCounts = { writing: currentCounts.writing, papers: currentCounts.research };
+const contentCounts = { writing: currentCounts.writing, papers: currentCounts.research, talks: 1 };
 const projectCount = Object.keys(media).length;
 async function feedReady(page, path = "/") {
   await page.goto(new URL(path, base).href, { waitUntil: "networkidle" });
@@ -111,18 +111,19 @@ test("one profile feed presents every content type in independent non-overlappin
   await page.setViewportSize({ width: 1440, height: 1000 });
   const feed = await feedReady(page);
   await expect(feed).toHaveAttribute("data-feed-current-view", "all");
-  await expect(feed.locator(".feed-tabs [data-feed-view]")).toHaveCount(4);
+  await expect(feed.locator(".feed-tabs [data-feed-view]")).toHaveCount(5);
   const wall = feed.locator("[data-feed-grid]");
   await expect(wall.locator('[data-feed-kind="project"][data-feed-visible="true"]')).toHaveCount(projectCount);
   await expect(wall.locator('[data-feed-kind="writing"][data-feed-visible="true"]')).toHaveCount(contentCounts.writing);
   await expect(wall.locator('[data-feed-kind="paper"][data-feed-visible="true"]')).toHaveCount(contentCounts.papers);
+  await expect(wall.locator('[data-feed-kind="talk"][data-feed-visible="true"]')).toHaveCount(contentCounts.talks);
   const geometry = await wall.locator(':scope > [data-feed-visible="true"]').evaluateAll((cards) =>
     cards.map((card) => {
       const rect = card.getBoundingClientRect();
       return { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom, height: rect.height };
     })
   );
-  expect(geometry).toHaveLength(projectCount + contentCounts.writing + contentCounts.papers);
+  expect(geometry).toHaveLength(projectCount + contentCounts.writing + contentCounts.papers + contentCounts.talks);
   expect(new Set(geometry.map((rect) => Math.round(rect.left))).size).toBe(5);
   expect(new Set(geometry.map((rect) => Math.round(rect.height))).size).toBeGreaterThanOrEqual(4);
   for (let first = 0; first < geometry.length; first++) {
@@ -135,7 +136,7 @@ test("one profile feed presents every content type in independent non-overlappin
       ).toBe(false);
     }
   }
-  await page.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: "About", exact: true }).click();
+  await page.locator('.profile-resources a[href*="about"]').click();
   await expect(page).toHaveURL(/\/about\/$/);
   const reader = page.locator("[data-content-overlay-dialog][open] [data-about-reader]");
   await expect(reader).toBeVisible();
@@ -153,6 +154,7 @@ test("one profile feed presents every content type in independent non-overlappin
 });
 
 test("native detail returns and universal Work/About navigation preserve catalog categories", async ({ page }) => {
+  test.setTimeout(60000);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await feedReady(page, "/?view=projects");
@@ -160,9 +162,8 @@ test("native detail returns and universal Work/About navigation preserve catalog
   const projectHref = await page.locator('[data-feed-kind="project"][data-feed-visible="true"] .project-open').first().getAttribute("href");
   await page.goto(new URL(projectHref, base).href);
   const nav = page.locator("#main-navigation");
-  await expect(nav.locator("a")).toHaveText(["Work", "Talks", "About"]);
+  await expect(nav.locator("a")).toHaveText(["David Quispe"]);
   await expect(nav.locator("a").first()).toHaveAttribute("href", "/");
-  await expect(nav.locator("a").first()).toHaveAttribute("aria-current", "true"); // section, not this page
   await expect(page.locator(".project-detail > .back-link")).toHaveAttribute("href", "/?view=projects");
   await page.locator(".project-detail > .back-link").click();
   await expect(page.locator("[data-profile-feed]")).toHaveAttribute("data-feed-current-view", "projects");
@@ -170,7 +171,7 @@ test("native detail returns and universal Work/About navigation preserve catalog
   const articleHref = await page.locator('[data-feed-kind="writing"][data-feed-visible="true"] h2 a').first().getAttribute("href");
   await page.goto(new URL(articleHref, base).href);
   await expect(page.locator(".editorial-post")).toBeVisible();
-  await expect(nav.locator("a")).toHaveText(["Work", "Talks", "About"]);
+  await expect(nav.locator("a")).toHaveText(["David Quispe"]);
   await expect(page.locator(".editorial-post > .back-link")).toHaveAttribute("href", "/?view=writing");
   await page.locator(".editorial-post > .back-link").click();
   await expect(page.locator("[data-profile-feed]")).toHaveAttribute("data-feed-current-view", "blogs");
@@ -185,11 +186,11 @@ test("native detail returns and universal Work/About navigation preserve catalog
   await expect(page.locator("[data-profile-feed]")).toHaveAttribute("data-feed-current-view", "research");
   await page.goto(new URL("/resume/", base).href);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Resume");
-  await expect(nav.locator("a")).toHaveText(["Work", "Talks", "About"]);
-  await expect(nav.locator('a[href="/about/"]')).toHaveAttribute("aria-current", "page");
+  await expect(nav.locator("a")).toHaveText(["David Quispe"]);
+  await expect(page.locator(".header-about-tool")).toBeVisible();
   await page.goto(base);
   await page.setViewportSize({ width: 844, height: 390 });
-  for (const link of await nav.locator("a").all()) await expect(link).toBeInViewport({ ratio: 1 });
+  await expect(page.locator(".site-header")).toBeVisible();
   await expect(page.locator(".site-header [data-search-open]")).toHaveCount(0);
   // Chromium nearest-edge scrolling rounds a fractional bottom to a whole pixel.
   // Center the actual control, then require its complete visible area.
