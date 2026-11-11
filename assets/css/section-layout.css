@@ -179,9 +179,7 @@
   align-items: baseline;
   gap: 2px 10px;
 }
-:is([data-feed-current-view="research"], [data-feed-current-view="papers"])
-  .paper-card
-  :is(.wall-meta, .content-updated) {
+:is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card :is(.wall-meta, .content-updated) {
   font-size: 11px;
   line-height: 1.2;
 }
@@ -211,9 +209,7 @@
 :is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card .project-destinations-card {
   gap: 6px;
 }
-:is([data-feed-current-view="research"], [data-feed-current-view="papers"])
-  .paper-card
-  :is(.project-destination, .talk-action-pill) {
+:is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card :is(.project-destination, .talk-action-pill) {
   width: auto;
   min-height: 20px;
   padding: 1px 8px;
@@ -230,9 +226,7 @@
     border-color 140ms,
     background-color 140ms;
 }
-:is([data-feed-current-view="research"], [data-feed-current-view="papers"])
-  .paper-card
-  :is(.project-destination, .talk-action-pill):hover {
+:is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card :is(.project-destination, .talk-action-pill):hover {
   color: var(--ink);
   border-color: var(--ink);
   background: var(--surface-alt);
@@ -241,10 +235,7 @@
   width: 24px;
   padding: 1px 2px;
 }
-:is([data-feed-current-view="research"], [data-feed-current-view="papers"])
-  .paper-card
-  .project-destination
-  > span {
+:is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card .project-destination > span {
   display: none;
 }
 :is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card .paper-citation {
@@ -398,9 +389,7 @@
   grid-template-columns: minmax(0, 1fr);
 }
 .paper-card:not(:has(.research-card-media)) .paper-card-kicker,
-:is([data-feed-current-view="research"], [data-feed-current-view="papers"])
-  .paper-card:not(:has(.research-card-media))
-  .wall-card-body,
+:is([data-feed-current-view="research"], [data-feed-current-view="papers"]) .paper-card:not(:has(.research-card-media)) .wall-card-body,
 .research-record-preview:not(:has(.research-record-media)) .research-record-body {
   grid-column: 1;
 }

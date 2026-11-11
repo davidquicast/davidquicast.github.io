@@ -19,7 +19,6 @@ talks:
     slide_image: "/assets/img/talks/devfest-cusco-2026-slide-1280.webp"
     slide_srcset: "/assets/img/talks/devfest-cusco-2026-slide-960.webp 960w, /assets/img/talks/devfest-cusco-2026-slide-1280.webp 1280w"
     image_alt: "DevFest Cusco 2026 keynote slide: ¿Puede Hugging Face manipular a Antigravity? por David Quispe."
-    language: "Spanish (delivered live in Spanish in Cusco, Peru)"
     language_short: "Spanish"
     description: "Empirical security evaluation testing whether third-party MCP tools can manipulate autonomous coding agents."
     summary: "An empirical security evaluation testing whether indirect prompt injections and altered tool parameters can manipulate autonomous coding agents like Google Antigravity, featuring live MCP telemetry and deterministic PreToolUse defenses."
