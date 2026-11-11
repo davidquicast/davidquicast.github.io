@@ -140,9 +140,12 @@
   }
   .js .profile-sidebar .profile-role,
   .js .profile-sidebar .profile-availability,
+  .js .profile-sidebar .profile-resources a,
   .js .profile-sidebar .profile-focus,
   .js .profile-sidebar .profile-summary,
-  .js .profile-sidebar .profile-link-list > *,
+  .js .profile-sidebar .profile-links-primary > *,
+  .js .profile-sidebar .profile-links-overflow > summary,
+  .js .profile-sidebar .profile-more-info,
   .js .profile-sidebar .profile-research-links > * {
     animation: motion-rise 760ms var(--motion-ease) both;
     animation-delay: calc(var(--motion-order, 0) * var(--motion-step) + 260ms);
@@ -153,31 +156,43 @@
   .js .profile-sidebar .profile-availability {
     --motion-order: 2;
   }
+  .js .profile-sidebar .profile-resources a:nth-child(1) {
+    --motion-order: 2.2;
+  }
+  .js .profile-sidebar .profile-resources a:nth-child(2) {
+    --motion-order: 2.5;
+  }
+  .js .profile-sidebar .profile-resources a:nth-child(n + 3) {
+    --motion-order: 2.8;
+  }
   .js .profile-sidebar .profile-focus {
     --motion-order: 3;
   }
   .js .profile-sidebar .profile-summary {
     --motion-order: 4;
   }
-  .js .profile-sidebar .profile-link-list > :nth-child(1) {
+  .js .profile-sidebar .profile-links-primary > :nth-child(1) {
     --motion-order: 5;
   }
-  .js .profile-sidebar .profile-link-list > :nth-child(2) {
-    --motion-order: 5.5;
+  .js .profile-sidebar .profile-links-primary > :nth-child(2) {
+    --motion-order: 5.4;
   }
-  .js .profile-sidebar .profile-link-list > :nth-child(3) {
-    --motion-order: 6;
+  .js .profile-sidebar .profile-links-primary > :nth-child(3) {
+    --motion-order: 5.8;
   }
-  .js .profile-sidebar .profile-link-list > :nth-child(4) {
-    --motion-order: 6.5;
+  .js .profile-sidebar .profile-links-primary > :nth-child(4) {
+    --motion-order: 6.2;
   }
-  .js .profile-sidebar .profile-link-list > :nth-child(5) {
+  .js .profile-sidebar .profile-links-primary > :nth-child(5) {
+    --motion-order: 6.6;
+  }
+  .js .profile-sidebar .profile-links-primary > :nth-child(n + 6) {
     --motion-order: 7;
   }
-  .js .profile-sidebar .profile-link-list > :nth-child(6) {
-    --motion-order: 7.5;
+  .js .profile-sidebar .profile-links-overflow > summary {
+    --motion-order: 7.4;
   }
-  .js .profile-sidebar .profile-link-list > :nth-child(n + 7) {
+  .js .profile-sidebar .profile-more-info {
     --motion-order: 8;
   }
   .js .profile-sidebar .profile-research-links > * {

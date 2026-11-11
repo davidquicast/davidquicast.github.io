@@ -168,7 +168,7 @@
 }
 
 /* Connection disclosure responds immediately rather than replaying the intro. */
-.js .profile-sidebar .profile-connections-list > *,
-.js .profile-sidebar .profile-connections-list .profile-research-links > * {
+.js .profile-sidebar .profile-links-extra > *,
+.js .profile-sidebar .profile-links-extra .profile-research-links > * {
   animation: none;
 }

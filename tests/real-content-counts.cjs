@@ -16,7 +16,9 @@ authored = data.fetch('publications', []).length
 cited = data.fetch('citations', []).length
 covers = YAML.safe_load(File.read('_data/research_covers.yml')) || {}
 research_ids = (data.fetch('publications', []) + data.fetch('citations', [])).map { |paper| paper['id'] }
-puts JSON.generate({projects:projects,writing:writing,authored:authored,cited:cited,research:authored+cited,researchCovers:(covers.keys & research_ids),all:projects+writing+authored+cited})
+talks_data = YAML.safe_load(File.read('_data/talks.yml')) || {}
+talks = (talks_data['talks'] || []).count { |t| t['published'] != false }
+puts JSON.generate({projects:projects,writing:writing,authored:authored,cited:cited,research:authored+cited,talks:talks,researchCovers:(covers.keys & research_ids),all:projects+writing+authored+cited+talks})
 `,
     ],
     { encoding: "utf8" }

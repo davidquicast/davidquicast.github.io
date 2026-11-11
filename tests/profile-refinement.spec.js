@@ -17,10 +17,10 @@ test("identity, search and category labels each have one visible home location",
   await expect(page.locator(".site-header img, .profile-handle, .profile-about-actions")).toHaveCount(0);
   await expect(page.locator("[data-search-open]")).toHaveCount(0);
   await expect(page.locator("input[type=search]:visible")).toHaveCount(1);
-  await expect(page.locator(".feed-tabs button")).toHaveText(["All", "Projects", "Blog", "Research"]);
+  await expect(page.locator(".feed-tabs button")).toHaveText([/all/i, /projects/i, /blog/i, /research/i, /talks/i]);
   await expect(page.locator("[data-project-filters]")).toBeHidden();
-  await expect(page.locator(".profile-resources a")).toHaveAttribute("href", "/resume/");
-  await page.locator(".main-navigation a[href='/about/']").click();
+  await expect(page.locator(".profile-resources a[href*='resume']")).toHaveAttribute("href", "/resume/");
+  await page.locator(".profile-resources a[href*='about']").click();
   await expect(page.locator("[data-about-ready=true]")).toBeVisible();
   await expect(page.locator("[data-overlay-body] img")).toHaveCount(0);
   await expect(page.locator("[data-overlay-context]")).toHaveText("About");

@@ -144,12 +144,13 @@ async function readyFeed(page, reducedMotion = "no-preference") {
   await expect(root).toHaveAttribute("data-feed-ready", "true");
   await expect(root).toHaveAttribute("data-feed-busy", "false");
   await expect(root).toHaveAttribute("data-feed-current-view", "all");
-  await expect(page.locator(".feed-tabs button")).toHaveCount(4);
+  await expect(page.locator(".feed-tabs button")).toHaveCount(5);
   expect(await page.locator(".feed-tabs button").evaluateAll((buttons) => buttons.map((button) => button.dataset.feedView))).toEqual([
     "all",
     "projects",
     "blogs",
     "research",
+    "talks",
   ]);
   await expect(page.locator("[data-project-deck]")).toHaveCount(0);
   return root;
