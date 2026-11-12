@@ -25,7 +25,7 @@ async function close(page) {
 }
 test("All groups actual content, highlights are marks, and usernames retain platform identity", async ({ page }) => {
   await home(page);
-  await expect(page.locator("[data-feed-view]")).toHaveCount(4);
+  await expect(page.locator(".feed-tabs [data-feed-view]")).toHaveCount(5);
   await expect(page.locator("[data-feed-view=all]")).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("[data-feed-view=featured]")).toHaveCount(0);
   await expect(page.locator("[data-feed-item]:not([hidden])")).toHaveCount(contentCounts.all);
@@ -47,13 +47,13 @@ test("All groups actual content, highlights are marks, and usernames retain plat
   expect(connections.some((c) => c.text === "@davidquicast" && c.label.includes("GitHub"))).toBeTruthy();
   expect(connections.some((c) => c.text === "@davidquicast" && c.label.includes("Hugging Face"))).toBeTruthy();
   expect(connections.every((c) => c.href && !["GitHub", "LinkedIn", "Hugging Face"].includes(c.text))).toBeTruthy();
-  for (const view of ["projects", "blogs", "research", "all"]) {
+  for (const view of ["projects", "blogs", "research", "talks", "all"]) {
     await page.locator(`[data-feed-view=${view}]`).click();
     await settled(page);
     await expect(page.locator(`[data-feed-view=${view}]`)).toHaveAttribute("aria-pressed", "true");
     if (view !== "all") await expect(page.locator(".featured-mark:visible")).toHaveCount(0);
   }
-  await expect(page.locator(".site-header .main-navigation a")).toHaveText(["Work", "About"]);
+  await expect(page.locator(".profile-resources a[href*='about']")).toBeVisible();
 });
 test("content overlays preserve document, filters, history and normal reloadable URLs", async ({ page }) => {
   await home(page);
@@ -83,7 +83,7 @@ test("content overlays preserve document, filters, history and normal reloadable
   await expect(page.locator(overlay)).not.toBeVisible();
   await expect(page.locator("#main .project-detail h1")).toBeVisible();
   expect(await page.evaluate(() => window.documentIdentity)).toBeUndefined();
-  await expect(page.locator(".site-header .main-navigation a")).toHaveText(["Work", "About"]);
+  await expect(page.locator(".site-header .main-navigation a")).toHaveText(["David Quispe"]);
 });
 test("overlay backdrop and nested gallery recover focus and the original board", async ({ page }) => {
   await home(page);
@@ -146,7 +146,7 @@ test("About keeps bounded desktop pages and native compact reading with the comp
 });
 test("About to CV is one history stack and a direct CV stays a normal page", async ({ page }) => {
   await home(page, 390, 844);
-  await page.locator('.main-navigation a[href="/about/"]').click();
+  await page.locator('.profile-resources a[href*="about"]').click();
   await opened(page);
   await expect(page.locator("[data-about-reader]")).toHaveAttribute("data-about-ready", "true");
   await page.locator("[data-overlay-body] .about-reader-actions [data-content-overlay]").click();
@@ -240,7 +240,7 @@ test("short landscape About scrolls the original biography in direct and overlay
   for (const overlayMode of [false, true]) {
     await page.setViewportSize({ width: 844, height: 390 });
     await page.goto(new URL(overlayMode ? "/" : "/about/", base).href, { waitUntil: "networkidle" });
-    if (overlayMode) await page.locator('.main-navigation a[href="/about/"]').click();
+    if (overlayMode) await page.locator('.profile-resources a[href*="about"]').click();
     const reader = page.locator("[data-about-reader]");
     await expect(reader).toHaveAttribute("data-about-ready", "true");
     await expect(reader).toHaveAttribute("data-about-mode", "scroll");
@@ -268,7 +268,7 @@ test("phone About overlays scroll natively by keyboard and retain CV actions and
   test.setTimeout(60000);
   for (const width of [320, 390]) {
     await home(page, width, 568);
-    const about = page.locator('.main-navigation a[href="/about/"]');
+    const about = page.locator('.profile-resources a[href*="about"]');
     await about.focus();
     await page.keyboard.press("Enter");
     const reader = page.locator("[data-about-reader]");

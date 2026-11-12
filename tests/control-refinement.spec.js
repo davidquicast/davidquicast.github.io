@@ -108,7 +108,8 @@ test("shared close and theme controls retain touch targets and visible keyboard 
     const target = await theme.boundingBox();
     expect(target.width).toBeGreaterThanOrEqual(44);
     expect(target.height).toBeGreaterThanOrEqual(44);
-    await page.locator(".main-navigation").getByRole("link", { name: "About", exact: true }).click();
+    const aboutLink = page.locator('.profile-resources a[href*="about"]');
+    await aboutLink.click();
     const close = page.locator("[data-overlay-close]");
     await expect(close).toBeVisible();
     const rectangle = await close.boundingBox();
@@ -117,7 +118,7 @@ test("shared close and theme controls retain touch targets and visible keyboard 
     await close.focus();
     await page.keyboard.press("Enter");
     await expect(page.locator("[data-content-overlay-dialog]")).not.toBeVisible();
-    await expect(page.locator(".main-navigation").getByRole("link", { name: "About", exact: true })).toBeFocused();
+    await expect(aboutLink).toBeFocused();
   } finally {
     await context.close();
   }

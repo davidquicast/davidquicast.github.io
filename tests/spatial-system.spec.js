@@ -27,13 +27,17 @@ async function frame(page) {
       return { left: r.left, width: r.width, start: r.left + parseFloat(s.paddingLeft), end: r.right - parseFloat(s.paddingRight) };
     };
     const nav = document.querySelector(".main-navigation a");
-    const range = document.createRange();
-    range.selectNodeContents(nav);
+    let workTextLeft = null;
+    if (nav) {
+      const range = document.createRange();
+      range.selectNodeContents(nav);
+      workTextLeft = range.getBoundingClientRect().left;
+    }
     return {
       header: box(document.querySelector(".site-header-inner")),
       main: box(document.querySelector(".site-main")),
       footer: box(document.querySelector(".site-footer")),
-      workTextLeft: range.getBoundingClientRect().left,
+      workTextLeft,
       overflow: document.documentElement.scrollWidth - innerWidth,
       workspace: document.querySelector("[data-profile-feed]")?.getBoundingClientRect().left,
     };
@@ -51,7 +55,9 @@ test("header, content and footer share real aligned frames across routes and vie
         expect(Math.abs(f[name].start - f.main.start), `${route} ${width} ${name} left`).toBeLessThan(1);
         expect(Math.abs(f[name].end - f.main.end), `${route} ${width} ${name} right`).toBeLessThan(1);
       }
-      expect(Math.abs(f.workTextLeft - f.main.start), `${route} ${width} navigation optical edge`).toBeLessThan(1);
+      if (f.workTextLeft !== null) {
+        expect(Math.abs(f.workTextLeft - f.main.start), `${route} ${width} navigation optical edge`).toBeLessThan(1);
+      }
       expect(f.main.start).toBeGreaterThanOrEqual(24);
       expect(f.main.width).toBeLessThanOrEqual(1440);
       expect(f.overflow).toBeLessThanOrEqual(1);
@@ -93,9 +99,16 @@ test("profile identity, resources and reading scale stay cohesive instead of inh
         handleLines: handleRange.getClientRects().length,
         avatar: rect(".profile-avatar").width,
         identityHeight: rect(".profile-person").height,
-        // The optional availability signal sits between identity and biography.
+        // The optional availability signal and status row sit between identity and biography.
         biographyGap:
-          rect(".profile-bio").top - rect(document.querySelector(".profile-availability") ? ".profile-availability" : ".profile-person").bottom,
+          rect(".profile-bio").top -
+          rect(
+            document.querySelector(".profile-status-row")
+              ? ".profile-status-row"
+              : document.querySelector(".profile-availability")
+                ? ".profile-availability"
+                : ".profile-person"
+          ).bottom,
         name: size(".profile-name h1"),
         role: size(".profile-role"),
         bio: size(".profile-summary"),
@@ -151,10 +164,12 @@ test("the same frame and profile remain readable without JavaScript", async ({ b
       await page.setViewportSize({ width, height: 1000 });
       await page.goto(base, { waitUntil: "networkidle" });
       const f = await frame(page);
-      expect(Math.abs(f.workTextLeft - f.main.start)).toBeLessThan(1);
+      if (f.workTextLeft !== null) {
+        expect(Math.abs(f.workTextLeft - f.main.start)).toBeLessThan(1);
+      }
       expect(Math.abs(f.workspace - f.main.start)).toBeLessThan(1);
       expect(f.overflow).toBeLessThanOrEqual(1);
-      await expect(page.locator(".profile-resources a")).toHaveAttribute("href", "/resume/");
+      await expect(page.locator('.profile-resources a[href*="resume"]')).toHaveAttribute("href", "/resume/");
       await expect(page.locator("img.profile-avatar")).toHaveCount(1);
     }
   } finally {

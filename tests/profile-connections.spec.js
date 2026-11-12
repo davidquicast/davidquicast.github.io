@@ -25,7 +25,7 @@ test("phone exposes five connections and a native keyboard disclosure, with RSS 
   const position = await page.evaluate(() => {
     const status = document.querySelector(".profile-status-row").getBoundingClientRect();
     const links = document.querySelector("[data-profile-links]").getBoundingClientRect();
-    const cv = document.querySelector(".profile-status-row a").getBoundingClientRect();
+    const cv = document.querySelector('.profile-status-row a[href*="resume"]').getBoundingClientRect();
     const available = document.querySelector(".profile-availability").getBoundingClientRect();
     return {
       above: status.bottom < links.top,
@@ -36,7 +36,7 @@ test("phone exposes five connections and a native keyboard disclosure, with RSS 
   expect(position.above).toBe(true);
   expect(position.aligned).toBeLessThan(1);
   expect(position.overflow).toBeLessThanOrEqual(1);
-  await page.locator(".profile-status-row a").click();
+  await page.locator('.profile-status-row a[href*="resume"]').click();
   await expect(page.locator("[data-overlay-body] .resume-preview")).toBeVisible();
 });
 test("desktop shows every connection while it fits, then offers disclosure when height is constrained", async ({ page }) => {

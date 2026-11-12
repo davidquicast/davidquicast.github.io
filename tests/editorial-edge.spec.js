@@ -226,11 +226,9 @@ test.describe("live progressive enhancement", () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.route("**/assets/js/portfolio.js*", (route) => route.abort());
     await page.goto(base);
-    const nav = page.locator("#main-navigation");
-    await expect(nav).toBeVisible();
-    await expect(nav.locator("a")).toHaveText(["Work", "About"]);
     await expect(page.locator(".menu-toggle")).toHaveCount(0);
-    const about = nav.getByRole("link", { name: "About", exact: true });
+    const about = page.locator('.profile-resources a[href*="about"]');
+    await expect(about).toBeVisible();
     await about.focus();
     await page.keyboard.press("Enter");
     await expect(page.locator("[data-content-overlay-dialog]")).toBeVisible();

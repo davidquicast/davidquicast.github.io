@@ -1,4 +1,5 @@
 const { test, expect } = require("@playwright/test");
+const { entrancesFinished } = require("./support/motion.cjs");
 const contentCounts = require("./real-content-counts.cjs");
 const base = process.env.PORTFOLIO_URL;
 test.skip(!base, "Set PORTFOLIO_URL to the Docker production preview.");
@@ -187,6 +188,7 @@ test("rapid filter changes finish at the requested column mode with sorted seman
 
 test("profile connections use compact desktop rows and retain touch targets on coarse-pointer phones", async ({ page, browser }) => {
   await home(page);
+  await entrancesFinished(page);
   const desktop = await page
     .locator(".profile-sidebar .profile-social-links .profile-social-link")
     .evaluateAll((links) =>

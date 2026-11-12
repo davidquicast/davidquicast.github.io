@@ -402,8 +402,7 @@ test("late enhancement keeps sidebar, catalog and compact header geometry stable
           };
         });
       // Essential compact navigation and theme do not depend on this deferred download.
-      await expect(page.locator("#main-navigation a")).toHaveText(["Work", "About"]);
-      const about = page.locator('#main-navigation a[href$="/about/"]');
+      const about = page.locator('.profile-resources a[href*="about"]');
       await about.focus();
       await expect(about).toBeFocused();
       await expect(about).toHaveAttribute("href", /\/about\/$/);
@@ -425,7 +424,6 @@ test("late enhancement keeps sidebar, catalog and compact header geometry stable
       await page.waitForLoadState("domcontentloaded");
       await expect(page.locator("[data-search-dialog]")).toHaveAttribute("data-ready", "true");
       await expect(page.locator(".profile-sidebar [data-pretext]").first()).toHaveAttribute("data-pretext-ready", "true");
-      await expect(page.locator("#main-navigation")).toHaveAttribute("data-enhanced", "true");
       await expect(page.locator("[data-profile-feed]")).toHaveAttribute("data-feed-busy", "false");
       await expect(page.locator("[data-project-deck]")).toHaveCount(0);
       await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
