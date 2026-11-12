@@ -37,6 +37,24 @@ body {
   display: block;
   border: 0;
   overflow: visible;
+  background: transparent;
+  pointer-events: none;
+  z-index: 40;
+}
+.site-header .main-navigation,
+.site-header .rail-tools {
+  pointer-events: auto;
+}
+body:not(.page-about) .site-header {
+  background: color-mix(in srgb, var(--bg) 84%, transparent);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+}
+.page-about .site-header {
+  background: transparent;
+  border-bottom: 0;
+  box-shadow: none;
 }
 .site-header-inner {
   display: flex;
