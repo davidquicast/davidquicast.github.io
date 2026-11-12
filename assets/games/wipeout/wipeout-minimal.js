@@ -131,6 +131,7 @@ var REMOTE_PACKAGE_SIZE = metadata['remote_package_size'];
 Module['FS_createPath']("/", "wipeout", true, true);
 Module['FS_createPath']("/wipeout", "common", true, true);
 Module['FS_createPath']("/wipeout", "sound", true, true);
+Module['FS_createPath']("/wipeout", "music", true, true);
 Module['FS_createPath']("/wipeout", "textures", true, true);
 Module['FS_createPath']("/wipeout", "track01", true, true);
 Module['FS_createPath']("/wipeout", "track02", true, true);
@@ -1042,8 +1043,8 @@ function dbg(...args) {
 // end include: runtime_debug.js
 // === Body ===
 
-function saudio_js_init(sample_rate,num_channels,buffer_size) { Module._saudio_context = null; Module._saudio_node = null; if (typeof AudioContext !== 'undefined') { Module._saudio_context = new AudioContext({ sampleRate: sample_rate, latencyHint: 'interactive', }); } else { Module._saudio_context = null; console.log('sokol_audio.h: no WebAudio support'); } if (Module._saudio_context) { console.log('sokol_audio.h: sample rate ', Module._saudio_context.sampleRate); Module._saudio_node = Module._saudio_context.createScriptProcessor(buffer_size, 0, num_channels); Module._saudio_node.onaudioprocess = (event) => { const num_frames = event.outputBuffer.length; const ptr = __saudio_emsc_pull(num_frames); if (ptr) { const num_channels = event.outputBuffer.numberOfChannels; for (let chn = 0; chn < num_channels; chn++) { const chan = event.outputBuffer.getChannelData(chn); for (let i = 0; i < num_frames; i++) { chan[i] = HEAPF32[(ptr>>2) + ((num_channels*i)+chn)] } } } }; Module._saudio_node.connect(Module._saudio_context.destination); const resume_webaudio = () => { if (Module._saudio_context) { if (Module._saudio_context.state === 'suspended') { Module._saudio_context.resume(); } } }; document.addEventListener('click', resume_webaudio, {once:true}); document.addEventListener('touchend', resume_webaudio, {once:true}); document.addEventListener('keydown', resume_webaudio, {once:true}); return 1; } else { return 0; } }
-function saudio_js_shutdown() { /** @suppress {missingProperties} */ const ctx = Module._saudio_context; if (ctx !== null) { if (Module._saudio_node) { Module._saudio_node.disconnect(); } ctx.close(); Module._saudio_context = null; Module._saudio_node = null; } }
+function saudio_js_init(sample_rate,num_channels,buffer_size) { Module._saudio_context = null; Module._saudio_node = null; if (typeof AudioContext !== 'undefined') { Module._saudio_context = new AudioContext({ sampleRate: sample_rate, latencyHint: 'interactive', }); } else { Module._saudio_context = null; console.log('sokol_audio.h: no WebAudio support'); } if (Module._saudio_context) { console.log('sokol_audio.h: sample rate ', Module._saudio_context.sampleRate); Module._saudio_node = Module._saudio_context.createScriptProcessor(buffer_size, 0, num_channels); Module._saudio_node.onaudioprocess = (event) => { const num_frames = event.outputBuffer.length; const ptr = __saudio_emsc_pull(num_frames); if (ptr) { const num_channels = event.outputBuffer.numberOfChannels; for (let chn = 0; chn < num_channels; chn++) { const chan = event.outputBuffer.getChannelData(chn); for (let i = 0; i < num_frames; i++) { chan[i] = HEAPF32[(ptr>>2) + ((num_channels*i)+chn)] } } } }; Module._saudio_node.connect(Module._saudio_context.destination); const resume_webaudio = () => { if (typeof Module !== 'undefined' && Module && Module._saudio_context) { if (Module._saudio_context.state === 'suspended') { Module._saudio_context.resume(); } } }; document.addEventListener('click', resume_webaudio, {once:true}); document.addEventListener('touchend', resume_webaudio, {once:true}); document.addEventListener('keydown', resume_webaudio, {once:true}); return 1; } else { return 0; } }
+function saudio_js_shutdown() { /** @suppress {missingProperties} */ const ctx = (typeof Module !== 'undefined' && Module) ? Module._saudio_context : null; if (ctx !== null) { if (Module && Module._saudio_node) { Module._saudio_node.disconnect(); } ctx.close(); if (Module) { Module._saudio_context = null; Module._saudio_node = null; } } }
 function saudio_js_sample_rate() { if (Module._saudio_context) { return Module._saudio_context.sampleRate; } else { return 0; } }
 function saudio_js_buffer_frames() { if (Module._saudio_node) { return Module._saudio_node.bufferSize; } else { return 0; } }
 function saudio_js_suspended() { if (Module._saudio_context) { if (Module._saudio_context.state === 'suspended') { return 1; } else { return 0; } } }
@@ -6371,6 +6372,7 @@ Module['FS_createDevice'] = FS.createDevice;
 Module['FS_createPreloadedFile'] = FS.createPreloadedFile;
 Module['FS_createDataFile'] = FS.createDataFile;
 Module['FS_unlink'] = FS.unlink;
+Module['FS'] = FS;
 var missingLibrarySymbols = [
   'writeI53ToI64Clamped',
   'writeI53ToI64Signaling',

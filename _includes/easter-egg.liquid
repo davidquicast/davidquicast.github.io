@@ -4,10 +4,10 @@
       <div class="wipeout-title-group">
         <span class="wipeout-tag-prefix">AG-SYSTEMS //</span>
         <h2 class="wipeout-title">WIPEOUT (1995)</h2>
-        <span class="wipeout-badge">WEBASSEMBLY // 60 FPS</span>
+        <span class="wipeout-badge">WASM // 60 FPS</span>
       </div>
       <div class="wipeout-tools">
-        <button type="button" class="wipeout-tool-btn" data-wipeout-help title="Ver controles" aria-label="Ver controles">
+        <button type="button" class="wipeout-tool-btn" data-wipeout-help title="Ver guía de controles" aria-label="Ver guía de controles">
           <svg
             width="15"
             height="15"
@@ -55,6 +55,22 @@
           </svg>
           <span class="btn-text audio-label">Audio</span>
         </button>
+        <button type="button" class="wipeout-tool-btn" data-wipeout-restart title="Reiniciar juego limpio" aria-label="Reiniciar juego limpio">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+          </svg>
+          <span class="btn-text">Reiniciar</span>
+        </button>
         <button type="button" class="wipeout-tool-btn" data-wipeout-fullscreen title="Pantalla completa" aria-label="Pantalla completa">
           <svg
             width="15"
@@ -80,85 +96,177 @@
     <div class="wipeout-viewport" id="wipeout-game-viewport">
       <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1" aria-label="Lienzo de juego WipEout"></canvas>
 
+      <!-- Music Track Toast HUD -->
+      <div class="wipeout-track-toast" id="wipeout-track-toast" aria-live="polite" hidden>
+        <span class="track-icon">♪</span>
+        <span class="track-info">
+          <strong class="track-name" id="wipeout-track-name">CAIRODROME</strong>
+          <span class="track-artist">CoLD SToRAGE</span>
+        </span>
+      </div>
+
       <!-- Loading overlay -->
       <div class="wipeout-loader" id="wipeout-loader">
         <div class="wipeout-spinner"></div>
-        <div class="wipeout-loader-status" id="wipeout-status">Cargando motor WipEout...</div>
+        <div class="wipeout-loader-status" id="wipeout-status">Cargando motor y pistas de audio...</div>
         <div class="wipeout-progress-bar">
           <div class="wipeout-progress-fill" id="wipeout-progress-fill" style="width: 0%;"></div>
         </div>
-        <div class="wipeout-loader-sub">Decompilación C • WebAssembly • WebGL • Sokol Engine</div>
+        <div class="wipeout-loader-sub">Decompilación C • WebAssembly • Audio QOA • Sokol Engine</div>
+      </div>
+
+      <!-- Crash Recovery Overlay -->
+      <div class="wipeout-error-overlay" id="wipeout-error-overlay" hidden>
+        <div class="wipeout-error-box">
+          <div class="error-badge">⚠️ ESTADO DEL MOTOR</div>
+          <h3 id="wipeout-error-title">Interrupción de Ejecución</h3>
+          <p id="wipeout-error-desc">
+            Se detectó una excepción en el módulo WebAssembly. Puedes reiniciar el motor y cargar todos los assets limpiamente con un clic.
+          </p>
+          <div class="error-actions">
+            <button type="button" class="wipeout-btn-primary" data-wipeout-retry>🔄 Reiniciar WipEout</button>
+            <button type="button" class="wipeout-btn-secondary" data-wipeout-close>Cerrar</button>
+          </div>
+        </div>
       </div>
 
       <!-- Controls legend drawer -->
       <div class="wipeout-help-overlay" id="wipeout-help-overlay" hidden>
         <div class="wipeout-help-box">
-          <h3>Controles de Carrera</h3>
-          <div class="wipeout-help-grid">
-            <div class="help-item">
-              <span class="help-keys"><kbd>◀</kbd> <kbd>▶</kbd> / <kbd>A</kbd> <kbd>D</kbd></span
-              ><span class="help-desc">Girar nave</span>
+          <div class="help-box-header">
+            <h3>Guía de Controles WipEout (1995)</h3>
+            <span class="help-sub">Compatible con Teclado, Pantalla Táctil y Mando USB/Bluetooth</span>
+          </div>
+
+          <div class="wipeout-help-sections">
+            <div class="help-section">
+              <h4 class="help-section-title">🎮 MÓVIL / PANTALLA TÁCTIL</h4>
+              <div class="wipeout-help-grid">
+                <div class="help-item">
+                  <span class="help-keys"><kbd class="kbd-touch kbd-thrust">ACEL</kbd></span>
+                  <span class="help-desc"><strong>Acelerar nave</strong> (mantener pulsado) / Seleccionar en menú</span>
+                </div>
+                <div class="help-item">
+                  <span class="help-keys"><kbd class="kbd-touch kbd-shoot">FUEGO</kbd></span>
+                  <span class="help-desc"><strong>Disparar arma</strong> (misiles, minas, escudos) / Atrás en menú</span>
+                </div>
+                <div class="help-item">
+                  <span class="help-keys"><kbd class="kbd-touch kbd-brake">FRENO L / R</kbd></span>
+                  <span class="help-desc"><strong>Frenos de aire laterales</strong> para derrapes y curvas cerradas</span>
+                </div>
+                <div class="help-item">
+                  <span class="help-keys"><kbd class="kbd-touch">◀ ▶ ▲ ▼</kbd></span>
+                  <span class="help-desc"><strong>Girar y cabeceo</strong> (bajar o subir el morro de la nave)</span>
+                </div>
+                <div class="help-item">
+                  <span class="help-keys"><kbd class="kbd-touch">CÁM</kbd></span>
+                  <span class="help-desc"><strong>Cambiar cámara</strong> (primera persona / tercera persona)</span>
+                </div>
+                <div class="help-item">
+                  <span class="help-keys"><kbd class="kbd-touch">PAUSA</kbd></span>
+                  <span class="help-desc"><strong>Pausar carrera</strong> / Selector de pistas de música</span>
+                </div>
+              </div>
             </div>
-            <div class="help-item">
-              <span class="help-keys"><kbd>▲</kbd> <kbd>▼</kbd> / <kbd>W</kbd> <kbd>S</kbd></span
-              ><span class="help-desc">Cabeceo (morro)</span>
+
+            <div class="help-section">
+              <h4 class="help-section-title">⌨️ TECLADO (PC)</h4>
+              <div class="wipeout-help-grid">
+                <div class="help-item">
+                  <span class="help-keys"><kbd>◀</kbd> <kbd>▶</kbd></span>
+                  <span class="help-desc">Girar nave a izquierda / derecha</span>
+                </div>
+                <div class="help-item">
+                  <span class="help-keys"><kbd>▲</kbd> <kbd>▼</kbd></span>
+                  <span class="help-desc">Cabeceo (bajar o elevar el morro en saltos)</span>
+                </div>
+                <div class="help-item">
+                  <span class="help-keys"><kbd>X</kbd></span>
+                  <span class="help-desc">Acelerador (Thrust) / Aceptar en menú</span>
+                </div>
+                <div class="help-item">
+                  <span class="help-keys"><kbd>Z</kbd></span>
+                  <span class="help-desc">Disparo / Arma / Cancelar en menú</span>
+                </div>
+                <div class="help-item">
+                  <span class="help-keys"><kbd>C</kbd> / <kbd>V</kbd></span>
+                  <span class="help-desc">Freno de aire izquierdo / derecho</span>
+                </div>
+                <div class="help-item">
+                  <span class="help-keys"><kbd>A</kbd></span>
+                  <span class="help-desc">Alternar cámara interna / externa</span>
+                </div>
+                <div class="help-item">
+                  <span class="help-keys"><kbd>Enter</kbd></span>
+                  <span class="help-desc">Pausa de carrera / Menú de opciones</span>
+                </div>
+                <div class="help-item">
+                  <span class="help-keys"><kbd>Esc</kbd></span>
+                  <span class="help-desc">Salir del juego</span>
+                </div>
+              </div>
             </div>
-            <div class="help-item">
-              <span class="help-keys"><kbd>X</kbd></span
-              ><span class="help-desc">Acelerador (Thrust)</span>
-            </div>
-            <div class="help-item">
-              <span class="help-keys"><kbd>Z</kbd></span
-              ><span class="help-desc">Disparo / Arma</span>
-            </div>
-            <div class="help-item">
-              <span class="help-keys"><kbd>C</kbd> / <kbd>V</kbd></span
-              ><span class="help-desc">Frenos de aire (izq / der)</span>
-            </div>
-            <div class="help-item">
-              <span class="help-keys"><kbd>A</kbd></span
-              ><span class="help-desc">Cambiar cámara</span>
-            </div>
-            <div class="help-item">
-              <span class="help-keys"><kbd>Enter</kbd></span
-              ><span class="help-desc">Pausa / Menú</span>
-            </div>
-            <div class="help-item">
-              <span class="help-keys"><kbd>Esc</kbd></span
-              ><span class="help-desc">Cerrar juego</span>
+
+            <div class="help-section help-section-gamepad">
+              <h4 class="help-section-title">🕹️ MANDO GAMEPAD (PlayStation / Xbox)</h4>
+              <p class="help-gamepad-desc">
+                Stick o D-Pad: Dirección • <kbd>A</kbd> / <kbd>✕</kbd>: Acelerador • <kbd>X</kbd> / <kbd>▢</kbd>: Disparo • <kbd>LB</kbd> /
+                <kbd>RB</kbd>: Frenos de aire • <kbd>Y</kbd> / <kbd>△</kbd>: Cámara • <kbd>Start</kbd>: Pausa
+              </p>
             </div>
           </div>
-          <button type="button" class="wipeout-btn-primary" data-wipeout-help-dismiss>Entendido</button>
+
+          <div class="help-box-footer">
+            <button type="button" class="wipeout-btn-primary" data-wipeout-help-dismiss>¡A Correr!</button>
+          </div>
         </div>
       </div>
 
       <!-- Virtual on-screen touch gamepad for mobile/tablets -->
       <div class="wipeout-touch-controls" id="wipeout-touch-controls" aria-hidden="true">
-        <!-- D-pad on left -->
-        <div class="touch-cluster touch-left">
-          <button type="button" class="touch-btn touch-dpad touch-up" data-button="82" aria-label="Arriba">▲</button>
-          <div class="touch-horiz">
-            <button type="button" class="touch-btn touch-dpad touch-left-btn" data-button="80" aria-label="Izquierda">◀</button>
-            <button type="button" class="touch-btn touch-dpad touch-right-btn" data-button="79" aria-label="Derecha">▶</button>
+        <!-- Left Side Controls (Steering + Left Airbrake) -->
+        <div class="touch-side touch-side-left">
+          <button type="button" class="touch-btn touch-brake touch-brake-l" data-button="6" aria-label="Freno de aire izquierdo">
+            <span class="brake-arrow">◀</span>
+            <span class="brake-txt">FRENO L</span>
+          </button>
+          <div class="touch-dpad-cluster">
+            <button type="button" class="touch-btn touch-dpad touch-up" data-button="82" aria-label="Morro abajo">▲</button>
+            <div class="touch-horiz">
+              <button type="button" class="touch-btn touch-dpad touch-left-btn" data-button="80" aria-label="Giro izquierda">◀</button>
+              <button type="button" class="touch-btn touch-dpad touch-right-btn" data-button="79" aria-label="Giro derecha">▶</button>
+            </div>
+            <button type="button" class="touch-btn touch-dpad touch-down" data-button="81" aria-label="Morro arriba">▼</button>
           </div>
-          <button type="button" class="touch-btn touch-dpad touch-down" data-button="81" aria-label="Abajo">▼</button>
         </div>
 
-        <!-- Utility buttons (top) -->
-        <div class="touch-cluster touch-center-top">
-          <button type="button" class="touch-btn touch-pill" data-button="4" aria-label="Cámara">CÁM</button>
-          <button type="button" class="touch-btn touch-pill" data-button="40" aria-label="Pausa">PAUSA</button>
+        <!-- Center Top Utility Controls -->
+        <div class="touch-center-top">
+          <button type="button" class="touch-btn touch-pill touch-cam" data-button="4" aria-label="Cambiar cámara">
+            <span class="pill-icon">🎥</span>
+            <span class="pill-label">CÁM</span>
+          </button>
+          <button type="button" class="touch-btn touch-pill touch-pause" data-button="40" aria-label="Pausa y menú de música">
+            <span class="pill-icon">⏸</span>
+            <span class="pill-label">PAUSA</span>
+          </button>
         </div>
 
-        <!-- Action buttons on right -->
-        <div class="touch-cluster touch-right">
-          <div class="touch-brakes">
-            <button type="button" class="touch-btn touch-brake" data-button="6" aria-label="Freno Izq">BRK-L</button>
-            <button type="button" class="touch-btn touch-brake" data-button="25" aria-label="Freno Der">BRK-R</button>
-          </div>
-          <div class="touch-actions">
-            <button type="button" class="touch-btn touch-action touch-shoot" data-button="29" aria-label="Disparar">Z</button>
-            <button type="button" class="touch-btn touch-action touch-thrust" data-button="27" aria-label="Acelerar">X</button>
+        <!-- Right Side Controls (Airbrake Right + Thrust + Fire) -->
+        <div class="touch-side touch-side-right">
+          <button type="button" class="touch-btn touch-brake touch-brake-r" data-button="25" aria-label="Freno de aire derecho">
+            <span class="brake-txt">FRENO R</span>
+            <span class="brake-arrow">▶</span>
+          </button>
+          <div class="touch-actions-cluster">
+            <button type="button" class="touch-btn touch-action touch-shoot" data-button="29" aria-label="Disparar arma">
+              <span class="action-main">FUEGO</span>
+              <span class="action-sub">Z / ATRÁS</span>
+            </button>
+            <button type="button" class="touch-btn touch-action touch-thrust" data-button="27" aria-label="Acelerar a fondo">
+              <span class="action-main">ACEL</span>
+              <span class="action-sub">X / OK</span>
+            </button>
           </div>
         </div>
       </div>
@@ -168,11 +276,11 @@
     <footer class="wipeout-footer">
       <div class="wipeout-controls-hint">
         <span><kbd>◀</kbd><kbd>▲</kbd><kbd>▼</kbd><kbd>▶</kbd> Dirección</span>
-        <span><kbd>X</kbd> Acelerador</span>
-        <span><kbd>Z</kbd> Disparo</span>
+        <span><kbd>X</kbd> Acelerador (Thrust) / Aceptar</span>
+        <span><kbd>Z</kbd> Disparo (Arma) / Volver</span>
         <span><kbd>C</kbd><kbd>V</kbd> Frenos de aire</span>
         <span><kbd>A</kbd> Cámara</span>
-        <span><kbd>Enter</kbd> Menú</span>
+        <span><kbd>Enter</kbd> Pausa / Música</span>
       </div>
     </footer>
   </div>

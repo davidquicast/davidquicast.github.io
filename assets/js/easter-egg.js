@@ -1,6 +1,6 @@
 /**
  * WipEout (1995) WebAssembly Easter Egg Controller
- * Self-hosted decompiled C port (sokol + WebAssembly + WebGL)
+ * Self-hosted decompiled C port (sokol + WebAssembly + WebGL + QOA Audio)
  * Zero initial load overhead: assets lazy-loaded on activation.
  */
 (function () {
@@ -13,12 +13,12 @@
     DOWN: 81,
     LEFT: 80,
     RIGHT: 79,
-    THRUST: 27, // X key
-    SHOOT: 29, // Z key
-    BRAKE_L: 6, // C key
-    BRAKE_R: 25, // V key
-    VIEW: 4, // A key
-    PAUSE: 40, // Enter key
+    THRUST: 27, // X key (Accelerate / Select)
+    SHOOT: 29, // Z key (Fire / Cancel)
+    BRAKE_L: 6, // C key (Left Airbrake)
+    BRAKE_R: 25, // V key (Right Airbrake)
+    VIEW: 4, // A key (Change Camera)
+    PAUSE: 40, // Enter key (Pause / Music Options)
   };
 
   var konamiIndex = 0;
@@ -29,8 +29,34 @@
   var gamepadLoopId = null;
   var activeGamepadState = {};
   var previousActiveElement = null;
+  var trackToastTimer = null;
+
+  var remainingTracksQueue = [
+    { num: 2, name: "track02.qoa" },
+    { num: 3, name: "track03.qoa" },
+    { num: 4, name: "track04.qoa" },
+    { num: 5, name: "track05.qoa" },
+    { num: 6, name: "track06.qoa" },
+    { num: 7, name: "track07.qoa" },
+    { num: 8, name: "track08.qoa" },
+    { num: 9, name: "track09.qoa" },
+    { num: 10, name: "track10.qoa" },
+    { num: 11, name: "track11.qoa" },
+  ];
+
+  function checkUrlTrigger() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      if (params.has("wipeout") || params.has("game") || params.has("antigravity")) {
+        var cleanUrl = window.location.pathname + window.location.hash;
+        window.history.replaceState({}, document.title, cleanUrl);
+        setTimeout(launchWipEout, 300);
+      }
+    } catch (_) {}
+  }
 
   function initEasterEgg() {
+    checkUrlTrigger();
     setupKonamiListener();
     setupAvatarListener();
     setupGlobalApi();
@@ -42,7 +68,8 @@
   function logConsoleGreeting() {
     try {
       console.log(
-        "%c[AG-SYSTEMS]%c WipEout (1995) WebAssembly easter egg loaded.\n" + "Execute %cwindow.antigravity()%c or %cwindow.wipeout()%c to launch.",
+        "%c[AG-SYSTEMS]%c WipEout (1995) WebAssembly Easter Egg ready.\n" +
+          "Ejecuta %cwindow.antigravity()%c o %cwindow.wipeout()%c para iniciar el juego.",
         "background: #00f0ff; color: #040910; font-weight: bold; padding: 2px 6px; border-radius: 3px;",
         "color: #00f0ff;",
         "color: #ffd000; font-weight: bold;",
@@ -56,6 +83,9 @@
   function setupGlobalApi() {
     window.antigravity = window.wipeout = function () {
       launchWipEout();
+    };
+    window.wipeoutRestart = function () {
+      restartWipEout();
     };
   }
 
@@ -86,6 +116,9 @@
 
   function setupAvatarListener() {
     function handleAvatarClick(e) {
+      if (e && e.cancelable && e.type === "click") {
+        // Prevent default zoom or synthetic delays on mobile
+      }
       avatarClicks++;
       clearTimeout(avatarClickTimer);
 
@@ -111,7 +144,7 @@
         if (avatarEl) {
           avatarEl.classList.remove("egg-pulse");
         }
-      }, 1600);
+      }, 2000);
     }
 
     var avatars = document.querySelectorAll(".profile-avatar, [data-easter-egg-trigger], .profile-portrait");
@@ -127,7 +160,21 @@
     banner.hidden = false;
     setTimeout(function () {
       banner.hidden = true;
-    }, 2000);
+    }, 2200);
+  }
+
+  function showTrackToast(trackName) {
+    var toast = document.getElementById("wipeout-track-toast");
+    var nameEl = document.getElementById("wipeout-track-name");
+    if (!toast || !nameEl) return;
+
+    nameEl.textContent = trackName.trim().toUpperCase();
+    toast.hidden = false;
+
+    clearTimeout(trackToastTimer);
+    trackToastTimer = setTimeout(function () {
+      toast.hidden = true;
+    }, 4500);
   }
 
   function launchWipEout() {
@@ -188,6 +235,37 @@
       try {
         previousActiveElement.focus();
       } catch (_) {}
+    }
+  }
+
+  function restartWipEout() {
+    stopGamepadLoop();
+    suspendAudio();
+    var modal = document.getElementById("wipeout-modal");
+    if (modal && typeof modal.close === "function") {
+      try {
+        modal.close();
+      } catch (_) {}
+    }
+    window.location.href = window.location.pathname + "?wipeout=1";
+  }
+
+  function handleEngineCrash(reason) {
+    console.error("[WipEout] Engine crash caught:", reason);
+    isWipEoutLoaded = false;
+    isWipEoutLoading = false;
+    stopGamepadLoop();
+
+    var errorOverlay = document.getElementById("wipeout-error-overlay");
+    var errorDesc = document.getElementById("wipeout-error-desc");
+    if (errorOverlay) {
+      errorOverlay.hidden = false;
+    }
+    if (errorDesc) {
+      errorDesc.textContent =
+        "Interrupción detectada en el motor WebAssembly (" +
+        (typeof reason === "string" ? reason.slice(0, 120) : "Fallo de ejecución") +
+        "). Puedes reiniciarlo limpiamente con un clic.";
     }
   }
 
@@ -287,6 +365,22 @@
       });
     }
 
+    var restartBtn = modal.querySelector("[data-wipeout-restart]");
+    if (restartBtn) {
+      restartBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        restartWipEout();
+      });
+    }
+
+    var retryBtn = modal.querySelector("[data-wipeout-retry]");
+    if (retryBtn) {
+      retryBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        restartWipEout();
+      });
+    }
+
     var fsBtn = modal.querySelector("[data-wipeout-fullscreen]");
     if (fsBtn) {
       fsBtn.addEventListener("click", function (e) {
@@ -343,7 +437,7 @@
       if (isNaN(code)) return;
 
       function press(e) {
-        if (e.cancelable) e.preventDefault();
+        if (e && e.cancelable) e.preventDefault();
         button.classList.add("active");
         setGameButton(code, 1);
         resumeAudioIfSuspended();
@@ -454,6 +548,38 @@
     activeGamepadState = {};
   }
 
+  function fetchRemainingTracksInBackground() {
+    if (!remainingTracksQueue.length) return;
+    var item = remainingTracksQueue.shift();
+
+    fetch("/assets/games/wipeout/music/" + item.name)
+      .then(function (res) {
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        return res.arrayBuffer();
+      })
+      .then(function (buffer) {
+        if (window.Module && window.Module.FS) {
+          try {
+            window.Module.FS.writeFile("/wipeout/music/" + item.name, new Uint8Array(buffer));
+            console.log("[WipEout Audio] Pista real lista en memoria: " + item.name);
+          } catch (e) {}
+        }
+        setTimeout(fetchRemainingTracksInBackground, 800);
+      })
+      .catch(function (e) {
+        console.warn("[WipEout Audio] Falló descarga de " + item.name + ", reteniendo placeholder.", e);
+        setTimeout(fetchRemainingTracksInBackground, 2000);
+      });
+  }
+
+  function handleEngineLog(text) {
+    if (typeof text !== "string") return;
+    var match = text.match(/open music track\s+([A-Z0-9\s]+)/i);
+    if (match && match[1]) {
+      showTrackToast(match[1]);
+    }
+  }
+
   function loadWipEoutEngine() {
     isWipEoutLoading = true;
 
@@ -463,15 +589,67 @@
     var canvas = document.getElementById("canvas");
 
     if (loader) loader.style.display = "flex";
-    if (statusEl) statusEl.textContent = "Descargando motor y texturas...";
+    if (statusEl) statusEl.textContent = "Cargando motor y pistas de audio...";
 
     window.Module = {
       canvas: canvas,
+      preRun: [
+        function () {
+          try {
+            window.Module.FS_createPath("/", "wipeout", true, true);
+            window.Module.FS_createPath("/wipeout", "music", true, true);
+          } catch (_) {}
+
+          // Preload track01.qoa (Cairodrome) so sound is ready on first race start
+          window.Module.FS_createPreloadedFile(
+            "/wipeout/music",
+            "track01.qoa",
+            "/assets/games/wipeout/music/track01.qoa",
+            true,
+            true,
+            function () {
+              try {
+                // Ensure slots 02 through 11 exist immediately as valid QOA to eliminate any NULL crash
+                var t1 = window.Module.FS.readFile("/wipeout/music/track01.qoa");
+                for (var i = 2; i <= 11; i++) {
+                  var pad = i < 10 ? "0" + i : "" + i;
+                  window.Module.FS.writeFile("/wipeout/music/track" + pad + ".qoa", t1);
+                }
+                fetchRemainingTracksInBackground();
+              } catch (err) {
+                console.warn("[WipEout Audio] Copia de resguardo completada:", err);
+              }
+            },
+            function (err) {
+              console.error("[WipEout Audio] Error al precargar track01.qoa:", err);
+            }
+          );
+        },
+      ],
       locateFile: function (path, prefix) {
         if (path.endsWith(".wasm") || path.endsWith(".data")) {
           return "/assets/games/wipeout/" + path;
         }
         return prefix + path;
+      },
+      print: function (text) {
+        if (arguments.length > 1) {
+          text = Array.prototype.slice.call(arguments).join(" ");
+        }
+        console.log(text);
+        handleEngineLog(text);
+      },
+      printErr: function (text) {
+        if (arguments.length > 1) {
+          text = Array.prototype.slice.call(arguments).join(" ");
+        }
+        console.error(text);
+        if (typeof text === "string" && text.indexOf("Abort") !== -1) {
+          handleEngineCrash(text);
+        }
+      },
+      onAbort: function (reason) {
+        handleEngineCrash(reason);
       },
       setStatus: function (text) {
         if (!text) {
@@ -490,7 +668,7 @@
         this.totalDependencies = Math.max(this.totalDependencies, left);
         if (statusEl) {
           statusEl.textContent = left
-            ? "Cargando datos (" + (this.totalDependencies - left) + "/" + this.totalDependencies + ")..."
+            ? "Descargando datos y audio (" + (this.totalDependencies - left) + "/" + this.totalDependencies + ")..."
             : "Inicializando motor WipEout...";
         }
         if (progressFill && this.totalDependencies > 0) {
@@ -513,7 +691,7 @@
     script.onerror = function () {
       isWipEoutLoading = false;
       if (statusEl) {
-        statusEl.textContent = "Error al cargar WipEout. Reintente más tarde.";
+        statusEl.textContent = "Error al descargar WipEout. Reintente más tarde.";
       }
     };
     document.body.appendChild(script);
