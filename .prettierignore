@@ -18,6 +18,7 @@ _site/
 node_modules/
 tools/mcp/node_modules/
 assets/js/dist/
+assets/games/
 
 # Inactive translations and original theme samples are retained without edits.
 _pages/pt-br/
