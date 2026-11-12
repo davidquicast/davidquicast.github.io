@@ -14,7 +14,7 @@ description: Keynotes, technical workshops, and speaking engagements on AI agent
 </header>
 
 <section class="talks-collection wall-collection" aria-label="Talks and workshops">
-  <div class="talks-list wall-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 24px;">
+  <div class="talks-list wall-grid">
     {% for talk in site.data.talks_catalog %}
       {% include talk-card.liquid talk=talk entry=talk loading='eager' %}
     {% endfor %}

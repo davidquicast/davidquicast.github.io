@@ -322,7 +322,8 @@
 @media (max-width: 580px) {
   [data-feed-current-view="projects"] .profile-feed-grid,
   [data-feed-current-view="blogs"] .profile-feed-grid,
-  [data-feed-current-view="writing"] .profile-feed-grid {
+  [data-feed-current-view="writing"] .profile-feed-grid,
+  [data-feed-current-view="talks"] .profile-feed-grid {
     --feed-columns: 1;
   }
   .page-projects .project-list.wall-grid,
@@ -593,4 +594,61 @@
 }
 :is([data-feed-current-view="talks"], .talks-collection) .talk-article-action {
   font-size: 12px;
+}
+
+/* Talks Archive Grid (Standalone page) */
+.talks-list.wall-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+  gap: 24px;
+}
+
+/* Mobile & Small Screen Refinements for Talks */
+@media (max-width: 768px) {
+  [data-feed-current-view="talks"] .profile-feed-grid,
+  :is([data-feed-current-view="talks"], .talks-collection) .profile-feed-grid {
+    --feed-columns: 1;
+    gap: 16px;
+  }
+  .talks-list.wall-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  :is([data-feed-current-view="talks"], .talks-collection) .talk-card {
+    max-width: 100%;
+  }
+  :is([data-feed-current-view="talks"], .talks-collection) .talk-card .talk-card-body {
+    padding: 16px;
+    gap: 10px;
+  }
+  :is([data-feed-current-view="talks"], .talks-collection) .talk-card .talk-card-heading h2 {
+    font-size: 15.5px;
+  }
+}
+
+@media (max-width: 480px) {
+  :is([data-feed-current-view="talks"], .talks-collection) .talk-card .talk-metric-strip {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px 10px;
+    padding: 8px 10px;
+  }
+  :is([data-feed-current-view="talks"], .talks-collection) .metric-num {
+    font-size: 12px;
+  }
+  :is([data-feed-current-view="talks"], .talks-collection) .metric-desc {
+    font-size: 10.5px;
+    line-height: 1.25;
+  }
+  :is([data-feed-current-view="talks"], .talks-collection) .talk-card-actions .project-destination {
+    min-height: 28px;
+    font-size: 11.5px;
+    padding: 2px 8px;
+  }
+}
+
+@media (max-width: 360px) {
+  :is([data-feed-current-view="talks"], .talks-collection) .talk-card .talk-metric-strip {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
 }
