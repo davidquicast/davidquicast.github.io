@@ -357,6 +357,14 @@
       });
     }
 
+    var errCloseBtn = modal.querySelector("[data-wipeout-error-close]");
+    if (errCloseBtn) {
+      errCloseBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        closeWipEout();
+      });
+    }
+
     var audioBtn = modal.querySelector("[data-wipeout-audio]");
     if (audioBtn) {
       audioBtn.addEventListener("click", function (e) {
