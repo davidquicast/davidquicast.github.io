@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{ '/assets/css/control-refinement.css' | relative_url | bust_file_cache }}">
     <link rel="stylesheet" href="{{ '/assets/css/profile-connections.css' | relative_url | bust_file_cache }}">
     <link rel="stylesheet" href="{{ '/assets/css/reader-typography.css' | relative_url | bust_file_cache }}">
+    <link rel="stylesheet" href="{{ '/assets/css/easter-egg.css' | relative_url | bust_file_cache }}">
     {% include language-links.liquid %}
     {% include ui-labels.liquid %}
     {% include frontend-bootstrap.liquid %}
@@ -50,6 +51,8 @@
     <script src="{{ '/assets/js/motion.js' | relative_url | bust_file_cache }}" defer></script>
     <script src="{{ '/assets/js/about-reader.js' | relative_url | bust_file_cache }}" defer></script>
     <script src="{{ '/assets/js/content-overlay.js' | relative_url | bust_file_cache }}" defer></script>
+    {% include easter-egg.liquid %}
+    <script src="{{ '/assets/js/easter-egg.js' | relative_url | bust_file_cache }}" defer></script>
     {% include optional-features.liquid %}
     {% include site-progress.liquid %}
     {% include scripts/analytics.liquid %}

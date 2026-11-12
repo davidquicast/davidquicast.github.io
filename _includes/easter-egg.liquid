@@ -1,0 +1,185 @@
+<dialog id="wipeout-modal" class="wipeout-modal" aria-label="WipEout 1995 Antigravity Racing" data-wipeout-modal>
+  <div class="wipeout-frame">
+    <header class="wipeout-header">
+      <div class="wipeout-title-group">
+        <span class="wipeout-tag-prefix">AG-SYSTEMS //</span>
+        <h2 class="wipeout-title">WIPEOUT (1995)</h2>
+        <span class="wipeout-badge">WEBASSEMBLY // 60 FPS</span>
+      </div>
+      <div class="wipeout-tools">
+        <button type="button" class="wipeout-tool-btn" data-wipeout-help title="Ver controles" aria-label="Ver controles">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.001"/><path d="M10 8h.001"/><path d="M14 8h.001"/><path d="M18 8h.001"/><path d="M8 12h.001"/><path d="M12 12h.001"/><path d="M16 12h.001"/><path d="M6 16h12"/>
+          </svg>
+          <span class="btn-text">Controles</span>
+        </button>
+        <button type="button" class="wipeout-tool-btn" data-wipeout-audio title="Silenciar / Activar sonido" aria-label="Silenciar sonido">
+          <svg
+            class="audio-on-icon"
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+          <svg
+            class="audio-off-icon"
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            style="display:none;"
+          >
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+          </svg>
+          <span class="btn-text audio-label">Audio</span>
+        </button>
+        <button type="button" class="wipeout-tool-btn" data-wipeout-fullscreen title="Pantalla completa" aria-label="Pantalla completa">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+          <span class="btn-text">Pantalla</span>
+        </button>
+        <button type="button" class="wipeout-close-btn" data-wipeout-close aria-label="Cerrar juego">
+          <span>✕ Cerrar</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="wipeout-viewport" id="wipeout-game-viewport">
+      <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1" aria-label="Lienzo de juego WipEout"></canvas>
+
+      <!-- Loading overlay -->
+      <div class="wipeout-loader" id="wipeout-loader">
+        <div class="wipeout-spinner"></div>
+        <div class="wipeout-loader-status" id="wipeout-status">Cargando motor WipEout...</div>
+        <div class="wipeout-progress-bar">
+          <div class="wipeout-progress-fill" id="wipeout-progress-fill" style="width: 0%;"></div>
+        </div>
+        <div class="wipeout-loader-sub">Decompilación C • WebAssembly • WebGL • Sokol Engine</div>
+      </div>
+
+      <!-- Controls legend drawer -->
+      <div class="wipeout-help-overlay" id="wipeout-help-overlay" hidden>
+        <div class="wipeout-help-box">
+          <h3>Controles de Carrera</h3>
+          <div class="wipeout-help-grid">
+            <div class="help-item">
+              <span class="help-keys"><kbd>◀</kbd> <kbd>▶</kbd> / <kbd>A</kbd> <kbd>D</kbd></span
+              ><span class="help-desc">Girar nave</span>
+            </div>
+            <div class="help-item">
+              <span class="help-keys"><kbd>▲</kbd> <kbd>▼</kbd> / <kbd>W</kbd> <kbd>S</kbd></span
+              ><span class="help-desc">Cabeceo (morro)</span>
+            </div>
+            <div class="help-item">
+              <span class="help-keys"><kbd>X</kbd></span
+              ><span class="help-desc">Acelerador (Thrust)</span>
+            </div>
+            <div class="help-item">
+              <span class="help-keys"><kbd>Z</kbd></span
+              ><span class="help-desc">Disparo / Arma</span>
+            </div>
+            <div class="help-item">
+              <span class="help-keys"><kbd>C</kbd> / <kbd>V</kbd></span
+              ><span class="help-desc">Frenos de aire (izq / der)</span>
+            </div>
+            <div class="help-item">
+              <span class="help-keys"><kbd>A</kbd></span
+              ><span class="help-desc">Cambiar cámara</span>
+            </div>
+            <div class="help-item">
+              <span class="help-keys"><kbd>Enter</kbd></span
+              ><span class="help-desc">Pausa / Menú</span>
+            </div>
+            <div class="help-item">
+              <span class="help-keys"><kbd>Esc</kbd></span
+              ><span class="help-desc">Cerrar juego</span>
+            </div>
+          </div>
+          <button type="button" class="wipeout-btn-primary" data-wipeout-help-dismiss>Entendido</button>
+        </div>
+      </div>
+
+      <!-- Virtual on-screen touch gamepad for mobile/tablets -->
+      <div class="wipeout-touch-controls" id="wipeout-touch-controls" aria-hidden="true">
+        <!-- D-pad on left -->
+        <div class="touch-cluster touch-left">
+          <button type="button" class="touch-btn touch-dpad touch-up" data-button="82" aria-label="Arriba">▲</button>
+          <div class="touch-horiz">
+            <button type="button" class="touch-btn touch-dpad touch-left-btn" data-button="80" aria-label="Izquierda">◀</button>
+            <button type="button" class="touch-btn touch-dpad touch-right-btn" data-button="79" aria-label="Derecha">▶</button>
+          </div>
+          <button type="button" class="touch-btn touch-dpad touch-down" data-button="81" aria-label="Abajo">▼</button>
+        </div>
+
+        <!-- Utility buttons (top) -->
+        <div class="touch-cluster touch-center-top">
+          <button type="button" class="touch-btn touch-pill" data-button="4" aria-label="Cámara">CÁM</button>
+          <button type="button" class="touch-btn touch-pill" data-button="40" aria-label="Pausa">PAUSA</button>
+        </div>
+
+        <!-- Action buttons on right -->
+        <div class="touch-cluster touch-right">
+          <div class="touch-brakes">
+            <button type="button" class="touch-btn touch-brake" data-button="6" aria-label="Freno Izq">BRK-L</button>
+            <button type="button" class="touch-btn touch-brake" data-button="25" aria-label="Freno Der">BRK-R</button>
+          </div>
+          <div class="touch-actions">
+            <button type="button" class="touch-btn touch-action touch-shoot" data-button="29" aria-label="Disparar">Z</button>
+            <button type="button" class="touch-btn touch-action touch-thrust" data-button="27" aria-label="Acelerar">X</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop controls summary bar at bottom -->
+    <footer class="wipeout-footer">
+      <div class="wipeout-controls-hint">
+        <span><kbd>◀</kbd><kbd>▲</kbd><kbd>▼</kbd><kbd>▶</kbd> Dirección</span>
+        <span><kbd>X</kbd> Acelerador</span>
+        <span><kbd>Z</kbd> Disparo</span>
+        <span><kbd>C</kbd><kbd>V</kbd> Frenos de aire</span>
+        <span><kbd>A</kbd> Cámara</span>
+        <span><kbd>Enter</kbd> Menú</span>
+      </div>
+    </footer>
+  </div>
+</dialog>
+
+<!-- Notification pill that flashes when easter egg is triggered -->
+<div id="wipeout-easter-egg-banner" class="wipeout-egg-banner" aria-live="polite" hidden>
+  <span class="banner-glitch-icon">⚡</span>
+  <span class="banner-text">AG-SYSTEMS // PROTOCOLO ANTIGRAVEDAD ACTIVADO</span>
+</div>

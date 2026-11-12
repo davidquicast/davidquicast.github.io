@@ -1,0 +1,590 @@
+/* Easter Egg - WipEout (1995) WebAssembly Modal & Controls */
+
+/* Avatar easter egg glitch state */
+.profile-avatar.egg-pulse {
+  animation: egg-glitch 200ms ease infinite alternate;
+}
+
+@keyframes egg-glitch {
+  0% {
+    transform: scale(1) translate(0, 0);
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    transform: scale(1.04) translate(-2px, 1px);
+    filter: hue-rotate(90deg) contrast(1.2);
+  }
+  100% {
+    transform: scale(0.98) translate(2px, -1px);
+    filter: hue-rotate(180deg);
+  }
+}
+
+/* Flash Banner on trigger */
+.wipeout-egg-banner {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  background: #0a0e14;
+  color: #00f0ff;
+  border: 1px solid #00f0ff;
+  border-radius: 999px;
+  box-shadow:
+    0 4px 20px rgba(0, 240, 255, 0.35),
+    0 0 10px rgba(0, 240, 255, 0.2);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+  animation: banner-enter 240ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.wipeout-egg-banner[hidden] {
+  display: none !important;
+}
+
+.wipeout-egg-banner .banner-glitch-icon {
+  color: #ffd000;
+  animation: blink 400ms infinite;
+}
+
+@keyframes banner-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-14px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+/* Modal Dialog */
+.wipeout-modal {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: rgba(8, 10, 15, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e0e4ec;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  overflow: hidden;
+}
+
+.wipeout-modal:not([open]) {
+  display: none !important;
+}
+
+.wipeout-modal::backdrop {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.wipeout-frame {
+  display: flex;
+  flex-direction: column;
+  width: min(100vw, 1160px);
+  height: min(100vh, 740px);
+  background: #0d1117;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(0, 240, 255, 0.15);
+  overflow: hidden;
+}
+
+/* Header */
+.wipeout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: #141820;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.wipeout-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.wipeout-tag-prefix {
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: #00f0ff;
+  letter-spacing: 0.05em;
+}
+
+.wipeout-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+}
+
+.wipeout-badge {
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0, 240, 255, 0.12);
+  color: #00f0ff;
+  border: 1px solid rgba(0, 240, 255, 0.25);
+}
+
+.wipeout-tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.wipeout-tool-btn,
+.wipeout-close-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  color: #c9d1d9;
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 1;
+  transition: all 120ms ease;
+  min-height: 32px;
+}
+
+.wipeout-tool-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.wipeout-close-btn {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #ff8888;
+}
+
+.wipeout-close-btn:hover {
+  background: rgba(239, 68, 68, 0.3);
+  color: #ffffff;
+  border-color: rgba(239, 68, 68, 0.6);
+}
+
+/* Viewport & Canvas */
+.wipeout-viewport {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000000;
+  overflow: hidden;
+}
+
+.wipeout-viewport canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  background: #000000;
+  outline: none;
+}
+
+/* Loader */
+.wipeout-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #000000;
+  z-index: 10;
+  gap: 16px;
+  padding: 24px;
+}
+
+.wipeout-spinner {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #00f0ff;
+  border-right-color: #ffd000;
+  animation: spinner-spin 900ms linear infinite;
+}
+
+@keyframes spinner-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.wipeout-loader-status {
+  font-family: ui-monospace, monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+.wipeout-progress-bar {
+  width: min(280px, 80%);
+  height: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.wipeout-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00f0ff, #ffd000);
+  border-radius: 999px;
+  transition: width 150ms ease;
+}
+
+.wipeout-loader-sub {
+  font-size: 11px;
+  color: #7d8590;
+  letter-spacing: 0.04em;
+}
+
+/* Controls Help Drawer */
+.wipeout-help-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 14, 20, 0.92);
+  backdrop-filter: blur(8px);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.wipeout-help-overlay[hidden] {
+  display: none !important;
+}
+
+.wipeout-help-box {
+  width: min(420px, 100%);
+  background: #141820;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.wipeout-help-box h3 {
+  margin: 0 0 14px 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.wipeout-help-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.help-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12.5px;
+  color: #c9d1d9;
+}
+
+.help-keys kbd,
+.wipeout-controls-hint kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 4px;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  color: #f0f6fc;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+}
+
+.wipeout-btn-primary {
+  width: 100%;
+  padding: 8px 16px;
+  background: #00f0ff;
+  color: #040910;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 120ms ease;
+}
+
+.wipeout-btn-primary:hover {
+  opacity: 0.9;
+}
+
+/* Footer Hint Bar */
+.wipeout-footer {
+  padding: 6px 16px;
+  background: #141820;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.wipeout-controls-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 11.5px;
+  color: #8b949e;
+}
+
+/* Touch Controls for Mobile / Tablets */
+.wipeout-touch-controls {
+  display: none;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 15;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+/* Show touch controls on coarse pointer / touch devices */
+@media (pointer: coarse), (max-width: 820px) {
+  .wipeout-touch-controls {
+    display: block;
+  }
+  .wipeout-footer {
+    display: none;
+  }
+}
+
+.touch-cluster {
+  position: absolute;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+.touch-left {
+  left: 12px;
+  bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.touch-horiz {
+  display: flex;
+  gap: 36px;
+}
+
+.touch-right {
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.touch-brakes {
+  display: flex;
+  gap: 8px;
+}
+
+.touch-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.touch-center-top {
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+
+.touch-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+  font-family: ui-monospace, monospace;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 60ms ease,
+    background 60ms ease;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.touch-btn:active,
+.touch-btn.active {
+  background: rgba(0, 240, 255, 0.45);
+  border-color: #00f0ff;
+  transform: scale(0.92);
+}
+
+.touch-dpad {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.touch-pill {
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 16px;
+  font-size: 11px;
+  background: rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.touch-brake {
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 8px;
+  font-size: 11px;
+}
+
+.touch-action {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  font-size: 20px;
+}
+
+.touch-thrust {
+  background: rgba(0, 240, 255, 0.22);
+  border-color: rgba(0, 240, 255, 0.5);
+  color: #00f0ff;
+}
+
+.touch-shoot {
+  background: rgba(255, 68, 68, 0.22);
+  border-color: rgba(255, 68, 68, 0.5);
+  color: #ff8888;
+}
+
+/* Fullscreen mode adjustments */
+:fullscreen .wipeout-frame,
+:-webkit-full-screen .wipeout-frame {
+  width: 100vw !important;
+  height: 100vh !important;
+  border-radius: 0;
+  border: none;
+}
+
+/* Small Viewports (Mobile Phones <= 480px) */
+@media (max-width: 480px) {
+  .wipeout-frame {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+  .wipeout-header {
+    padding: 6px 10px;
+  }
+  .wipeout-title-group .wipeout-tag-prefix,
+  .wipeout-title-group .wipeout-badge {
+    display: none;
+  }
+  .wipeout-tool-btn .btn-text {
+    display: none;
+  }
+  .wipeout-tool-btn {
+    padding: 6px;
+  }
+  .touch-dpad {
+    width: 42px;
+    height: 42px;
+    font-size: 14px;
+  }
+  .touch-horiz {
+    gap: 28px;
+  }
+  .touch-action {
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+  }
+  .touch-brake {
+    height: 32px;
+    padding: 0 8px;
+    font-size: 10px;
+  }
+}

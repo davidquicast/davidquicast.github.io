@@ -2,7 +2,7 @@ const http = require("node:http");
 const fs = require("node:fs");
 const path = require("node:path");
 const root = path.resolve(__dirname, "..");
-const mime = { ".js": "text/javascript", ".css": "text/css", ".html": "text/html" };
+const mime = { ".js": "text/javascript", ".css": "text/css", ".html": "text/html", ".wasm": "application/wasm", ".data": "application/octet-stream" };
 http
   .createServer((request, response) => {
     const requested = request.url.split("?")[0];
