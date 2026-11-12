@@ -666,6 +666,116 @@
   gap: 10px;
 }
 
+/* Virtual Analog Joystick */
+.touch-joystick-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.touch-joystick-base {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(14, 24, 38, 0.88) 0%, rgba(5, 10, 18, 0.94) 100%);
+  border: 2px solid rgba(0, 240, 255, 0.45);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.6),
+    inset 0 0 16px rgba(0, 240, 255, 0.18);
+  touch-action: none;
+  user-select: none;
+  cursor: grab;
+}
+
+.touch-joystick-base:active {
+  cursor: grabbing;
+  border-color: #00f0ff;
+  box-shadow:
+    0 8px 28px rgba(0, 240, 255, 0.35),
+    inset 0 0 20px rgba(0, 240, 255, 0.3);
+}
+
+.touch-joystick-knob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  margin-top: -25px;
+  margin-left: -25px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #00f0ff, #0088cc 60%, #004466 100%);
+  border: 2.5px solid #ffffff;
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.5),
+    inset 0 1px 2px rgba(255, 255, 255, 0.7);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.touch-joystick-knob::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  margin-top: -9px;
+  margin-left: -9px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 8px #ffffff;
+}
+
+.joystick-tick {
+  position: absolute;
+  font-size: 11px;
+  color: rgba(0, 240, 255, 0.6);
+  pointer-events: none;
+  user-select: none;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}
+
+.joystick-tick.tick-u {
+  top: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.joystick-tick.tick-d {
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.joystick-tick.tick-l {
+  left: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.joystick-tick.tick-r {
+  right: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.joystick-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #00f0ff;
+  text-shadow: 0 0 6px rgba(0, 240, 255, 0.6);
+  font-family: ui-monospace, monospace;
+}
+
 .touch-dpad-cluster {
   display: flex;
   flex-direction: column;
@@ -684,7 +794,64 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 10px;
+  gap: 8px;
+}
+
+/* Auto-Fire Toggle Button */
+.touch-autofire {
+  width: auto;
+  min-height: 32px;
+  padding: 3px 12px;
+  background: rgba(20, 25, 35, 0.85);
+  border: 1.5px solid rgba(255, 208, 0, 0.45);
+  color: #ffd000;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 4px;
+}
+
+.touch-autofire.active,
+.touch-autofire[data-autofire="true"] {
+  background: rgba(255, 208, 0, 0.28);
+  border-color: #ffd000;
+  box-shadow: 0 0 14px rgba(255, 208, 0, 0.6);
+  color: #ffffff;
+}
+
+/* Special Bomb Button */
+.touch-btn.touch-bomb {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(255, 120, 50, 0.4), rgba(180, 40, 20, 0.6));
+  border: 2px solid #ff6633;
+  color: #ffffff;
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.5),
+    0 0 14px rgba(255, 102, 51, 0.4);
+}
+
+.touch-btn.touch-bomb:active,
+.touch-btn.touch-bomb.active {
+  background: #ff6633 !important;
+  box-shadow: 0 0 24px rgba(255, 102, 51, 0.85) !important;
+}
+
+/* Engine switch tool button */
+.easter-egg-engine-btn {
+  background: rgba(255, 208, 0, 0.12);
+  border-color: rgba(255, 208, 0, 0.35);
+  color: #ffd000;
+}
+.easter-egg-engine-btn:hover {
+  background: rgba(255, 208, 0, 0.25);
+  border-color: #ffd000;
+  color: #ffffff;
 }
 
 .touch-actions-cluster {
