@@ -692,14 +692,14 @@
   }
   .catalog-search-row {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     justify-content: space-between;
     gap: 8px;
     align-items: center;
   }
   .catalog-controls .feed-search {
-    flex: 1 1 0;
-    min-width: 0;
+    flex: 1 1 120px;
+    min-width: 100px;
     max-width: none;
   }
   .catalog-controls .feed-search input {
@@ -784,13 +784,16 @@
     font-size: 11.5px;
   }
 }
-@media (max-width: 280px) {
+@media (max-width: 340px) {
   .catalog-search-row {
     flex-direction: column;
     align-items: stretch;
   }
   .catalog-controls .feed-search,
   .catalog-controls .feed-sort {
+    width: 100%;
+  }
+  .catalog-controls .feed-sort select {
     width: 100%;
   }
 }

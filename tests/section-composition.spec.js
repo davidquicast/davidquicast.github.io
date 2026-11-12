@@ -208,8 +208,12 @@ test("profile connections use compact desktop rows and retain touch targets on c
     const phone = await context.newPage();
     await phone.goto(base, { waitUntil: "networkidle" });
     await expect(phone.locator("[data-profile-feed]")).toHaveAttribute("data-feed-ready", "true");
+    await expect(phone.locator("[data-profile-links]")).toHaveAttribute("data-profile-links-ready", "true");
     const more = phone.locator("[data-profile-overflow] summary");
-    if (await more.isVisible()) await more.click();
+    if (await more.isVisible()) {
+      await more.click();
+      await expect(phone.locator("[data-profile-overflow]")).toHaveAttribute("open", "");
+    }
     const targets = await phone
       .locator(".profile-sidebar .profile-social-link")
       .evaluateAll((links) =>
