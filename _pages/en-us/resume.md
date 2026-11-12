@@ -7,7 +7,23 @@ description: David Quispe's resume.
 nav: true
 ---
 
-<header class="page-heading"><h1 data-pretext="lines">{{ 'navigation.resume' | ui_label }}</h1><p class="lead">{{ 'profile.resume_focus' | ui_label }}</p><div class="project-actions resume-actions"><a class="button" href="{{ '/assets/pdf/en-us/cv.pdf' | relative_url }}">{{ 'labels.open_pdf' | ui_label }} ↗</a><a class="text-link" href="{{ '/assets/pdf/en-us/cv.pdf' | relative_url }}" download>{{ 'labels.download_pdf' | ui_label }} ↓</a></div></header>
+<header class="page-heading">
+  <div class="resume-heading-row">
+    <div>
+      <h1 data-pretext="lines">{{ 'navigation.resume' | ui_label }}</h1>
+      <p class="lead">{{ 'profile.resume_focus' | ui_label }}</p>
+    </div>
+    <nav class="resume-lang-switch" aria-label="Resume language / Idioma del currículum">
+      <span class="lang-opt active" aria-current="page">EN</span>
+      <span class="lang-divider" aria-hidden="true">/</span>
+      <a class="lang-opt" href="{{ '/es/resume/' | relative_url }}" hreflang="es" lang="es">ES</a>
+    </nav>
+  </div>
+  <div class="project-actions resume-actions">
+    <a class="button" href="{{ '/assets/pdf/en-us/cv.pdf' | relative_url }}">{{ 'labels.open_pdf' | ui_label }} ↗</a>
+    <a class="text-link" href="{{ '/assets/pdf/en-us/cv.pdf' | relative_url }}" download>{{ 'labels.download_pdf' | ui_label }} ↓</a>
+  </div>
+</header>
 {% assign cv_preview = site.data.resume_preview %}
 {% if cv_preview.pages.size > 0 %}
 <section class="resume-preview" data-resume-preview data-source-sha256="{{ cv_preview.source.sha256 }}" aria-label="{{ 'resume.preview' | ui_label: 'CV preview' }}">

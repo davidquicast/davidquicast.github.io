@@ -1,0 +1,68 @@
+{
+  "source": { "path": "/assets/pdf/es/cv.pdf", "sha256": "3f5d39ae834db9ab99f8c7e9dd70bb8df49cbe482a1276816a5754068e029eab", "bytes": 120968 },
+  "settings": { "version": 2, "widths": [800, 1600], "webp": "lossless", "extraction": "layout" },
+  "tools": {
+    "pdftoppm": "pdftoppm version 22.12.0",
+    "pdftotext": "pdftotext version 22.12.0",
+    "imagemagick": "Version: ImageMagick 6.9.11-60 Q16 aarch64 2021-01-25 https://imagemagick.org"
+  },
+  "page_count": 2,
+  "pages": [
+    {
+      "number": 1,
+      "image": {
+        "src": "/assets/img/resume/es/cv-page-1-1600-85a884f7559c.webp",
+        "width": 1600,
+        "height": 2263,
+        "bytes": 193952,
+        "sha256": "85a884f7559c5962c62cc3564f2f07071d61b65fb34f17893503625a00483a7d"
+      },
+      "variants": [
+        {
+          "src": "/assets/img/resume/es/cv-page-1-800-714082621e77.webp",
+          "width": 800,
+          "height": 1132,
+          "bytes": 84160,
+          "sha256": "714082621e77f32b4253acaa5279e759cf0e9ae7528eeb0422fd418341d0ad2b"
+        },
+        {
+          "src": "/assets/img/resume/es/cv-page-1-1600-85a884f7559c.webp",
+          "width": 1600,
+          "height": 2263,
+          "bytes": 193952,
+          "sha256": "85a884f7559c5962c62cc3564f2f07071d61b65fb34f17893503625a00483a7d"
+        }
+      ],
+      "srcset": "/assets/img/resume/es/cv-page-1-800-714082621e77.webp 800w, /assets/img/resume/es/cv-page-1-1600-85a884f7559c.webp 1600w",
+      "text": "David Quispe\nIngeniero de Sistemas • AI Engineering & Cybersecurity\ndavidq@personaxis.com • Cusco, Perú (Disponible para trabajo en remoto / Reubicación) • davidquicast.github.io\ngithub.com/davidquicast • huggingface.co/davidquicast • linkedin.com/in/davidquicast\n\nPERFIL PROFESIONAL\nIngeniero de Sistemas con experiencia profesional en el desarrollo de aplicaciones de IA, fine-tuning de modelos\nopen-source y soporte en operaciones de ciberseguridad empresarial. Trayectoria práctica en el desarrollo de pipelines de\nRetrieval-Augmented Generation (RAG), flujos de trabajo de agentes autónomos con tool-calling, e implementación de\ninteligencia de vulnerabilidades y controles de seguridad organizacional (NIST CSF, ENS, ISO 27001).\n\nHABILIDADES TÉCNICAS\nIA & Machine Learning: PyTorch, Hugging Face, Transformers, PEFT (LoRA/QLoRA), RAG, LangChain, Langroid,\nsmolagents, Vector Databases (Qdrant, FAISS), Model Quantization, Synthetic Data Generation.\nCiberseguridad & Cloud: Inteligencia de Vulnerabilidades, Threat Intelligence (CTI), Plataformas EDR, Fortinet, Microsoft\n365 Defender, Herramientas CCN-CERT, Arquitectura Zero Trust.\nIngeniería & Sistemas: Python, FastAPI, Docker, SQL (PostgreSQL, MySQL), Git, Linux/Bash, React, Laravel.\nEstándares & Marcos de Trabajo: NIST CSF, ENS (Esquema Nacional de Seguridad), MITRE ATT&CK, OWASP Top\n10, STRIDE, ISO 27001.\nIdiomas: Español (Nativo), Inglés (C1 Competencia Profesional Completa).\n\nEXPERIENCIA PROFESIONAL\nFIIAPP – Fundación Internacional y para Iberoamérica de Administración y Políticas PúblicasSep 2024 – Jun 2025\nTécnico de Ciberseguridad Madrid, España (Híbrido)\n• Lideró un programa interno de inteligencia de vulnerabilidades sobre los activos organizacionales para detectar, catalogar\ny priorizar proactivamente la remediación de CVEs críticos.\n• Desarrolló pruebas de concepto (PoC) para flujos de trabajo de ciberinteligencia de amenazas (CTI) aprovechando LLMs\nopen-source y Microsoft Copilot para automatizar el triaje de alertas y la correlación de IoCs.\n• Coordinó el inventario de activos, auditorías de seguridad y detección de amenazas utilizando soluciones de seguridad\nEDR empresarial y CCN-CERT.\n• Configuró y reforzó cortafuegos Fortinet y controles de seguridad de Microsoft 365, redactando políticas de seguridad\norganizacional alineadas con el Esquema Nacional de Seguridad (ENS) y los estándares NIST.\nPlawLabs Ltd. Jul 2024 – Sep 2024\nAI/ML Engineer Londres, Reino Unido (Remoto)\n• Realizó fine-tuning de modelos fundacionales open-source (LLaMA-3.1 8B y 70B) mediante parameter-efficient fine-tuning\n(PEFT/QLoRA) y cuantización de 4 bits, fusionando checkpoints de adaptadores para una inferencia optimizada en\nproducción.\n• Diseñó y desplegó un sistema end-to-end de Retrieval-Augmented Generation (RAG) con embeddings vectoriales densos\ny bases de datos vectoriales, mejorando el rigor factual en consultas de dominio.\n• Construyó y evaluó agentes autónomos con tool-calling utilizando LangChain y Langroid; evaluó latencia, coste y\nprecisión de razonamiento comparando modelos de pesos abiertos y propietarios.\nHAMB Ingeniería y Construcción S.A.C. Ene 2022 – Sep 2022\nDesarrollador Web Full Stack (Prácticas) Cusco, Perú (Presencial)\n• Lideró el desarrollo de aplicaciones web full-stack con Laravel, React y MySQL, entregando mejoras de funcionalidad\nque contribuyeron a un incremento del 25% en la base de clientes activos.\n• Diseñó e integró flujos de trabajo para la gestión de inventarios con SAP, reduciendo las ineficiencias de los procesos de\ninventario en un 30%.\n• Implementó software CRM corporativo y capacitó a los equipos técnico y comercial, incrementando la productividad del\npersonal en un 20%."
+    },
+    {
+      "number": 2,
+      "image": {
+        "src": "/assets/img/resume/es/cv-page-2-1600-96c2c1f47800.webp",
+        "width": 1600,
+        "height": 2263,
+        "bytes": 198566,
+        "sha256": "96c2c1f47800c1b9185e79d04c2499c9dbaad90522b0a1d2b6bd071dcac1176b"
+      },
+      "variants": [
+        {
+          "src": "/assets/img/resume/es/cv-page-2-800-092050e822b3.webp",
+          "width": 800,
+          "height": 1132,
+          "bytes": 85388,
+          "sha256": "092050e822b3b801e9b4e6be447e27bbeaca389d64e50f091be3b37ab0909495"
+        },
+        {
+          "src": "/assets/img/resume/es/cv-page-2-1600-96c2c1f47800.webp",
+          "width": 1600,
+          "height": 2263,
+          "bytes": 198566,
+          "sha256": "96c2c1f47800c1b9185e79d04c2499c9dbaad90522b0a1d2b6bd071dcac1176b"
+        }
+      ],
+      "srcset": "/assets/img/resume/es/cv-page-2-800-092050e822b3.webp 800w, /assets/img/resume/es/cv-page-2-1600-96c2c1f47800.webp 1600w",
+      "text": "PUBLICACIONES CIENTÍFICAS Y OPEN SOURCE\nINCLUDE-2.0: Disentangling Knowledge Gaps in Multilingual LLM Evaluation EMNLP, Oct 2026\nCoautor (David Quispe-Castillo). Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing\n(Main Conference). Evaluación de límites de conocimiento en LLMs multilingües, analizando brechas lingüísticas en benchmarks\nestandarizados.\nCulturalRiddles: A Multicultural Benchmark of Riddles arXiv:2610.29968, Oct 2026\nCoautor y Colaborador Principal para Español (Perú) (Colaboración con la comunidad de Cohere Labs). Aportó instancias de\nevaluación contextualizadas culturalmente y pipelines de validación dialectal para evaluación de NLP en Latinoamérica.\nContribuciones Open Source en IA y Citas de Modelos\n• Google DeepMind Gemma Recipes: Contribuyó e integró receta de fine-tuning y configuración para modelos Gemma\n(github.com/google-gemini/gemma-cookbook).\n• Hugging Face Smol Course: Autor y traductor de notebooks de razonamiento, alineamiento y agentes con LLMs en\nespañol (github.com/huggingface/smol-course).\n• Argilla Synthetic Data Generator: Implementó integración con Docker y ejecución local con Ollama para flujos\nprivados y offline de generación de datos sintéticos (github.com/argilla-io/synthetic-data-generator).\n• Benchmarks de Lenguaje Citados: Autor de los datasets en español KUNTUR y WikiHowES, citados por #Somos600M\n(Jul 2024) y RigoChat 2 (Mar 2025).\n\nPROYECTOS SELECCIONADOS\nPersonaxis + persona.md 2026\nEspecificación abierta y conjunto de herramientas CLI para personas declarativas de agentes de IA: validación de esquemas,\nobjetivos de compilación, análisis estático (linting), diffing de AST y registro abierto de personas de agentes.\nOpen Deep Research for Vulnerability Intelligence 2025\nAgente autónomo de investigación en ciberseguridad desarrollado con smolagents y LangChain para automatizar la agregación\nde amenazas a través de las APIs de NIST NVD, Shodan CVEDB, KEVin y EPSS.\nSorry-Bench Multilingual Translation Pipeline Colaboración con Cohere Labs, 2025\nPipeline automatizado de traducción y validación que publicó un dataset multilingüe de evaluación de seguridad en Hugging Face\npara evaluar la resistencia contra jailbreaks en LLMs a través de diversos idiomas.\n\nEDUCACIÓN\nDIGITECH – Technology and Digitization Center Madrid, España | Sep 2023 – Jun 2025\nGrado Superior Dual en Administración de Sistemas Informáticos en Red (ASIR)\nCEUPE – Centro Europeo de Postgrado y Empresa Madrid, España | Mar 2022 – May 2023\nMáster en Ciberseguridad\nUniversidad Mayor Santiago, Chile | Abr 2023 – Nov 2023\nDiplomado de Postgrado en Ciberseguridad\nUniversidad Andina del Cusco Cusco, Perú | Ene 2017 – Nov 2022\nGrado de Bachiller en Ingeniería de Sistemas\n\nCERTIFICACIONES Y FORMACIÓN ESPECIALIZADA\nCertificaciones Profesionales:\n• Experto en Modelos Transformer y Deep Learning para NLP – LenguajeNatural.AI (Ago 2024)\n• Auditor Interno ISO/IEC 27001 (SGSI) e ISO 22301 (SGCN) – TÜV NORD (Mar 2023)\n• Experto en Sistemas de Información y Seguridad – Centro Europeo de Postgrado y Empresa (Mar 2023)\n• Técnico en Seguridad en la Nube – Fundación Carlos Slim (Oct 2022)\nFormación Especializada del Sector:\n• Building RAG Agents with LLMs – NVIDIA Deep Learning Institute (Abr 2025)\n• The Reasoning Course & AI Agents Fundamentals – Hugging Face (Feb – Abr 2025)\n• CyberOps Associate & Endpoint Security – Cisco Networking Academy (Jul – Oct 2023)\n• Informática Forense, Hacking Ético y Seguridad de la Información – Instituto Nacional de Investigación Forense\ndel Perú (Feb – Abr 2023)"
+    }
+  ]
+}

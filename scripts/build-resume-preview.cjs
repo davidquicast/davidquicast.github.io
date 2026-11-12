@@ -21,10 +21,11 @@ async function version(command, flag) {
   const result = await run(command, [flag]);
   return (result.stdout || result.stderr).trim().split("\n")[0];
 }
-async function buildResumePreview({ root = projectRoot, force = false } = {}) {
-  const source = path.join(root, "assets/pdf/en-us/cv.pdf");
-  const manifest = path.join(root, "_data/resume_preview.json");
-  const output = path.join(root, "assets/img/resume/en-us");
+async function buildResumePreview({ root = projectRoot, force = false, lang = "en-us" } = {}) {
+  const relSource = lang === "es" ? "assets/pdf/es/cv.pdf" : "assets/pdf/en-us/cv.pdf";
+  const source = path.join(root, relSource);
+  const manifest = path.join(root, lang === "es" ? "_data/resume_preview_es.json" : "_data/resume_preview.json");
+  const output = path.join(root, lang === "es" ? "assets/img/resume/es" : "assets/img/resume/en-us");
   const bytes = await fsp.readFile(source);
   if (!bytes.subarray(0, 5).equals(Buffer.from("%PDF-"))) throw new Error("CV source is not a PDF.");
   const sourceHash = digest(bytes);
@@ -105,7 +106,7 @@ async function buildResumePreview({ root = projectRoot, force = false } = {}) {
         const filename = `cv-page-${index + 1}-${width}-${hash.slice(0, 12)}.webp`;
         await fsp.rename(converted, path.join(output, filename));
         variants.push({
-          src: `/assets/img/resume/en-us/${filename}`,
+          src: `/assets/img/resume/${lang}/${filename}`,
           width: dimensions[0],
           height: dimensions[1],
           bytes: image.length,
@@ -122,7 +123,7 @@ async function buildResumePreview({ root = projectRoot, force = false } = {}) {
       });
     }
     const data = {
-      source: { path: "/assets/pdf/en-us/cv.pdf", sha256: sourceHash, bytes: bytes.length },
+      source: { path: `/${relSource}`, sha256: sourceHash, bytes: bytes.length },
       settings,
       tools: {
         pdftoppm: await version("pdftoppm", "-v"),
@@ -178,10 +179,17 @@ function watchResumePreview({ root = projectRoot, onChange = () => {}, onError =
   };
 }
 module.exports = { buildResumePreview, watchResumePreview };
-if (require.main === module)
-  buildResumePreview({ force: process.argv.includes("--force") })
-    .then(({ changed, data }) => console.log(`CV preview ${changed ? "generated" : "current"}: ${data.page_count} pages, ${data.source.sha256}`))
-    .catch((error) => {
-      console.error(error.message);
-      process.exitCode = 1;
-    });
+if (require.main === module) {
+  const force = process.argv.includes("--force");
+  const specificLang = process.argv.find((arg) => arg.startsWith("--lang="))?.split("=")[1];
+  const languages = specificLang ? [specificLang] : ["en-us", "es"];
+  (async () => {
+    for (const lang of languages) {
+      const { changed, data } = await buildResumePreview({ force, lang });
+      console.log(`CV preview [${lang}] ${changed ? "generated" : "current"}: ${data.page_count} pages, ${data.source.sha256}`);
+    }
+  })().catch((error) => {
+    console.error(error.message);
+    process.exitCode = 1;
+  });
+}

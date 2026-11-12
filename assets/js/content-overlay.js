@@ -455,6 +455,7 @@
     // A link to the page already on screen (e.g. "About" on /about/) must not
     // open that same page in a reader on top of itself.
     if (!dialog.open && url.pathname === location.pathname && url.search === location.search) return;
+    if (!dialog.open && /\/resume\/?$/.test(location.pathname) && /\/resume\/?$/.test(url.pathname)) return;
     const kind = pathKind(url, anchor.hasAttribute("data-content-overlay"));
     if (!kind) return;
     event.preventDefault();

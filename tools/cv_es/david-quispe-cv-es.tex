@@ -1,0 +1,173 @@
+% David Quispe - Curriculum Vitae en Español (Optimizado para ATS y Top-Tech)
+% Formato de 100% precisión para motores ATS (Greenhouse, Lever, Workday, Ashby)
+% Columna única, tipografía estándar, mapeo Unicode exacto, sin artefactos.
+
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[a4paper,left=16mm,right=16mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks,
+  pdftitle={David Quispe - Curriculum Vitae},
+  pdfauthor={David Quispe},
+  pdfkeywords={AI Engineering, Systems Engineering, Cybersecurity, Machine Learning},
+  pdfsubject={Curriculum Vitae de David Quispe}]{hyperref}
+
+% Garantía de texto Unicode 100% extraíble para motores OCR y ATS
+\input{glyphtounicode}
+\pdfgentounicode=1
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\emergencystretch}{2em}
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+
+% Comandos semánticos de diseño
+\newcommand{\sectiontitle}[1]{\par\vspace{8pt}{\fontsize{10.5}{12}\selectfont\bfseries\MakeUppercase{#1}}\par\vspace{2.5pt}\hrule height .4pt\vspace{4.5pt}}
+\newcommand{\jobheader}[4]{\textbf{#1}\hfill {\fontsize{9.5}{12}\selectfont #2}\par {\fontsize{9.5}{12}\selectfont\textit{#3}}\hfill {\fontsize{9.5}{12}\selectfont #4}\par\vspace{2pt}}
+\newcommand{\subentry}[2]{\textbf{#1}\hfill {\fontsize{9.5}{12}\selectfont #2}\par\vspace{1.5pt}}
+\newenvironment{cvbullets}{\begin{list}{\textbullet}{\setlength{\leftmargin}{11pt}\setlength{\labelwidth}{6pt}\setlength{\labelsep}{5pt}\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}\setlength{\parsep}{0pt}\setlength{\itemsep}{1.5pt}}}{\end{list}\vspace{4pt}}
+
+\begin{document}
+\fontsize{10}{12.5}\selectfont
+
+% ==========================================
+% ENCABEZADO Y CONTACTO
+% ==========================================
+{\fontsize{17}{20}\selectfont\bfseries David Quispe}\par\vspace{2.5pt}
+{\fontsize{10}{13}\selectfont\textbf{Ingeniero de Sistemas\enspace\textbullet\enspace AI Engineering \& Cybersecurity}}\par\vspace{3.5pt}
+{\fontsize{9.5}{12}\selectfont
+\href{mailto:davidq@personaxis.com}{davidq@personaxis.com}\enspace\textbullet\enspace
+Cusco, Perú (Disponible para trabajo en remoto / Reubicación)\enspace\textbullet\enspace
+\href{https://davidquicast.github.io}{davidquicast.github.io}\par\vspace{1.5pt}
+\href{https://github.com/davidquicast}{github.com/davidquicast}\enspace\textbullet\enspace
+\href{https://huggingface.co/davidquicast}{huggingface.co/davidquicast}\enspace\textbullet\enspace
+\href{https://linkedin.com/in/davidquicast}{linkedin.com/in/davidquicast}
+}\par\vspace{6pt}
+
+% ==========================================
+% PERFIL PROFESIONAL
+% ==========================================
+\sectiontitle{Perfil Profesional}
+Ingeniero de Sistemas con experiencia profesional en el desarrollo de aplicaciones de IA, fine-tuning de modelos open-source y soporte en operaciones de ciberseguridad empresarial. Trayectoria práctica en el desarrollo de pipelines de Retrieval-Augmented Generation (RAG), flujos de trabajo de agentes autónomos con tool-calling, e implementación de inteligencia de vulnerabilidades y controles de seguridad organizacional (NIST CSF, ENS, ISO~27001).
+
+% ==========================================
+% HABILIDADES TÉCNICAS
+% ==========================================
+\sectiontitle{Habilidades Técnicas}
+\textbf{IA \& Machine Learning:} PyTorch, Hugging Face, Transformers, PEFT (LoRA/QLoRA), RAG, LangChain, Langroid, smolagents, Vector Databases (Qdrant, FAISS), Model Quantization, Synthetic Data Generation.\par\vspace{2pt}
+\textbf{Ciberseguridad \& Cloud:} Inteligencia de Vulnerabilidades, Threat Intelligence (CTI), Plataformas EDR, Fortinet, Microsoft 365 Defender, Herramientas CCN-CERT, Arquitectura Zero Trust.\par\vspace{2pt}
+\textbf{Ingeniería \& Sistemas:} Python, FastAPI, Docker, SQL (PostgreSQL, MySQL), Git, Linux/Bash, React, Laravel.\par\vspace{2pt}
+\textbf{Estándares \& Marcos de Trabajo:} NIST CSF, ENS (Esquema Nacional de Seguridad), MITRE ATT\&CK, OWASP Top 10, STRIDE, ISO~27001.\par\vspace{2pt}
+\textbf{Idiomas:} Español (Nativo), Inglés (C1 Competencia Profesional Completa).
+
+% ==========================================
+% EXPERIENCIA PROFESIONAL
+% ==========================================
+\sectiontitle{Experiencia Profesional}
+
+\jobheader{FIIAPP -- Fundación Internacional y para Iberoamérica de Administración y Políticas Públicas}{Sep 2024 -- Jun 2025}{Técnico de Ciberseguridad}{Madrid, España (Híbrido)}
+\begin{cvbullets}
+\item Lideró un programa interno de inteligencia de vulnerabilidades sobre los activos organizacionales para detectar, catalogar y priorizar proactivamente la remediación de CVEs críticos.
+\item Desarrolló pruebas de concepto (PoC) para flujos de trabajo de ciberinteligencia de amenazas (CTI) aprovechando LLMs open-source y Microsoft Copilot para automatizar el triaje de alertas y la correlación de IoCs.
+\item Coordinó el inventario de activos, auditorías de seguridad y detección de amenazas utilizando soluciones de seguridad EDR empresarial y CCN-CERT.
+\item Configuró y reforzó cortafuegos Fortinet y controles de seguridad de Microsoft 365, redactando políticas de seguridad organizacional alineadas con el Esquema Nacional de Seguridad (ENS) y los estándares NIST.
+\end{cvbullets}
+
+\jobheader{PlawLabs Ltd.}{Jul 2024 -- Sep 2024}{AI/ML Engineer}{Londres, Reino Unido (Remoto)}
+\begin{cvbullets}
+\item Realizó fine-tuning de modelos fundacionales open-source (LLaMA-3.1 8B y 70B) mediante parameter-efficient fine-tuning (PEFT/QLoRA) y cuantización de 4 bits, fusionando checkpoints de adaptadores para una inferencia optimizada en producción.
+\item Diseñó y desplegó un sistema end-to-end de Retrieval-Augmented Generation (RAG) con embeddings vectoriales densos y bases de datos vectoriales, mejorando el rigor factual en consultas de dominio.
+\item Construyó y evaluó agentes autónomos con tool-calling utilizando LangChain y Langroid; evaluó latencia, coste y precisión de razonamiento comparando modelos de pesos abiertos y propietarios.
+\end{cvbullets}
+
+\jobheader{HAMB Ingeniería y Construcción S.A.C.}{Ene 2022 -- Sep 2022}{Desarrollador Web Full Stack (Prácticas)}{Cusco, Perú (Presencial)}
+\begin{cvbullets}
+\item Lideró el desarrollo de aplicaciones web full-stack con Laravel, React y MySQL, entregando mejoras de funcionalidad que contribuyeron a un incremento del 25\% en la base de clientes activos.
+\item Diseñó e integró flujos de trabajo para la gestión de inventarios con SAP, reduciendo las ineficiencias de los procesos de inventario en un 30\%.
+\item Implementó software CRM corporativo y capacitó a los equipos técnico y comercial, incrementando la productividad del personal en un 20\%.
+\end{cvbullets}
+
+\newpage
+
+% ==========================================
+% PUBLICACIONES CIENTÍFICAS Y OPEN SOURCE
+% ==========================================
+\sectiontitle{Publicaciones Científicas y Open Source}
+
+\subentry{\href{https://aclanthology.org/2026.emnlp-main.1344/}{INCLUDE-2.0: Disentangling Knowledge Gaps in Multilingual LLM Evaluation}}{EMNLP, Oct 2026}
+{\fontsize{9.5}{12}\selectfont
+Coautor (David Quispe-Castillo). \textit{Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing (Main Conference)}. Evaluación de límites de conocimiento en LLMs multilingües, analizando brechas lingüísticas en benchmarks estandarizados.\par\vspace{3.5pt}}
+
+\subentry{\href{https://arxiv.org/abs/2610.29968}{CulturalRiddles: A Multicultural Benchmark of Riddles}}{arXiv:2610.29968, Oct 2026}
+{\fontsize{9.5}{12}\selectfont
+Coautor y Colaborador Principal para Español (Perú) (Colaboración con la comunidad de Cohere Labs). Aportó instancias de evaluación contextualizadas culturalmente y pipelines de validación dialectal para evaluación de NLP en Latinoamérica.\par\vspace{3.5pt}}
+
+\subentry{Contribuciones Open Source en IA y Citas de Modelos}{}
+\begin{cvbullets}
+\item \textbf{Google DeepMind Gemma Recipes:} Contribuyó e integró receta de fine-tuning y configuración para modelos Gemma (\href{https://github.com/google-gemini/gemma-cookbook}{github.com/google-gemini/gemma-cookbook}).
+\item \textbf{Hugging Face Smol Course:} Autor y traductor de notebooks de razonamiento, alineamiento y agentes con LLMs en español (\href{https://github.com/huggingface/smol-course}{github.com/huggingface/smol-course}).
+\item \textbf{Argilla Synthetic Data Generator:} Implementó integración con Docker y ejecución local con Ollama para flujos privados y offline de generación de datos sintéticos (\href{https://github.com/argilla-io/synthetic-data-generator}{github.com/argilla-io/synthetic-data-generator}).
+\item \textbf{Benchmarks de Lenguaje Citados:} Autor de los datasets en español \textit{KUNTUR} y \textit{WikiHowES}, citados por \#Somos600M (Jul 2024) y RigoChat~2 (Mar 2025).
+\end{cvbullets}
+
+% ==========================================
+% PROYECTOS SELECCIONADOS
+% ==========================================
+\sectiontitle{Proyectos Seleccionados}
+
+\subentry{\href{https://personaxis.com}{Personaxis} + \href{https://github.com/personaxis/persona.md}{persona.md}}{2026}
+{\fontsize{9.5}{12}\selectfont
+Especificación abierta y conjunto de herramientas CLI para personas declarativas de agentes de IA: validación de esquemas, objetivos de compilación, análisis estático (linting), diffing de AST y registro abierto de personas de agentes.\par\vspace{3.5pt}}
+
+\subentry{\href{https://github.com/davidquicast/open-deep-research-vulnerability-intelligence}{Open Deep Research for Vulnerability Intelligence}}{2025}
+{\fontsize{9.5}{12}\selectfont
+Agente autónomo de investigación en ciberseguridad desarrollado con \texttt{smolagents} y LangChain para automatizar la agregación de amenazas a través de las APIs de NIST NVD, Shodan CVEDB, KEVin y EPSS.\par\vspace{3.5pt}}
+
+\subentry{\href{https://github.com/davidquicast/sorry-bench-translation-pipeline}{Sorry-Bench Multilingual Translation Pipeline}}{Colaboración con Cohere Labs, 2025}
+{\fontsize{9.5}{12}\selectfont
+Pipeline automatizado de traducción y validación que publicó un dataset multilingüe de evaluación de seguridad en Hugging Face para evaluar la resistencia contra jailbreaks en LLMs a través de diversos idiomas.\par\vspace{3.5pt}}
+
+% ==========================================
+% EDUCACIÓN
+% ==========================================
+\sectiontitle{Educación}
+
+\subentry{DIGITECH -- Technology and Digitization Center}{Madrid, España \textbar\ Sep 2023 -- Jun 2025}
+{\fontsize{9.5}{12}\selectfont Grado Superior Dual en Administración de Sistemas Informáticos en Red (ASIR)\par\vspace{3pt}}
+
+\subentry{CEUPE -- Centro Europeo de Postgrado y Empresa}{Madrid, España \textbar\ Mar 2022 -- May 2023}
+{\fontsize{9.5}{12}\selectfont Máster en Ciberseguridad\par\vspace{3pt}}
+
+\subentry{Universidad Mayor}{Santiago, Chile \textbar\ Abr 2023 -- Nov 2023}
+{\fontsize{9.5}{12}\selectfont Diplomado de Postgrado en Ciberseguridad\par\vspace{3pt}}
+
+\subentry{Universidad Andina del Cusco}{Cusco, Perú \textbar\ Ene 2017 -- Nov 2022}
+{\fontsize{9.5}{12}\selectfont Grado de Bachiller en Ingeniería de Sistemas\par\vspace{3pt}}
+
+% ==========================================
+% CERTIFICACIONES Y FORMACIÓN ESPECIALIZADA
+% ==========================================
+\sectiontitle{Certificaciones y Formación Especializada}
+
+\textbf{Certificaciones Profesionales:}\par
+\begin{cvbullets}
+\item \textbf{Experto en Modelos Transformer y Deep Learning para NLP} -- LenguajeNatural.AI (Ago 2024)
+\item \textbf{Auditor Interno ISO/IEC 27001 (SGSI) e ISO 22301 (SGCN)} -- TÜV NORD (Mar 2023)
+\item \textbf{Experto en Sistemas de Información y Seguridad} -- Centro Europeo de Postgrado y Empresa (Mar 2023)
+\item \textbf{Técnico en Seguridad en la Nube} -- Fundación Carlos Slim (Oct 2022)
+\end{cvbullets}
+
+\textbf{Formación Especializada del Sector:}\par
+\begin{cvbullets}
+\item \textbf{Building RAG Agents with LLMs} -- NVIDIA Deep Learning Institute (Abr 2025)
+\item \textbf{The Reasoning Course \& AI Agents Fundamentals} -- Hugging Face (Feb -- Abr 2025)
+\item \textbf{CyberOps Associate \& Endpoint Security} -- Cisco Networking Academy (Jul -- Oct 2023)
+\item \textbf{Informática Forense, Hacking Ético y Seguridad de la Información} -- Instituto Nacional de Investigación Forense del Perú (Feb -- Abr 2023)
+\end{cvbullets}
+
+\end{document}

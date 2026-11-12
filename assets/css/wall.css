@@ -731,8 +731,10 @@ body {
 }
 .page-projects .filter-panel .search-field,
 .page-blog .filter-panel .search-field {
-  flex: 0 1 300px;
-  width: 300px;
+  flex: 1 1 240px;
+  max-width: 300px;
+  width: 100%;
+  min-width: 0;
 }
 .page-projects .filter-status,
 .page-blog .filter-status {

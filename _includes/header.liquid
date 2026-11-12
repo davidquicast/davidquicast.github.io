@@ -47,7 +47,9 @@
           </span>
         </button>
       {%- endif %}
-      {% include language-switcher.liquid %}
+      {% if site.show_language_switcher and site.languages.size > 1 %}
+        {% include language-switcher.liquid %}
+      {% endif %}
     </div>
   </div>
 </header>

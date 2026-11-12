@@ -511,18 +511,19 @@ body {
     font-size: 12.5px;
   }
   .catalog-search-row {
-    gap: 12px;
+    gap: 8px;
   }
   .catalog-controls .feed-sort {
     gap: 5px;
-    padding-inline: 4px;
+    padding-inline: 8px 6px;
   }
   .catalog-controls .feed-sort select {
-    width: 108px;
-    font-size: 11px;
+    width: auto;
+    min-width: calc(14ch + 18px);
+    font-size: 12px;
   }
   .catalog-controls .feed-sort .sort-chevron {
-    right: 4px;
+    right: 6px;
   }
   .project-scope {
     gap: 2px 16px;
