@@ -88,7 +88,7 @@
     };
 
     console.log(
-      "%c[AG-SYSTEMS]%c Aero Fighters (SNES) Easter Egg ready.\nRun %cwindow.aerofighters()%c to play (or %cwindow.joinPlayer2()%c for 2P co-op).",
+      "%c[AG-SYSTEMS]%c Aero Fighters (SNES) Easter Egg ready.\nRun %cwindow.aerofighters()%c to play (or %cwindow.joinPlayer2()%c for Player 2 co-op).",
       "background: #00f0ff; color: #040910; font-weight: bold; padding: 2px 6px; border-radius: 3px;",
       "color: #00f0ff;",
       "color: #ffd000; font-weight: bold;",
@@ -276,8 +276,8 @@
           input_player1_down: "s",
           input_player1_left: "a",
           input_player1_right: "d",
-          input_player1_y: "j",
-          input_player1_b: "k",
+          input_player1_y: "v", // Player 1 Button B (Fire)
+          input_player1_b: "b", // Player 1 Button A (Special Bomb)
           input_player1_start: "enter",
           input_player1_select: "shift",
           // Player 2 controls
@@ -285,10 +285,10 @@
           input_player2_down: "down",
           input_player2_left: "left",
           input_player2_right: "right",
-          input_player2_y: "num1",
-          input_player2_b: "num2",
-          input_player2_start: "kp_enter",
-          input_player2_select: "num0",
+          input_player2_y: "comma", // Player 2 Button B (Fire) -> ","
+          input_player2_b: "period", // Player 2 Button A (Special Bomb) -> "."
+          input_player2_start: "enter",
+          input_player2_select: "semicolon",
         },
       });
       window.snesInstance = snesInstance;
@@ -722,12 +722,12 @@
       else if (k === "s" || k === "S") sendPress("down", true, 1);
       else if (k === "a" || k === "A") sendPress("left", true, 1);
       else if (k === "d" || k === "D") sendPress("right", true, 1);
-      // P1 Button B (Fire - SNES Y)
-      else if (k === "j" || k === "J" || k === "z" || k === "Z" || k === " ") {
+      // Player 1 Button B (Fire - SNES Y): 'V'
+      else if (k === "v" || k === "V" || k === "j" || k === "J" || k === "z" || k === "Z" || k === " ") {
         sendPress("y", true, 1);
       }
-      // P1 Button A (Special - SNES B)
-      else if (k === "k" || k === "K" || k === "x" || k === "X") {
+      // Player 1 Button A (Special - SNES B): 'B'
+      else if (k === "b" || k === "B" || k === "k" || k === "K" || k === "x" || k === "X") {
         sendPress("b", true, 1);
       } else if (k === "Enter") {
         sendPress("start", true, 1);
@@ -747,22 +747,22 @@
       } else if (k === "ArrowRight" || k === "6") {
         sendPress("right", true, 2);
       }
-      // P2 Button B (Fire - SNES Y)
-      else if (k === "1" || k === "[" || k === "o" || k === "O") {
+      // Player 2 Button B (Fire - SNES Y): ','
+      else if (k === "," || e.code === "Comma" || k === "1" || k === "[" || k === "o" || k === "O") {
         sendPress("y", true, 2);
       }
-      // P2 Button A (Special - SNES B)
-      else if (k === "2" || k === "]" || k === "p" || k === "P") {
+      // Player 2 Button A (Special - SNES B): '.'
+      else if (k === "." || e.code === "Period" || k === "2" || k === "]" || k === "p" || k === "P") {
         sendPress("b", true, 2);
       }
-      // P2 Start / Join
+      // Player 2 Start / Join
       else if (k === "3" || k === "\\" || k === "'" || k === "NumpadEnter") {
         sendPress("start", true, 2);
       }
-      // P2 Select
+      // Player 2 Select
       else if (k === "0" || k === ";") {
         sendPress("select", true, 2);
-      } else if (k === "v" || k === "V") {
+      } else if (k === "m" || k === "M") {
         toggleAutoFire(2);
       }
     });
@@ -778,9 +778,9 @@
       else if (k === "s" || k === "S") sendPress("down", false, 1);
       else if (k === "a" || k === "A") sendPress("left", false, 1);
       else if (k === "d" || k === "D") sendPress("right", false, 1);
-      else if (k === "j" || k === "J" || k === "z" || k === "Z" || k === " ") {
+      else if (k === "v" || k === "V" || k === "j" || k === "J" || k === "z" || k === "Z" || k === " ") {
         sendPress("y", false, 1);
-      } else if (k === "k" || k === "K" || k === "x" || k === "X") {
+      } else if (k === "b" || k === "B" || k === "k" || k === "K" || k === "x" || k === "X") {
         sendPress("b", false, 1);
       } else if (k === "Enter") {
         sendPress("start", false, 1);
@@ -797,9 +797,9 @@
         sendPress("left", false, 2);
       } else if (k === "ArrowRight" || k === "6") {
         sendPress("right", false, 2);
-      } else if (k === "1" || k === "[" || k === "o" || k === "O") {
+      } else if (k === "," || e.code === "Comma" || k === "1" || k === "[" || k === "o" || k === "O") {
         sendPress("y", false, 2);
-      } else if (k === "2" || k === "]" || k === "p" || k === "P") {
+      } else if (k === "." || e.code === "Period" || k === "2" || k === "]" || k === "p" || k === "P") {
         sendPress("b", false, 2);
       } else if (k === "3" || k === "\\" || k === "'" || k === "NumpadEnter") {
         sendPress("start", false, 2);
