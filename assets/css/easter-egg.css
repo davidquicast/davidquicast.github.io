@@ -620,10 +620,58 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: 16px;
   flex-wrap: wrap;
   font-size: 11.5px;
   color: #8b949e;
+}
+
+.wipeout-controls-hint .hint-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.wipeout-controls-hint .hint-group-p1 {
+  border: 1px solid rgba(0, 240, 255, 0.28);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.08);
+}
+
+.wipeout-controls-hint .hint-group-p2 {
+  border: 1px solid rgba(255, 170, 0, 0.28);
+  box-shadow: 0 0 10px rgba(255, 170, 0, 0.08);
+}
+
+.wipeout-controls-hint .hint-group-system {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.wipeout-controls-hint .hint-tag {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 4px;
+  line-height: 1.2;
+}
+
+.wipeout-controls-hint .hint-group-p1 .hint-tag {
+  background: rgba(0, 240, 255, 0.16);
+  color: #00f0ff;
+}
+
+.wipeout-controls-hint .hint-group-p2 .hint-tag {
+  background: rgba(255, 170, 0, 0.18);
+  color: #ffaa00;
+}
+
+.wipeout-controls-hint .hint-separator {
+  width: 1px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.18);
 }
 
 /* Touch Controls for Mobile / Tablets */

@@ -135,4 +135,68 @@ test.describe("WipEout (1995) Easter Egg", () => {
     await modal.locator("[data-wipeout-close]").click();
     await expect(modal).not.toHaveAttribute("open");
   });
+
+  test("controls footer contains visually separated groups for Player 1, Player 2, and System", async ({ page }) => {
+    const modal = page.locator("#wipeout-modal");
+    await page.evaluate(() => window.antigravity());
+    await expect(modal).toHaveAttribute("open");
+
+    const footer = modal.locator("#easter-egg-footer-hint");
+    await expect(footer).toBeVisible();
+
+    const p1Group = footer.locator(".hint-group-p1");
+    const p2Group = footer.locator(".hint-group-p2");
+    const sysGroup = footer.locator(".hint-group-system");
+    const separators = footer.locator(".hint-separator");
+
+    await expect(p1Group).toBeVisible();
+    await expect(p2Group).toBeVisible();
+    await expect(sysGroup).toBeVisible();
+    await expect(separators).toHaveCount(2);
+
+    // Verify Player 1 text
+    await expect(p1Group.locator(".hint-tag")).toHaveText("PLAYER 1");
+    expect(await p1Group.innerText()).toContain("WASD Move");
+    expect(await p1Group.innerText()).toContain("V B");
+    expect(await p1Group.innerText()).toContain("B A");
+    expect(await p1Group.innerText()).toContain("C Auto");
+    expect(await p1Group.innerText()).toContain("Enter Start");
+
+    // Verify Player 2 text (J for B, K for A, U for Auto, I for Start)
+    await expect(p2Group.locator(".hint-tag")).toHaveText("PLAYER 2");
+    expect(await p2Group.innerText()).toContain("▲▼◀▶ Move");
+    expect(await p2Group.innerText()).toContain("J B");
+    expect(await p2Group.innerText()).toContain("K A");
+    expect(await p2Group.innerText()).toContain("U Auto");
+    expect(await p2Group.innerText()).toContain("I Start");
+
+    await modal.locator("[data-wipeout-close]").click();
+  });
+
+  test("help modal details Player 1 and Player 2 keyboard bindings without abbreviations", async ({ page }) => {
+    const modal = page.locator("#wipeout-modal");
+    await page.evaluate(() => window.antigravity());
+    await expect(modal).toHaveAttribute("open");
+
+    // Open help overlay
+    await modal.locator("[data-wipeout-help]").click();
+    const helpOverlay = modal.locator("#wipeout-help-overlay");
+    await expect(helpOverlay).toBeVisible();
+
+    const text = await helpOverlay.innerText();
+    expect(text).toContain("PLAYER 1");
+    expect(text).toContain("PLAYER 2");
+    expect(text).not.toContain(" P1 ");
+    expect(text).not.toContain(" P2 ");
+
+    // Check Player 2 bindings in help
+    expect(text).toContain("J");
+    expect(text).toContain("K");
+    expect(text).toContain("U");
+    expect(text).toContain("I");
+    expect(text).toContain("O");
+
+    await modal.locator("[data-wipeout-help-dismiss]").click();
+    await modal.locator("[data-wipeout-close]").click();
+  });
 });

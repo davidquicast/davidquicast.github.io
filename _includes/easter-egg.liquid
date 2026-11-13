@@ -207,11 +207,11 @@
                   <span class="help-desc">Auto-Fire</span>
                 </div>
                 <div class="help-item">
-                  <span class="help-keys"><kbd>Enter</kbd></span>
+                  <span class="help-keys"><kbd>1</kbd> / <kbd>Enter</kbd></span>
                   <span class="help-desc">Start</span>
                 </div>
                 <div class="help-item">
-                  <span class="help-keys"><kbd>Shift</kbd></span>
+                  <span class="help-keys"><kbd>Tab</kbd> / <kbd>Shift</kbd></span>
                   <span class="help-desc">Select</span>
                 </div>
               </div>
@@ -225,23 +225,23 @@
                   <span class="help-desc">Move</span>
                 </div>
                 <div class="help-item">
-                  <span class="help-keys"><kbd>,</kbd></span>
+                  <span class="help-keys"><kbd>J</kbd></span>
                   <span class="help-desc">B</span>
                 </div>
                 <div class="help-item">
-                  <span class="help-keys"><kbd>.</kbd></span>
+                  <span class="help-keys"><kbd>K</kbd></span>
                   <span class="help-desc">A</span>
                 </div>
                 <div class="help-item">
-                  <span class="help-keys"><kbd>M</kbd></span>
+                  <span class="help-keys"><kbd>U</kbd></span>
                   <span class="help-desc">Auto-Fire</span>
                 </div>
                 <div class="help-item">
-                  <span class="help-keys"><kbd>Enter</kbd> / <kbd>'</kbd></span>
+                  <span class="help-keys"><kbd>I</kbd></span>
                   <span class="help-desc">Start / Join</span>
                 </div>
                 <div class="help-item">
-                  <span class="help-keys"><kbd>;</kbd></span>
+                  <span class="help-keys"><kbd>O</kbd></span>
                   <span class="help-desc">Select</span>
                 </div>
               </div>
@@ -319,14 +319,27 @@
     <!-- Desktop controls summary bar at bottom -->
     <footer class="wipeout-footer">
       <div class="wipeout-controls-hint" id="easter-egg-footer-hint">
-        <span><kbd>WASD</kbd> Player 1 Move</span>
-        <span><kbd>V</kbd> Player 1 B</span>
-        <span><kbd>B</kbd> Player 1 A</span>
-        <span><kbd>▲▼◀▶</kbd> Player 2 Move</span>
-        <span><kbd>,</kbd> Player 2 B</span>
-        <span><kbd>.</kbd> Player 2 A</span>
-        <span><kbd>Enter</kbd> Start</span>
-        <span><kbd>Esc</kbd> Close</span>
+        <div class="hint-group hint-group-p1">
+          <span class="hint-tag">PLAYER 1</span>
+          <span><kbd>WASD</kbd> Move</span>
+          <span><kbd>V</kbd> B</span>
+          <span><kbd>B</kbd> A</span>
+          <span><kbd>C</kbd> Auto</span>
+          <span><kbd>Enter</kbd> Start</span>
+        </div>
+        <div class="hint-separator" aria-hidden="true"></div>
+        <div class="hint-group hint-group-p2">
+          <span class="hint-tag">PLAYER 2</span>
+          <span><kbd>▲▼◀▶</kbd> Move</span>
+          <span><kbd>J</kbd> B</span>
+          <span><kbd>K</kbd> A</span>
+          <span><kbd>U</kbd> Auto</span>
+          <span><kbd>I</kbd> Start</span>
+        </div>
+        <div class="hint-separator" aria-hidden="true"></div>
+        <div class="hint-group hint-group-system">
+          <span><kbd>Esc</kbd> Close</span>
+        </div>
       </div>
     </footer>
   </div>
