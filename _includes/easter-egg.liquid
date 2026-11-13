@@ -1,4 +1,4 @@
-<dialog id="wipeout-modal" class="wipeout-modal easter-egg-modal" aria-label="Aero Fighters SNES / WipEout 1995" data-wipeout-modal>
+<dialog id="wipeout-modal" class="wipeout-modal easter-egg-modal" aria-label="Aero Fighters SNES (1993)" data-wipeout-modal>
   <div class="wipeout-frame">
     <header class="wipeout-header">
       <div class="wipeout-title-group">
@@ -7,16 +7,7 @@
         <span class="wipeout-badge" id="easter-egg-badge">SPC700 AUDIO // 60 FPS</span>
       </div>
       <div class="wipeout-tools">
-        <button
-          type="button"
-          class="wipeout-tool-btn"
-          data-easter-egg-switch
-          title="Alternar entre Aero Fighters y WipEout"
-          aria-label="Alternar juego"
-        >
-          <span class="btn-text" id="easter-egg-switch-label">🏎️ WipEout</span>
-        </button>
-        <button type="button" class="wipeout-tool-btn" data-wipeout-help title="Ver guía de controles" aria-label="Ver guía de controles">
+        <button type="button" class="wipeout-tool-btn" data-wipeout-help title="Controls guide" aria-label="Controls guide">
           <svg
             width="15"
             height="15"
@@ -30,9 +21,9 @@
           >
             <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.001"/><path d="M10 8h.001"/><path d="M14 8h.001"/><path d="M18 8h.001"/><path d="M8 12h.001"/><path d="M12 12h.001"/><path d="M16 12h.001"/><path d="M6 16h12"/>
           </svg>
-          <span class="btn-text">Controles</span>
+          <span class="btn-text">Controls</span>
         </button>
-        <button type="button" class="wipeout-tool-btn" data-wipeout-audio title="Silenciar / Activar sonido" aria-label="Silenciar sonido">
+        <button type="button" class="wipeout-tool-btn" data-wipeout-audio title="Mute / Unmute audio" aria-label="Audio toggle">
           <svg
             class="audio-on-icon"
             width="15"
@@ -64,7 +55,7 @@
           </svg>
           <span class="btn-text audio-label">Audio</span>
         </button>
-        <button type="button" class="wipeout-tool-btn" data-wipeout-restart title="Reiniciar juego" aria-label="Reiniciar juego">
+        <button type="button" class="wipeout-tool-btn" data-wipeout-restart title="Restart game" aria-label="Restart game">
           <svg
             width="15"
             height="15"
@@ -78,9 +69,9 @@
           >
             <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
           </svg>
-          <span class="btn-text">Reiniciar</span>
+          <span class="btn-text">Restart</span>
         </button>
-        <button type="button" class="wipeout-tool-btn" data-wipeout-fullscreen title="Pantalla completa" aria-label="Pantalla completa">
+        <button type="button" class="wipeout-tool-btn" data-wipeout-fullscreen title="Fullscreen" aria-label="Fullscreen">
           <svg
             width="15"
             height="15"
@@ -94,10 +85,10 @@
           >
             <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
           </svg>
-          <span class="btn-text">Pantalla</span>
+          <span class="btn-text">Fullscreen</span>
         </button>
-        <button type="button" class="wipeout-close-btn" data-wipeout-close aria-label="Cerrar juego">
-          <span>✕ Cerrar</span>
+        <button type="button" class="wipeout-close-btn" data-wipeout-close aria-label="Close game">
+          <span>✕ Close</span>
         </button>
       </div>
     </header>
@@ -238,7 +229,6 @@
               <span class="joystick-tick tick-l" data-button="80">◀</span>
               <span class="joystick-tick tick-r" data-button="79">▶</span>
             </div>
-            <span class="joystick-label">🕹️ JOYSTICK</span>
           </div>
         </div>
 
@@ -256,24 +246,22 @@
 
         <!-- Right Side: Action Buttons -->
         <div class="touch-side touch-side-right">
-          <button type="button" class="touch-btn touch-autofire" id="touch-autofire-btn" data-button="6" aria-label="Auto-Disparo continuo">
+          <button type="button" class="touch-btn touch-autofire" id="touch-autofire-btn" data-button="6" aria-label="Auto Fire toggle">
             <span class="autofire-icon">⚡</span>
-            <span class="autofire-txt" id="touch-autofire-label">AUTO-FUEGO: OFF</span>
+            <span class="autofire-txt" id="touch-autofire-label">AUTO: OFF</span>
           </button>
           <div class="touch-actions-cluster">
-            <button type="button" class="touch-btn touch-action touch-shoot" data-button="27" data-action="shoot" aria-label="Disparo principal [B]">
+            <button type="button" class="touch-btn touch-action touch-shoot" data-button="27" data-action="shoot" aria-label="B">
               <span class="action-main" id="action-btn-main-label">B</span>
-              <span class="action-sub" id="action-btn-sub-label">DISPARO</span>
             </button>
             <button
               type="button"
               class="touch-btn touch-action touch-thrust touch-bomb"
               data-button="29"
               data-action="bomb"
-              aria-label="Bomba especial [A]"
+              aria-label="A"
             >
               <span class="action-main" id="action-btn-bomb-label">A</span>
-              <span class="action-sub" id="action-btn-bomb-sub">BOMBA</span>
             </button>
           </div>
         </div>

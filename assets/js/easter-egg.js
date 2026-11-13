@@ -1,8 +1,6 @@
 /**
- * Retro Arcade Easter Egg Controller
- * Dual Engine:
- * 1. Aero Fighters (SNES - 1993) [PRIMARY]: WebAssembly Snes9x + SPC700 synthesized audio + Virtual Analog Joystick
- * 2. WipEout (1995) [FALLBACK / SECONDARY]: Decompiled C + Sokol WebAssembly + QOA CD-Audio
+ * Retro Arcade Easter Egg Controller - Aero Fighters (SNES - 1993)
+ * WebAssembly Snes9x + SPC700 synthesized audio + Virtual Analog Joystick
  *
  * Zero performance impact on portfolio initial page load (lazy-loaded).
  */
@@ -11,10 +9,7 @@
 
   var KONAMI_SEQUENCE = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
 
-  var currentEngine = "aerofighters"; // "aerofighters" (default) or "wipeout"
   var snesInstance = null;
-  var isWipEoutLoaded = false;
-  var isWipEoutLoading = false;
   var isAudioMuted = false;
   var autoFireActive = false;
   var autoFireInterval = null;
@@ -23,6 +18,7 @@
   var previousActiveElement = null;
   var trackToastTimer = null;
   var activeAudioContexts = [];
+  var activeHolds = {};
 
   // Track WebAudio contexts created by WebAssembly modules
   var OrigAudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -50,44 +46,13 @@
 
   var activeDirs = { up: false, down: false, left: false, right: false };
 
-  // WipEout button codes for C engine
-  var BUTTON_CODES = {
-    UP: 82,
-    DOWN: 81,
-    LEFT: 80,
-    RIGHT: 79,
-    THRUST: 27,
-    SHOOT: 29,
-    BRAKE_L: 6,
-    BRAKE_R: 25,
-    VIEW: 4,
-    PAUSE: 40,
-  };
-
-  var remainingTracksQueue = [
-    { num: 2, name: "track02.qoa" },
-    { num: 3, name: "track03.qoa" },
-    { num: 4, name: "track04.qoa" },
-    { num: 5, name: "track05.qoa" },
-    { num: 6, name: "track06.qoa" },
-    { num: 7, name: "track07.qoa" },
-    { num: 8, name: "track08.qoa" },
-    { num: 9, name: "track09.qoa" },
-    { num: 10, name: "track10.qoa" },
-    { num: 11, name: "track11.qoa" },
-  ];
-
   function checkUrlTrigger() {
     try {
       var params = new URLSearchParams(window.location.search);
-      if (params.has("game") || params.has("aerofighters") || params.has("antigravity")) {
+      if (params.has("game") || params.has("aerofighters") || params.has("antigravity") || params.has("wipeout")) {
         var cleanUrl = window.location.pathname + window.location.hash;
         window.history.replaceState({}, document.title, cleanUrl);
         setTimeout(launchAeroFighters, 300);
-      } else if (params.has("wipeout")) {
-        var cleanUrlW = window.location.pathname + window.location.hash;
-        window.history.replaceState({}, document.title, cleanUrlW);
-        setTimeout(launchWipEout, 300);
       }
     } catch (_) {}
   }
@@ -103,22 +68,20 @@
 
     window.antigravity = function () {
       launchAeroFighters();
-      return "AG-SYSTEMS: Aero Fighters (SNES) iniciado.";
+      return "AG-SYSTEMS: Aero Fighters (SNES) started.";
     };
     window.aerofighters = function () {
       launchAeroFighters();
-      return "AG-SYSTEMS: Aero Fighters (SNES) iniciado.";
+      return "AG-SYSTEMS: Aero Fighters (SNES) started.";
     };
     window.wipeout = function () {
-      launchWipEout();
-      return "AG-SYSTEMS: WipEout (1995) iniciado.";
+      launchAeroFighters();
+      return "AG-SYSTEMS: Aero Fighters (SNES) started.";
     };
 
     console.log(
-      "%c[AG-SYSTEMS]%c Retro Arcade Easter Egg ready.\nEjecuta %cwindow.antigravity()%c o %cwindow.wipeout()%c para jugar.",
+      "%c[AG-SYSTEMS]%c Aero Fighters (SNES) Easter Egg ready.\nRun %cwindow.aerofighters()%c to play.",
       "background: #00f0ff; color: #040910; font-weight: bold; padding: 2px 6px; border-radius: 3px;",
-      "color: #00f0ff;",
-      "color: #ffd000; font-weight: bold;",
       "color: #00f0ff;",
       "color: #ffd000; font-weight: bold;",
       "color: #00f0ff;"
@@ -148,7 +111,7 @@
     var avatar = document.querySelector(".profile-avatar");
     if (!avatar) return;
 
-    avatar.addEventListener("click", function (e) {
+    avatar.addEventListener("click", function () {
       avatarClicks++;
       avatar.classList.add("egg-pulse");
       clearTimeout(avatarClickTimer);
@@ -247,63 +210,26 @@
     });
   }
 
-  function updateHeaderForEngine(engine) {
-    var prefix = document.getElementById("easter-egg-tag-prefix");
-    var title = document.getElementById("easter-egg-title");
-    var badge = document.getElementById("easter-egg-badge");
-    var switchLabel = document.getElementById("easter-egg-switch-label");
-    var sub = document.getElementById("wipeout-loader-sub");
-    var actionMain = document.getElementById("action-btn-main-label");
-    var actionSub = document.getElementById("action-btn-sub-label");
-    var bombMain = document.getElementById("action-btn-bomb-label");
-    var bombSub = document.getElementById("action-btn-bomb-sub");
-
-    if (engine === "aerofighters") {
-      if (prefix) prefix.textContent = "SNES //";
-      if (title) title.textContent = "AERO FIGHTERS (1993)";
-      if (badge) badge.textContent = "SPC700 AUDIO // 60 FPS";
-      if (switchLabel) switchLabel.textContent = "🏎️ WipEout";
-      if (sub) sub.textContent = "Snes9x WebAssembly • 16-Bit SPC700 Audio • 60 FPS";
-      if (actionMain) actionMain.textContent = "B";
-      if (actionSub) actionSub.textContent = "DISPARO";
-      if (bombMain) bombMain.textContent = "A";
-      if (bombSub) bombSub.textContent = "BOMBA";
-    } else {
-      if (prefix) prefix.textContent = "AG-SYSTEMS //";
-      if (title) title.textContent = "WIPEOUT (1995)";
-      if (badge) badge.textContent = "WASM // 60 FPS";
-      if (switchLabel) switchLabel.textContent = "✈️ Aero Fighters";
-      if (sub) sub.textContent = "Decompilación C • WebAssembly • Audio QOA • Sokol Engine";
-      if (actionMain) actionMain.textContent = "ACEL";
-      if (actionSub) actionSub.textContent = "X / OK";
-      if (bombMain) bombMain.textContent = "FUEGO";
-      if (bombSub) bombSub.textContent = "Z / ARMA";
-    }
-  }
-
   /* -------------------------------------------------------------
    * Aero Fighters Engine (WebAssembly Snes9x + SPC700 Sound)
    * ------------------------------------------------------------- */
   async function launchAeroFighters() {
-    currentEngine = "aerofighters";
-    updateHeaderForEngine("aerofighters");
-
     var modal = document.getElementById("wipeout-modal");
     if (!modal) return;
 
     if (!modal.open) {
       previousActiveElement = document.activeElement;
       modal.showModal();
-      flashBanner("AG-SYSTEMS // AERO FIGHTERS (SNES) ACTIVADO");
+      flashBanner("AG-SYSTEMS // AERO FIGHTERS (SNES) ACTIVATED");
     }
 
-    // If snesInstance is already running, just resume
     if (snesInstance) {
       showLoader(false);
       try {
         snesInstance.resume();
       } catch (_) {}
       focusCanvas();
+      startGamepadPolling();
       return;
     }
 
@@ -341,6 +267,7 @@
 
       showLoader(false);
       focusCanvas();
+      startGamepadPolling();
 
       if (isAudioMuted) {
         activeAudioContexts.forEach(function (c) {
@@ -358,167 +285,47 @@
   }
 
   /* -------------------------------------------------------------
-   * WipEout 1995 Engine (Fallback / Alternative)
+   * Input Registration with Enforced Minimum Hold Duration
+   * Ensures fast taps on mobile (Button A / B) are sampled cleanly
+   * by SNES 60Hz joypad polling even while using virtual joystick.
    * ------------------------------------------------------------- */
-  function launchWipEout() {
-    currentEngine = "wipeout";
-    updateHeaderForEngine("wipeout");
+  function sendPress(btnName, pressed) {
+    if (!snesInstance) return;
 
-    var modal = document.getElementById("wipeout-modal");
-    if (!modal) return;
-
-    if (!modal.open) {
-      previousActiveElement = document.activeElement;
-      modal.showModal();
-      flashBanner("AG-SYSTEMS // WIPEOUT (1995) ACTIVADO");
-    }
-
-    if (isWipEoutLoaded) {
-      focusCanvas();
-      return;
-    }
-
-    if (isWipEoutLoading) return;
-    isWipEoutLoading = true;
-    showLoader(true, "Cargando motor WipEout...", 15);
-
-    var preloadP = fetchTrack("/assets/games/wipeout/music/track01.qoa");
-    preloadP
-      .then(function (track01Bytes) {
-        updateLoaderProgress(50, "Inicializando WebAssembly y Sokol WebGL...");
-        setupModule(track01Bytes);
-        return loadWipEoutEngineScript();
-      })
-      .then(function () {
-        isWipEoutLoaded = true;
-        isWipEoutLoading = false;
-        showLoader(false);
-        focusCanvas();
-        startGamepadPolling();
-        showToast("CAIRODROME", "CoLD SToRAGE (Track 01)");
-        startBackgroundTrackDownloads();
-      })
-      .catch(function (err) {
-        isWipEoutLoading = false;
-        console.error("WipEout load failed:", err);
-        showError("Fallo al iniciar WipEout", err && err.message ? err.message : String(err));
-      });
-  }
-
-  function fetchTrack(url) {
-    return fetch(url)
-      .then(function (res) {
-        if (!res.ok) throw new Error("HTTP " + res.status + " on " + url);
-        return res.arrayBuffer();
-      })
-      .then(function (ab) {
-        return new Uint8Array(ab);
-      });
-  }
-
-  function setupModule(track01Bytes) {
-    window.Module = {
-      canvas: document.getElementById("canvas"),
-      arguments: [],
-      print: function (text) {
-        handleEngineLog(text);
-      },
-      printErr: function (text) {
-        if (text && text.indexOf("Invalid music index") !== -1) {
-          console.warn("[WipEout Audio Guard]:", text);
-          return;
-        }
-        console.error("[WipEout Error]:", text);
-      },
-      preRun: [
-        function () {
-          try {
-            if (window.FS) {
-              window.Module.FS_createPath("/", "wipeout", true, true);
-              window.Module.FS_createPath("/wipeout", "music", true, true);
-              if (track01Bytes && track01Bytes.length > 0) {
-                window.FS.writeFile("/wipeout/music/track01.qoa", track01Bytes);
-                for (var i = 2; i <= 11; i++) {
-                  var padNum = i < 10 ? "0" + i : "" + i;
-                  window.FS.writeFile("/wipeout/music/track" + padNum + ".qoa", track01Bytes);
-                }
-              }
-            }
-          } catch (e) {
-            console.warn("preRun FS init warn:", e);
-          }
-        },
-      ],
-      postRun: [
-        function () {
-          showLoader(false);
-          focusCanvas();
-        },
-      ],
-      onAbort: function (err) {
-        showError("Interrupción de WipEout", String(err));
-      },
-    };
-  }
-
-  function loadWipEoutEngineScript() {
-    return new Promise(function (resolve, reject) {
-      if (document.querySelector('script[src*="wipeout-minimal.js"]')) {
-        resolve();
-        return;
+    if (pressed) {
+      if (activeHolds[btnName] && activeHolds[btnName].timer) {
+        clearTimeout(activeHolds[btnName].timer);
+        activeHolds[btnName].timer = null;
       }
-      var s = document.createElement("script");
-      s.src = "/assets/games/wipeout/wipeout-minimal.js";
-      s.async = true;
-      s.onload = resolve;
-      s.onerror = reject;
-      document.body.appendChild(s);
-    });
-  }
-
-  function startBackgroundTrackDownloads() {
-    var queue = remainingTracksQueue.slice();
-    function downloadNext() {
-      if (queue.length === 0) return;
-      var item = queue.shift();
-      var padNum = item.num < 10 ? "0" + item.num : "" + item.num;
-      var trackPath = "/wipeout/music/track" + padNum + ".qoa";
-      fetchTrack("/assets/games/wipeout/music/" + item.name)
-        .then(function (bytes) {
-          if (window.Module && window.Module.FS) {
+      activeHolds[btnName] = {
+        startTime: Date.now(),
+      };
+      try {
+        snesInstance.pressDown(btnName);
+      } catch (_) {}
+    } else {
+      var hold = activeHolds[btnName];
+      if (hold) {
+        var elapsed = Date.now() - hold.startTime;
+        var minHold = 110; // at least 6-7 frames of 60fps joypad polling
+        if (elapsed < minHold) {
+          hold.timer = setTimeout(function () {
             try {
-              window.Module.FS.writeFile(trackPath, bytes);
+              if (snesInstance) snesInstance.pressUp(btnName);
             } catch (_) {}
-          }
-          setTimeout(downloadNext, 500);
-        })
-        .catch(function () {
-          setTimeout(downloadNext, 1000);
-        });
-    }
-    setTimeout(downloadNext, 2000);
-  }
-
-  function handleEngineLog(text) {
-    if (!text) return;
-    var match = text.match(/open music track:.*track(\d+)\.qoa/i);
-    if (match && match[1]) {
-      var trackNum = parseInt(match[1], 10);
-      var names = [
-        "",
-        "CAIRODROME",
-        "TRANSRAPID",
-        "AFRO RIDE",
-        "LANDMATE",
-        "CORRIDOR",
-        "OPERATIQUE",
-        "MESSIJ EXTENDED",
-        "DO RE MI",
-        "WIPEOUT TITLES",
-        "CODON",
-        "HALCYON",
-      ];
-      showToast(names[trackNum] || "TRACK " + trackNum, "CoLD SToRAGE");
+            delete activeHolds[btnName];
+          }, minHold - elapsed);
+        } else {
+          try {
+            snesInstance.pressUp(btnName);
+          } catch (_) {}
+          delete activeHolds[btnName];
+        }
+      } else {
+        try {
+          snesInstance.pressUp(btnName);
+        } catch (_) {}
+      }
     }
   }
 
@@ -548,7 +355,7 @@
     }
 
     function applyDirection(dir, pressed) {
-      if (currentEngine === "aerofighters" && snesInstance) {
+      if (snesInstance) {
         if (pressed) {
           try {
             snesInstance.pressDown(dir);
@@ -558,9 +365,6 @@
             snesInstance.pressUp(dir);
           } catch (_) {}
         }
-      } else if (currentEngine === "wipeout") {
-        var code = dir === "up" ? 82 : dir === "down" ? 81 : dir === "left" ? 80 : 79;
-        setGameButton(code, pressed);
       }
     }
 
@@ -704,11 +508,10 @@
     var label = document.getElementById("touch-autofire-label");
     if (btn) {
       btn.setAttribute("data-autofire", autoFireActive ? "true" : "false");
-      if (autoFireActive) btn.classList.add("active");
-      else btn.classList.remove("active");
+      btn.classList.toggle("active", autoFireActive);
     }
     if (label) {
-      label.textContent = autoFireActive ? "AUTO-FUEGO: ON" : "AUTO-FUEGO: OFF";
+      label.textContent = autoFireActive ? "AUTO: ON" : "AUTO: OFF";
     }
 
     if (autoFireInterval) {
@@ -716,7 +519,7 @@
       autoFireInterval = null;
     }
 
-    if (autoFireActive && currentEngine === "aerofighters" && snesInstance) {
+    if (autoFireActive && snesInstance) {
       autoFireInterval = setInterval(function () {
         if (!snesInstance) return;
         try {
@@ -743,11 +546,9 @@
 
     var autoBtn = document.getElementById("touch-autofire-btn");
     if (autoBtn) {
-      autoBtn.addEventListener("click", function (e) {
+      autoBtn.addEventListener("pointerdown", function (e) {
         e.preventDefault();
-        if (currentEngine === "aerofighters") {
-          toggleAutoFire();
-        }
+        toggleAutoFire();
       });
     }
 
@@ -756,64 +557,46 @@
       var code = parseInt(btn.getAttribute("data-button"), 10);
       var action = btn.getAttribute("data-action");
 
-      function pressAction(pressed) {
+      // Resolve button mapping for Aero Fighters
+      var snesKey = null;
+      if (action === "shoot" || code === 27) {
+        snesKey = "y"; // Fire / Shoot (Button B)
+      } else if (action === "bomb" || code === 29) {
+        snesKey = "b"; // Special Bomb (Button A)
+      } else if (action === "start" || code === 40) {
+        snesKey = "start";
+      } else if (action === "select" || code === 4) {
+        snesKey = "select";
+      }
+
+      function handlePress(pressed) {
         if (pressed) btn.classList.add("active");
         else btn.classList.remove("active");
 
-        if (currentEngine === "aerofighters" && snesInstance) {
-          // Shoot / Fire (Button B) -> SNES Y
-          if (code === 27 || action === "shoot") {
-            if (pressed) snesInstance.pressDown("y");
-            else snesInstance.pressUp("y");
-          }
-          // Special Bomb (Button A) -> SNES B
-          else if (code === 29 || action === "bomb") {
-            if (pressed) snesInstance.pressDown("b");
-            else snesInstance.pressUp("b");
-          }
-          // Start / Pause -> SNES start
-          else if (code === 40 || action === "start") {
-            if (pressed) snesInstance.pressDown("start");
-            else snesInstance.pressUp("start");
-          }
-          // Select -> SNES select
-          else if (code === 4 || action === "select") {
-            if (pressed) snesInstance.pressDown("select");
-            else snesInstance.pressUp("select");
-          }
-        } else if (currentEngine === "wipeout") {
-          setGameButton(code, pressed);
+        if (snesKey) {
+          sendPress(snesKey, pressed);
         }
       }
 
       btn.addEventListener("pointerdown", function (e) {
         e.preventDefault();
-        try {
-          btn.setPointerCapture(e.pointerId);
-        } catch (_) {}
-        pressAction(true);
+        handlePress(true);
       });
 
       btn.addEventListener("pointerup", function (e) {
         e.preventDefault();
-        try {
-          btn.releasePointerCapture(e.pointerId);
-        } catch (_) {}
-        pressAction(false);
+        handlePress(false);
+      });
+
+      btn.addEventListener("pointerleave", function (e) {
+        e.preventDefault();
+        handlePress(false);
       });
 
       btn.addEventListener("pointercancel", function () {
-        pressAction(false);
+        handlePress(false);
       });
     });
-  }
-
-  function setGameButton(code, pressed) {
-    if (window.Module && typeof window.Module._set_button === "function") {
-      try {
-        window.Module._set_button(code, pressed ? 1 : 0);
-      } catch (_) {}
-    }
   }
 
   /* -------------------------------------------------------------
@@ -822,7 +605,7 @@
   function setupAeroFightersKeyboard() {
     document.addEventListener("keydown", function (e) {
       var modal = document.getElementById("wipeout-modal");
-      if (!modal || !modal.open || currentEngine !== "aerofighters" || !snesInstance) return;
+      if (!modal || !modal.open || !snesInstance) return;
 
       var k = e.key;
       if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " ", "Enter"].indexOf(k) !== -1) {
@@ -836,17 +619,24 @@
       else if (k === "ArrowLeft" || k === "a" || k === "A") snesInstance.pressDown("left");
       else if (k === "ArrowRight" || k === "d" || k === "D") snesInstance.pressDown("right");
       // Shoot (SNES Y)
-      else if (k === "z" || k === "Z" || k === "b" || k === "B" || k === "j" || k === "J" || k === " ") snesInstance.pressDown("y");
+      else if (k === "z" || k === "Z" || k === "b" || k === "B" || k === "j" || k === "J" || k === " ") {
+        sendPress("y", true);
+      }
       // Special Bomb (SNES B)
-      else if (k === "x" || k === "X" || k === "k" || k === "K") snesInstance.pressDown("b");
-      else if (k === "Enter") snesInstance.pressDown("start");
-      else if (k === "Shift") snesInstance.pressDown("select");
-      else if (k === "c" || k === "C") toggleAutoFire();
+      else if (k === "x" || k === "X" || k === "k" || k === "K") {
+        sendPress("b", true);
+      } else if (k === "Enter") {
+        sendPress("start", true);
+      } else if (k === "Shift") {
+        sendPress("select", true);
+      } else if (k === "c" || k === "C") {
+        toggleAutoFire();
+      }
     });
 
     document.addEventListener("keyup", function (e) {
       var modal = document.getElementById("wipeout-modal");
-      if (!modal || !modal.open || currentEngine !== "aerofighters" || !snesInstance) return;
+      if (!modal || !modal.open || !snesInstance) return;
 
       var k = e.key;
       if (k === "ArrowUp" || k === "w" || k === "W") snesInstance.pressUp("up");
@@ -854,11 +644,17 @@
       else if (k === "ArrowLeft" || k === "a" || k === "A") snesInstance.pressUp("left");
       else if (k === "ArrowRight" || k === "d" || k === "D") snesInstance.pressUp("right");
       // Shoot (SNES Y)
-      else if (k === "z" || k === "Z" || k === "b" || k === "B" || k === "j" || k === "J" || k === " ") snesInstance.pressUp("y");
+      else if (k === "z" || k === "Z" || k === "b" || k === "B" || k === "j" || k === "J" || k === " ") {
+        sendPress("y", false);
+      }
       // Special Bomb (SNES B)
-      else if (k === "x" || k === "X" || k === "k" || k === "K") snesInstance.pressUp("b");
-      else if (k === "Enter") snesInstance.pressUp("start");
-      else if (k === "Shift") snesInstance.pressUp("select");
+      else if (k === "x" || k === "X" || k === "k" || k === "K") {
+        sendPress("b", false);
+      } else if (k === "Enter") {
+        sendPress("start", false);
+      } else if (k === "Shift") {
+        sendPress("select", false);
+      }
     });
   }
 
@@ -868,23 +664,6 @@
   function setupModalEvents() {
     var modal = document.getElementById("wipeout-modal");
     if (!modal) return;
-
-    var switchBtn = modal.querySelector("[data-easter-egg-switch]");
-    if (switchBtn) {
-      switchBtn.addEventListener("click", function (e) {
-        e.preventDefault();
-        if (currentEngine === "aerofighters") {
-          if (snesInstance) {
-            try {
-              snesInstance.pause();
-            } catch (_) {}
-          }
-          launchWipEout();
-        } else {
-          launchAeroFighters();
-        }
-      });
-    }
 
     var closeBtn = modal.querySelector("[data-wipeout-close]");
     if (closeBtn) {
@@ -935,11 +714,29 @@
     }
 
     document.addEventListener("fullscreenchange", function () {
-      updateFullscreenUI(!!document.fullscreenElement);
+      var isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      var currentModal = document.getElementById("wipeout-modal");
+      if (currentModal) {
+        if (!isFs && !currentModal.classList.contains("is-fullscreen")) {
+          updateFullscreenUI(false);
+        } else if (isFs) {
+          currentModal.classList.add("is-fullscreen");
+          updateFullscreenUI(true);
+        }
+      }
     });
+
     document.addEventListener("webkitfullscreenchange", function () {
       var isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
-      updateFullscreenUI(isFs);
+      var currentModal = document.getElementById("wipeout-modal");
+      if (currentModal) {
+        if (!isFs && !currentModal.classList.contains("is-fullscreen")) {
+          updateFullscreenUI(false);
+        } else if (isFs) {
+          currentModal.classList.add("is-fullscreen");
+          updateFullscreenUI(true);
+        }
+      }
     });
 
     var helpBtn = modal.querySelector("[data-wipeout-help]");
@@ -991,13 +788,6 @@
       } catch (_) {}
     });
 
-    if (window.Module && window.Module._saudio_context) {
-      try {
-        if (isAudioMuted) window.Module._saudio_context.suspend();
-        else window.Module._saudio_context.resume();
-      } catch (_) {}
-    }
-
     updateAudioButtonUI(isAudioMuted);
   }
 
@@ -1012,13 +802,13 @@
     if (muted) {
       if (onIcon) onIcon.style.display = "none";
       if (offIcon) offIcon.style.display = "block";
-      if (label) label.textContent = "Silenciado";
-      if (audioBtn) audioBtn.setAttribute("aria-label", "Activar sonido");
+      if (label) label.textContent = "Muted";
+      if (audioBtn) audioBtn.setAttribute("aria-label", "Unmute audio");
     } else {
       if (onIcon) onIcon.style.display = "block";
       if (offIcon) offIcon.style.display = "none";
       if (label) label.textContent = "Audio";
-      if (audioBtn) audioBtn.setAttribute("aria-label", "Silenciar sonido");
+      if (audioBtn) audioBtn.setAttribute("aria-label", "Mute audio");
     }
   }
 
@@ -1026,15 +816,15 @@
     var overlay = document.getElementById("wipeout-error-overlay");
     if (overlay) overlay.hidden = true;
 
-    if (currentEngine === "aerofighters" && snesInstance) {
+    if (snesInstance) {
       try {
         snesInstance.restart();
         focusCanvas();
       } catch (_) {
         window.location.search = "?game=aerofighters";
       }
-    } else if (currentEngine === "wipeout") {
-      window.location.search = "?wipeout=1";
+    } else {
+      launchAeroFighters();
     }
   }
 
@@ -1042,35 +832,41 @@
     var modal = document.getElementById("wipeout-modal");
     if (!modal) return;
 
-    var fsEl = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+    var isCurrentlyFs = modal.classList.contains("is-fullscreen") || !!(document.fullscreenElement || document.webkitFullscreenElement);
 
-    if (!fsEl) {
-      var target = document.documentElement;
-      var req = target.requestFullscreen || target.webkitRequestFullscreen || target.mozRequestFullScreen || target.msRequestFullscreen;
+    if (!isCurrentlyFs) {
+      modal.classList.add("is-fullscreen");
+      document.body.classList.add("game-fullscreen-active");
+      var docEl = document.documentElement;
+      var req = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
 
       if (req) {
-        req.call(target).catch(function () {
-          togglePseudoFullscreen(modal);
-        });
-      } else {
-        togglePseudoFullscreen(modal);
+        try {
+          var p = req.call(docEl);
+          if (p && typeof p.catch === "function") p.catch(function () {});
+        } catch (_) {}
       }
+      updateFullscreenUI(true);
     } else {
+      modal.classList.remove("is-fullscreen");
+      document.body.classList.remove("game-fullscreen-active");
       var exit = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
-      if (exit) {
-        exit.call(document).catch(function () {
-          togglePseudoFullscreen(modal);
-        });
-      } else {
-        togglePseudoFullscreen(modal);
-      }
-    }
-  }
 
-  function togglePseudoFullscreen(modal) {
-    if (!modal) return;
-    modal.classList.toggle("is-pseudo-fullscreen");
-    updateFullscreenUI(modal.classList.contains("is-pseudo-fullscreen"));
+      if (exit && (document.fullscreenElement || document.webkitFullscreenElement)) {
+        try {
+          var pExit = exit.call(document);
+          if (pExit && typeof pExit.catch === "function") pExit.catch(function () {});
+        } catch (_) {}
+      }
+      updateFullscreenUI(false);
+    }
+
+    if (snesInstance && typeof snesInstance.resize === "function") {
+      try {
+        snesInstance.resize();
+      } catch (_) {}
+    }
+    focusCanvas();
   }
 
   function updateFullscreenUI(isFullscreen) {
@@ -1079,15 +875,16 @@
     var fsBtn = modal.querySelector("[data-wipeout-fullscreen]");
     if (!fsBtn) return;
     var btnText = fsBtn.querySelector(".btn-text");
+
     if (isFullscreen) {
-      fsBtn.setAttribute("title", "Salir de pantalla completa");
-      fsBtn.setAttribute("aria-label", "Salir de pantalla completa");
-      if (btnText) btnText.textContent = "Salir";
+      fsBtn.setAttribute("title", "Exit Fullscreen");
+      fsBtn.setAttribute("aria-label", "Exit Fullscreen");
+      if (btnText) btnText.textContent = "Exit";
       fsBtn.classList.add("active");
     } else {
-      fsBtn.setAttribute("title", "Pantalla completa");
-      fsBtn.setAttribute("aria-label", "Pantalla completa");
-      if (btnText) btnText.textContent = "Pantalla";
+      fsBtn.setAttribute("title", "Fullscreen");
+      fsBtn.setAttribute("aria-label", "Fullscreen");
+      if (btnText) btnText.textContent = "Fullscreen";
       fsBtn.classList.remove("active");
     }
   }
@@ -1116,15 +913,21 @@
       } catch (_) {}
     }
 
-    if (window.Module && window.Module._saudio_context) {
-      try {
-        window.Module._saudio_context.suspend();
-      } catch (_) {}
-    }
-
     if (gamepadLoopId) {
       cancelAnimationFrame(gamepadLoopId);
       gamepadLoopId = null;
+    }
+
+    if (modal.classList.contains("is-fullscreen")) {
+      modal.classList.remove("is-fullscreen");
+      document.body.classList.remove("game-fullscreen-active");
+      var exit = document.exitFullscreen || document.webkitExitFullscreen;
+      if (exit && (document.fullscreenElement || document.webkitFullscreenElement)) {
+        try {
+          exit.call(document);
+        } catch (_) {}
+      }
+      updateFullscreenUI(false);
     }
 
     if (modal.open) {
@@ -1145,7 +948,7 @@
     function poll() {
       var gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
       var gp = gamepads[0];
-      if (gp) {
+      if (gp && snesInstance) {
         var aPressed = (gp.buttons[0] && gp.buttons[0].pressed) || (gp.buttons[2] && gp.buttons[2].pressed);
         var bPressed = (gp.buttons[1] && gp.buttons[1].pressed) || (gp.buttons[3] && gp.buttons[3].pressed);
         var startPressed = gp.buttons[9] && gp.buttons[9].pressed;
@@ -1156,42 +959,41 @@
         var dpadLeft = (gp.buttons[14] && gp.buttons[14].pressed) || gp.axes[0] < -0.4;
         var dpadRight = (gp.buttons[15] && gp.buttons[15].pressed) || gp.axes[0] > 0.4;
 
-        if (currentEngine === "aerofighters" && snesInstance) {
-          if (aPressed !== activeGamepadState.a) {
-            activeGamepadState.a = aPressed;
-            if (aPressed) snesInstance.pressDown("y");
-            else snesInstance.pressUp("y");
-          }
-          if (bPressed !== activeGamepadState.b) {
-            activeGamepadState.b = bPressed;
-            if (bPressed) snesInstance.pressDown("b");
-            else snesInstance.pressUp("b");
-          }
-          if (startPressed !== activeGamepadState.start) {
-            activeGamepadState.start = startPressed;
-            if (startPressed) snesInstance.pressDown("start");
-            else snesInstance.pressUp("start");
-          }
-          if (dpadUp !== activeGamepadState.up) {
-            activeGamepadState.up = dpadUp;
-            if (dpadUp) snesInstance.pressDown("up");
-            else snesInstance.pressUp("up");
-          }
-          if (dpadDown !== activeGamepadState.down) {
-            activeGamepadState.down = dpadDown;
-            if (dpadDown) snesInstance.pressDown("down");
-            else snesInstance.pressUp("down");
-          }
-          if (dpadLeft !== activeGamepadState.left) {
-            activeGamepadState.left = dpadLeft;
-            if (dpadLeft) snesInstance.pressDown("left");
-            else snesInstance.pressUp("left");
-          }
-          if (dpadRight !== activeGamepadState.right) {
-            activeGamepadState.right = dpadRight;
-            if (dpadRight) snesInstance.pressDown("right");
-            else snesInstance.pressUp("right");
-          }
+        if (aPressed !== activeGamepadState.a) {
+          activeGamepadState.a = aPressed;
+          sendPress("y", aPressed);
+        }
+        if (bPressed !== activeGamepadState.b) {
+          activeGamepadState.b = bPressed;
+          sendPress("b", bPressed);
+        }
+        if (startPressed !== activeGamepadState.start) {
+          activeGamepadState.start = startPressed;
+          sendPress("start", startPressed);
+        }
+        if (selectPressed !== activeGamepadState.select) {
+          activeGamepadState.select = selectPressed;
+          sendPress("select", selectPressed);
+        }
+        if (dpadUp !== activeGamepadState.up) {
+          activeGamepadState.up = dpadUp;
+          if (dpadUp) snesInstance.pressDown("up");
+          else snesInstance.pressUp("up");
+        }
+        if (dpadDown !== activeGamepadState.down) {
+          activeGamepadState.down = dpadDown;
+          if (dpadDown) snesInstance.pressDown("down");
+          else snesInstance.pressUp("down");
+        }
+        if (dpadLeft !== activeGamepadState.left) {
+          activeGamepadState.left = dpadLeft;
+          if (dpadLeft) snesInstance.pressDown("left");
+          else snesInstance.pressUp("left");
+        }
+        if (dpadRight !== activeGamepadState.right) {
+          activeGamepadState.right = dpadRight;
+          if (dpadRight) snesInstance.pressDown("right");
+          else snesInstance.pressUp("right");
         }
       }
       gamepadLoopId = requestAnimationFrame(poll);
