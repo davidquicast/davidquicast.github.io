@@ -735,7 +735,7 @@
 .joystick-tick {
   position: absolute;
   font-size: 11px;
-  color: rgba(0, 240, 255, 0.6);
+  color: rgba(0, 240, 255, 0.5);
   pointer-events: none;
   user-select: none;
   font-weight: bold;
@@ -744,6 +744,16 @@
   justify-content: center;
   width: 30px;
   height: 30px;
+  transition:
+    color 80ms ease,
+    text-shadow 80ms ease;
+}
+
+.joystick-tick.active {
+  color: #00f0ff;
+  text-shadow:
+    0 0 8px #00f0ff,
+    0 0 16px rgba(0, 240, 255, 0.85);
 }
 
 .joystick-tick.tick-u {
@@ -834,6 +844,22 @@
   box-shadow:
     0 4px 14px rgba(0, 0, 0, 0.5),
     0 0 14px rgba(255, 102, 51, 0.4);
+}
+
+.touch-btn.touch-bomb .action-main {
+  font-size: 16px;
+  font-weight: 900;
+  color: #ffbb88;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.touch-btn.touch-bomb .action-sub {
+  font-size: 7.5px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: ui-monospace, monospace;
+  line-height: 1;
 }
 
 .touch-btn.touch-bomb:active,
@@ -1007,8 +1033,8 @@
 }
 
 .touch-shoot .action-main {
-  font-size: 11.5px;
-  font-weight: 800;
+  font-size: 16px;
+  font-weight: 900;
   color: #ff8888;
   letter-spacing: 0.04em;
   line-height: 1;
@@ -1017,7 +1043,7 @@
 .touch-shoot .action-sub {
   font-size: 7.5px;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.85);
   font-family: ui-monospace, monospace;
   line-height: 1;
 }
@@ -1064,11 +1090,13 @@
 
 /* Fullscreen mode adjustments */
 :fullscreen .wipeout-frame,
-:-webkit-full-screen .wipeout-frame {
+:-webkit-full-screen .wipeout-frame,
+.wipeout-modal.is-pseudo-fullscreen .wipeout-frame {
   width: 100vw !important;
   height: 100vh !important;
-  border-radius: 0;
-  border: none;
+  height: 100dvh !important;
+  border-radius: 0 !important;
+  border: none !important;
 }
 
 /* Small Viewports (Mobile Phones <= 480px) */

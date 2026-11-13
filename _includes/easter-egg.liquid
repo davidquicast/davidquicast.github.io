@@ -186,12 +186,16 @@
                   <span class="help-desc">Mover avión en 8 direcciones</span>
                 </div>
                 <div class="help-item">
-                  <span class="help-keys"><kbd>Z</kbd> / <kbd>J</kbd></span>
-                  <span class="help-desc">Disparo principal (Botón B / Y)</span>
+                  <span class="help-keys"><kbd>Z</kbd> / <kbd>B</kbd> / <kbd>Espacio</kbd></span>
+                  <span class="help-desc">Disparo principal (Botón B)</span>
                 </div>
                 <div class="help-item">
-                  <span class="help-keys"><kbd>X</kbd> / <kbd>K</kbd></span>
-                  <span class="help-desc">Bomba especial / Ataque masivo (Botón A)</span>
+                  <span class="help-keys"><kbd>X</kbd> / <kbd>A</kbd></span>
+                  <span class="help-desc">Bomba especial masiva (Botón A)</span>
+                </div>
+                <div class="help-item">
+                  <span class="help-keys"><kbd>C</kbd></span>
+                  <span class="help-desc">Alternar Auto-Fuego</span>
                 </div>
                 <div class="help-item">
                   <span class="help-keys"><kbd>Enter</kbd></span>
@@ -240,11 +244,11 @@
 
         <!-- Center Top Utility Controls -->
         <div class="touch-center-top">
-          <button type="button" class="touch-btn touch-pill touch-cam" data-button="4" aria-label="Select">
+          <button type="button" class="touch-btn touch-pill touch-cam" data-button="4" data-action="select" aria-label="Select">
             <span class="pill-icon">🔘</span>
             <span class="pill-label">SELECT</span>
           </button>
-          <button type="button" class="touch-btn touch-pill touch-pause" data-button="40" aria-label="Start / Pausa">
+          <button type="button" class="touch-btn touch-pill touch-pause" data-button="40" data-action="start" aria-label="Start / Pausa">
             <span class="pill-icon">▶</span>
             <span class="pill-label">START</span>
           </button>
@@ -257,13 +261,19 @@
             <span class="autofire-txt" id="touch-autofire-label">AUTO-FUEGO: OFF</span>
           </button>
           <div class="touch-actions-cluster">
-            <button type="button" class="touch-btn touch-action touch-shoot" data-button="27" aria-label="Disparar arma">
-              <span class="action-main" id="action-btn-main-label">FUEGO</span>
-              <span class="action-sub" id="action-btn-sub-label">DISPARO [B]</span>
+            <button type="button" class="touch-btn touch-action touch-shoot" data-button="27" data-action="shoot" aria-label="Disparo principal [B]">
+              <span class="action-main" id="action-btn-main-label">B</span>
+              <span class="action-sub" id="action-btn-sub-label">DISPARO</span>
             </button>
-            <button type="button" class="touch-btn touch-action touch-thrust touch-bomb" data-button="29" aria-label="Bomba especial">
-              <span class="action-main" id="action-btn-bomb-label">BOMBA</span>
-              <span class="action-sub">ESPECIAL [A]</span>
+            <button
+              type="button"
+              class="touch-btn touch-action touch-thrust touch-bomb"
+              data-button="29"
+              data-action="bomb"
+              aria-label="Bomba especial [A]"
+            >
+              <span class="action-main" id="action-btn-bomb-label">A</span>
+              <span class="action-sub" id="action-btn-bomb-sub">BOMBA</span>
             </button>
           </div>
         </div>
@@ -274,8 +284,8 @@
     <footer class="wipeout-footer">
       <div class="wipeout-controls-hint" id="easter-egg-footer-hint">
         <span><kbd>◀</kbd><kbd>▲</kbd><kbd>▼</kbd><kbd>▶</kbd> / <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> Vuelo</span>
-        <span><kbd>Z</kbd> / <kbd>J</kbd> Disparo Principal</span>
-        <span><kbd>X</kbd> / <kbd>K</kbd> Bomba Especial</span>
+        <span><kbd>Z</kbd> / <kbd>B</kbd> / <kbd>Espacio</kbd> Disparo Principal</span>
+        <span><kbd>X</kbd> / <kbd>A</kbd> Bomba Especial</span>
         <span><kbd>Enter</kbd> Start / Pausa</span>
         <span><kbd>Shift</kbd> Select</span>
         <span><kbd>Esc</kbd> Salir</span>

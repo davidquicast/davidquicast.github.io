@@ -264,10 +264,10 @@
       if (badge) badge.textContent = "SPC700 AUDIO // 60 FPS";
       if (switchLabel) switchLabel.textContent = "🏎️ WipEout";
       if (sub) sub.textContent = "Snes9x WebAssembly • 16-Bit SPC700 Audio • 60 FPS";
-      if (actionMain) actionMain.textContent = "FUEGO";
-      if (actionSub) actionSub.textContent = "DISPARO [B]";
-      if (bombMain) bombMain.textContent = "BOMBA";
-      if (bombSub) bombSub.textContent = "ESPECIAL [A]";
+      if (actionMain) actionMain.textContent = "B";
+      if (actionSub) actionSub.textContent = "DISPARO";
+      if (bombMain) bombMain.textContent = "A";
+      if (bombSub) bombSub.textContent = "BOMBA";
     } else {
       if (prefix) prefix.textContent = "AG-SYSTEMS //";
       if (title) title.textContent = "WIPEOUT (1995)";
@@ -337,6 +337,7 @@
           audio_enable: true,
         },
       });
+      window.snesInstance = snesInstance;
 
       showLoader(false);
       focusCanvas();
@@ -525,9 +526,15 @@
    * Virtual Analog Joystick Module
    * ------------------------------------------------------------- */
   function setupVirtualJoystick() {
+    var zone = document.getElementById("touch-joystick-zone");
     var base = document.getElementById("touch-joystick-base");
     var knob = document.getElementById("touch-joystick-knob");
     if (!base || !knob) return;
+
+    var tickU = base.querySelector(".tick-u");
+    var tickD = base.querySelector(".tick-d");
+    var tickL = base.querySelector(".tick-l");
+    var tickR = base.querySelector(".tick-r");
 
     var activePointerId = null;
     var maxRadius = 38;
@@ -557,6 +564,13 @@
       }
     }
 
+    function updateTicks(u, d, l, r) {
+      if (tickU) tickU.classList.toggle("active", !!u);
+      if (tickD) tickD.classList.toggle("active", !!d);
+      if (tickL) tickL.classList.toggle("active", !!l);
+      if (tickR) tickR.classList.toggle("active", !!r);
+    }
+
     function updateJoystick(clientX, clientY) {
       var center = getBaseCenter();
       var dx = clientX - center.x;
@@ -568,13 +582,44 @@
       var knobX = Math.cos(angle) * clampedDist;
       var knobY = Math.sin(angle) * clampedDist;
 
+      knob.style.transition = "none";
       knob.style.transform = "translate3d(" + knobX + "px, " + knobY + "px, 0)";
 
-      var deadzone = 8;
-      var newLeft = dx < -deadzone;
-      var newRight = dx > deadzone;
-      var newUp = dy < -deadzone;
-      var newDown = dy > deadzone;
+      var deadzone = 9;
+      var newUp = false;
+      var newDown = false;
+      var newLeft = false;
+      var newRight = false;
+
+      if (dist >= deadzone) {
+        var deg = (angle * 180) / Math.PI;
+        if (deg < 0) deg += 360;
+
+        // 8-way directional sectors (45 deg each)
+        if (deg >= 337.5 || deg < 22.5) {
+          newRight = true;
+        } else if (deg >= 22.5 && deg < 67.5) {
+          newDown = true;
+          newRight = true;
+        } else if (deg >= 67.5 && deg < 112.5) {
+          newDown = true;
+        } else if (deg >= 112.5 && deg < 157.5) {
+          newDown = true;
+          newLeft = true;
+        } else if (deg >= 157.5 && deg < 202.5) {
+          newLeft = true;
+        } else if (deg >= 202.5 && deg < 247.5) {
+          newUp = true;
+          newLeft = true;
+        } else if (deg >= 247.5 && deg < 292.5) {
+          newUp = true;
+        } else if (deg >= 292.5 && deg < 337.5) {
+          newUp = true;
+          newRight = true;
+        }
+      }
+
+      updateTicks(newUp, newDown, newLeft, newRight);
 
       if (newLeft !== activeDirs.left) {
         activeDirs.left = newLeft;
@@ -596,7 +641,10 @@
 
     function resetJoystick() {
       activePointerId = null;
+      knob.style.transition = "transform 140ms cubic-bezier(0.175, 0.885, 0.32, 1.275)";
       knob.style.transform = "translate3d(0, 0, 0)";
+      updateTicks(false, false, false, false);
+
       if (activeDirs.left) {
         activeDirs.left = false;
         applyDirection("left", false);
@@ -615,33 +663,34 @@
       }
     }
 
-    base.addEventListener("pointerdown", function (e) {
+    var touchTarget = zone || base;
+    touchTarget.addEventListener("pointerdown", function (e) {
       e.preventDefault();
       activePointerId = e.pointerId;
       try {
-        base.setPointerCapture(e.pointerId);
+        touchTarget.setPointerCapture(e.pointerId);
       } catch (_) {}
       updateJoystick(e.clientX, e.clientY);
     });
 
-    base.addEventListener("pointermove", function (e) {
+    touchTarget.addEventListener("pointermove", function (e) {
       if (activePointerId !== null && e.pointerId === activePointerId) {
         e.preventDefault();
         updateJoystick(e.clientX, e.clientY);
       }
     });
 
-    base.addEventListener("pointerup", function (e) {
+    touchTarget.addEventListener("pointerup", function (e) {
       if (activePointerId !== null && e.pointerId === activePointerId) {
         e.preventDefault();
         try {
-          base.releasePointerCapture(e.pointerId);
+          touchTarget.releasePointerCapture(e.pointerId);
         } catch (_) {}
         resetJoystick();
       }
     });
 
-    base.addEventListener("pointercancel", function () {
+    touchTarget.addEventListener("pointercancel", function () {
       resetJoystick();
     });
   }
@@ -671,19 +720,19 @@
       autoFireInterval = setInterval(function () {
         if (!snesInstance) return;
         try {
-          snesInstance.pressDown("b");
+          snesInstance.pressDown("y");
           setTimeout(function () {
             if (snesInstance) {
               try {
-                snesInstance.pressUp("b");
+                snesInstance.pressUp("y");
               } catch (_) {}
             }
-          }, 35);
+          }, 40);
         } catch (_) {}
-      }, 85);
+      }, 90);
     } else if (!autoFireActive && snesInstance) {
       try {
-        snesInstance.pressUp("b");
+        snesInstance.pressUp("y");
       } catch (_) {}
     }
   }
@@ -702,29 +751,33 @@
       });
     }
 
-    var buttons = touchControls.querySelectorAll("[data-button]");
+    var buttons = touchControls.querySelectorAll(".touch-btn:not(#touch-autofire-btn)");
     buttons.forEach(function (btn) {
       var code = parseInt(btn.getAttribute("data-button"), 10);
+      var action = btn.getAttribute("data-action");
 
       function pressAction(pressed) {
         if (pressed) btn.classList.add("active");
         else btn.classList.remove("active");
 
         if (currentEngine === "aerofighters" && snesInstance) {
-          if (code === 27) {
-            // Shoot (Button B)
+          // Shoot / Fire (Button B) -> SNES Y
+          if (code === 27 || action === "shoot") {
+            if (pressed) snesInstance.pressDown("y");
+            else snesInstance.pressUp("y");
+          }
+          // Special Bomb (Button A) -> SNES B
+          else if (code === 29 || action === "bomb") {
             if (pressed) snesInstance.pressDown("b");
             else snesInstance.pressUp("b");
-          } else if (code === 29) {
-            // Special Bomb (Button A)
-            if (pressed) snesInstance.pressDown("a");
-            else snesInstance.pressUp("a");
-          } else if (code === 40) {
-            // Start / Pause
+          }
+          // Start / Pause -> SNES start
+          else if (code === 40 || action === "start") {
             if (pressed) snesInstance.pressDown("start");
             else snesInstance.pressUp("start");
-          } else if (code === 4) {
-            // Select
+          }
+          // Select -> SNES select
+          else if (code === 4 || action === "select") {
             if (pressed) snesInstance.pressDown("select");
             else snesInstance.pressUp("select");
           }
@@ -735,7 +788,9 @@
 
       btn.addEventListener("pointerdown", function (e) {
         e.preventDefault();
-        btn.setPointerCapture(e.pointerId);
+        try {
+          btn.setPointerCapture(e.pointerId);
+        } catch (_) {}
         pressAction(true);
       });
 
@@ -780,8 +835,10 @@
       else if (k === "ArrowDown" || k === "s" || k === "S") snesInstance.pressDown("down");
       else if (k === "ArrowLeft" || k === "a" || k === "A") snesInstance.pressDown("left");
       else if (k === "ArrowRight" || k === "d" || k === "D") snesInstance.pressDown("right");
-      else if (k === "z" || k === "Z" || k === "j" || k === "J") snesInstance.pressDown("b");
-      else if (k === "x" || k === "X" || k === "k" || k === "K") snesInstance.pressDown("a");
+      // Shoot (SNES Y)
+      else if (k === "z" || k === "Z" || k === "b" || k === "B" || k === "j" || k === "J" || k === " ") snesInstance.pressDown("y");
+      // Special Bomb (SNES B)
+      else if (k === "x" || k === "X" || k === "k" || k === "K") snesInstance.pressDown("b");
       else if (k === "Enter") snesInstance.pressDown("start");
       else if (k === "Shift") snesInstance.pressDown("select");
       else if (k === "c" || k === "C") toggleAutoFire();
@@ -796,8 +853,10 @@
       else if (k === "ArrowDown" || k === "s" || k === "S") snesInstance.pressUp("down");
       else if (k === "ArrowLeft" || k === "a" || k === "A") snesInstance.pressUp("left");
       else if (k === "ArrowRight" || k === "d" || k === "D") snesInstance.pressUp("right");
-      else if (k === "z" || k === "Z" || k === "j" || k === "J") snesInstance.pressUp("b");
-      else if (k === "x" || k === "X" || k === "k" || k === "K") snesInstance.pressUp("a");
+      // Shoot (SNES Y)
+      else if (k === "z" || k === "Z" || k === "b" || k === "B" || k === "j" || k === "J" || k === " ") snesInstance.pressUp("y");
+      // Special Bomb (SNES B)
+      else if (k === "x" || k === "X" || k === "k" || k === "K") snesInstance.pressUp("b");
       else if (k === "Enter") snesInstance.pressUp("start");
       else if (k === "Shift") snesInstance.pressUp("select");
     });
@@ -874,6 +933,14 @@
         toggleFullscreen();
       });
     }
+
+    document.addEventListener("fullscreenchange", function () {
+      updateFullscreenUI(!!document.fullscreenElement);
+    });
+    document.addEventListener("webkitfullscreenchange", function () {
+      var isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      updateFullscreenUI(isFs);
+    });
 
     var helpBtn = modal.querySelector("[data-wipeout-help]");
     var helpOverlay = document.getElementById("wipeout-help-overlay");
@@ -974,10 +1041,54 @@
   function toggleFullscreen() {
     var modal = document.getElementById("wipeout-modal");
     if (!modal) return;
-    if (!document.fullscreenElement) {
-      modal.requestFullscreen().catch(function () {});
+
+    var fsEl = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+
+    if (!fsEl) {
+      var target = document.documentElement;
+      var req = target.requestFullscreen || target.webkitRequestFullscreen || target.mozRequestFullScreen || target.msRequestFullscreen;
+
+      if (req) {
+        req.call(target).catch(function () {
+          togglePseudoFullscreen(modal);
+        });
+      } else {
+        togglePseudoFullscreen(modal);
+      }
     } else {
-      document.exitFullscreen().catch(function () {});
+      var exit = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+      if (exit) {
+        exit.call(document).catch(function () {
+          togglePseudoFullscreen(modal);
+        });
+      } else {
+        togglePseudoFullscreen(modal);
+      }
+    }
+  }
+
+  function togglePseudoFullscreen(modal) {
+    if (!modal) return;
+    modal.classList.toggle("is-pseudo-fullscreen");
+    updateFullscreenUI(modal.classList.contains("is-pseudo-fullscreen"));
+  }
+
+  function updateFullscreenUI(isFullscreen) {
+    var modal = document.getElementById("wipeout-modal");
+    if (!modal) return;
+    var fsBtn = modal.querySelector("[data-wipeout-fullscreen]");
+    if (!fsBtn) return;
+    var btnText = fsBtn.querySelector(".btn-text");
+    if (isFullscreen) {
+      fsBtn.setAttribute("title", "Salir de pantalla completa");
+      fsBtn.setAttribute("aria-label", "Salir de pantalla completa");
+      if (btnText) btnText.textContent = "Salir";
+      fsBtn.classList.add("active");
+    } else {
+      fsBtn.setAttribute("title", "Pantalla completa");
+      fsBtn.setAttribute("aria-label", "Pantalla completa");
+      if (btnText) btnText.textContent = "Pantalla";
+      fsBtn.classList.remove("active");
     }
   }
 
@@ -1035,8 +1146,8 @@
       var gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
       var gp = gamepads[0];
       if (gp) {
-        var aPressed = gp.buttons[0] && gp.buttons[0].pressed;
-        var bPressed = gp.buttons[1] && gp.buttons[1].pressed;
+        var aPressed = (gp.buttons[0] && gp.buttons[0].pressed) || (gp.buttons[2] && gp.buttons[2].pressed);
+        var bPressed = (gp.buttons[1] && gp.buttons[1].pressed) || (gp.buttons[3] && gp.buttons[3].pressed);
         var startPressed = gp.buttons[9] && gp.buttons[9].pressed;
         var selectPressed = gp.buttons[8] && gp.buttons[8].pressed;
 
@@ -1048,13 +1159,13 @@
         if (currentEngine === "aerofighters" && snesInstance) {
           if (aPressed !== activeGamepadState.a) {
             activeGamepadState.a = aPressed;
-            if (aPressed) snesInstance.pressDown("b");
-            else snesInstance.pressUp("b");
+            if (aPressed) snesInstance.pressDown("y");
+            else snesInstance.pressUp("y");
           }
           if (bPressed !== activeGamepadState.b) {
             activeGamepadState.b = bPressed;
-            if (bPressed) snesInstance.pressDown("a");
-            else snesInstance.pressUp("a");
+            if (bPressed) snesInstance.pressDown("b");
+            else snesInstance.pressUp("b");
           }
           if (startPressed !== activeGamepadState.start) {
             activeGamepadState.start = startPressed;
