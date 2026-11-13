@@ -1,6 +1,7 @@
 /**
  * Retro Arcade Easter Egg Controller - Aero Fighters (SNES - 1993)
  * WebAssembly Snes9x + SPC700 synthesized audio + Virtual Analog Joystick
+ * Supports 1-Player and 2-Player Co-op (Keyboard, Dual Gamepads, Touchscreen)
  *
  * Zero performance impact on portfolio initial page load (lazy-loaded).
  */
@@ -11,9 +12,12 @@
 
   var snesInstance = null;
   var isAudioMuted = false;
-  var autoFireActive = false;
-  var autoFireInterval = null;
-  var activeGamepadState = {};
+  var autoFireP1Active = false;
+  var autoFireP1Interval = null;
+  var autoFireP2Active = false;
+  var autoFireP2Interval = null;
+  var activeGamepadStateP1 = {};
+  var activeGamepadStateP2 = {};
   var gamepadLoopId = null;
   var previousActiveElement = null;
   var trackToastTimer = null;
@@ -44,7 +48,7 @@
   var avatarClicks = 0;
   var avatarClickTimer = null;
 
-  var activeDirs = { up: false, down: false, left: false, right: false };
+  var activeDirsP1 = { up: false, down: false, left: false, right: false };
 
   function checkUrlTrigger() {
     try {
@@ -78,10 +82,16 @@
       launchAeroFighters();
       return "AG-SYSTEMS: Aero Fighters (SNES) started.";
     };
+    window.joinPlayer2 = function () {
+      joinPlayer2();
+      return "AG-SYSTEMS: Player 2 Join requested.";
+    };
 
     console.log(
-      "%c[AG-SYSTEMS]%c Aero Fighters (SNES) Easter Egg ready.\nRun %cwindow.aerofighters()%c to play.",
+      "%c[AG-SYSTEMS]%c Aero Fighters (SNES) Easter Egg ready.\nRun %cwindow.aerofighters()%c to play (or %cwindow.joinPlayer2()%c for 2P co-op).",
       "background: #00f0ff; color: #040910; font-weight: bold; padding: 2px 6px; border-radius: 3px;",
+      "color: #00f0ff;",
+      "color: #ffd000; font-weight: bold;",
       "color: #00f0ff;",
       "color: #ffd000; font-weight: bold;",
       "color: #00f0ff;"
@@ -233,15 +243,15 @@
       return;
     }
 
-    showLoader(true, "Iniciando emulador y música SNES...", 25);
+    showLoader(true, "Starting emulator and SNES audio...", 25);
 
     try {
       if (typeof window.Nostalgist === "undefined") {
-        updateLoaderProgress(50, "Cargando motor WebAssembly...");
+        updateLoaderProgress(50, "Loading WebAssembly core...");
         await loadScript("/assets/games/snes/nostalgist.umd.js");
       }
 
-      updateLoaderProgress(75, "Inicializando procesador de sonido SPC700...");
+      updateLoaderProgress(75, "Initializing SPC700 sound processor...");
 
       var canvas = document.getElementById("canvas");
 
@@ -261,6 +271,24 @@
         retroarchConfig: {
           video_smooth: false,
           audio_enable: true,
+          // Player 1 controls
+          input_player1_up: "w",
+          input_player1_down: "s",
+          input_player1_left: "a",
+          input_player1_right: "d",
+          input_player1_y: "j",
+          input_player1_b: "k",
+          input_player1_start: "enter",
+          input_player1_select: "shift",
+          // Player 2 controls
+          input_player2_up: "up",
+          input_player2_down: "down",
+          input_player2_left: "left",
+          input_player2_right: "right",
+          input_player2_y: "num1",
+          input_player2_b: "num2",
+          input_player2_start: "kp_enter",
+          input_player2_select: "num0",
         },
       });
       window.snesInstance = snesInstance;
@@ -280,57 +308,96 @@
       showToast("AERO FIGHTERS", "SUPER NINTENDO // SPC700 BGM");
     } catch (err) {
       console.error("Aero Fighters launch error:", err);
-      showError("Error al iniciar Aero Fighters", err && err.message ? err.message : String(err));
+      showError("Error launching Aero Fighters", err && err.message ? err.message : String(err));
     }
   }
 
   /* -------------------------------------------------------------
    * Input Registration with Enforced Minimum Hold Duration
-   * Ensures fast taps on mobile (Button A / B) are sampled cleanly
-   * by SNES 60Hz joypad polling even while using virtual joystick.
+   * Supports Player 1 and Player 2 Co-op.
+   * Ensures rapid taps on touchscreen or keyboard are cleanly sampled
+   * by SNES 60Hz Joypad polling even during simultaneous movement.
    * ------------------------------------------------------------- */
-  function sendPress(btnName, pressed) {
+  function sendPress(btnName, pressed, player) {
     if (!snesInstance) return;
+    player = player || 1;
+    var holdKey = player + "_" + btnName;
 
     if (pressed) {
-      if (activeHolds[btnName] && activeHolds[btnName].timer) {
-        clearTimeout(activeHolds[btnName].timer);
-        activeHolds[btnName].timer = null;
+      if (activeHolds[holdKey] && activeHolds[holdKey].timer) {
+        clearTimeout(activeHolds[holdKey].timer);
+        activeHolds[holdKey].timer = null;
       }
-      activeHolds[btnName] = {
+      activeHolds[holdKey] = {
         startTime: Date.now(),
       };
       try {
-        snesInstance.pressDown(btnName);
+        if (player === 1) {
+          snesInstance.pressDown(btnName);
+        } else {
+          snesInstance.pressDown({ button: btnName, player: 2 });
+        }
       } catch (_) {}
     } else {
-      var hold = activeHolds[btnName];
+      var hold = activeHolds[holdKey];
       if (hold) {
         var elapsed = Date.now() - hold.startTime;
         var minHold = 110; // at least 6-7 frames of 60fps joypad polling
         if (elapsed < minHold) {
           hold.timer = setTimeout(function () {
             try {
-              if (snesInstance) snesInstance.pressUp(btnName);
+              if (snesInstance) {
+                if (player === 1) {
+                  snesInstance.pressUp(btnName);
+                } else {
+                  snesInstance.pressUp({ button: btnName, player: 2 });
+                }
+              }
             } catch (_) {}
-            delete activeHolds[btnName];
+            delete activeHolds[holdKey];
           }, minHold - elapsed);
         } else {
           try {
-            snesInstance.pressUp(btnName);
+            if (player === 1) {
+              snesInstance.pressUp(btnName);
+            } else {
+              snesInstance.pressUp({ button: btnName, player: 2 });
+            }
           } catch (_) {}
-          delete activeHolds[btnName];
+          delete activeHolds[holdKey];
         }
       } else {
         try {
-          snesInstance.pressUp(btnName);
+          if (player === 1) {
+            snesInstance.pressUp(btnName);
+          } else {
+            snesInstance.pressUp({ button: btnName, player: 2 });
+          }
         } catch (_) {}
       }
     }
   }
 
+  function joinPlayer2() {
+    if (!snesInstance) return;
+    sendPress("start", true, 2);
+    setTimeout(function () {
+      sendPress("start", false, 2);
+    }, 120);
+
+    // Follow-up fire press to confirm selection if at select screen
+    setTimeout(function () {
+      sendPress("y", true, 2);
+      setTimeout(function () {
+        sendPress("y", false, 2);
+      }, 120);
+    }, 450);
+
+    showToast("PLAYER 2 JOINED", "CO-OP MODE ACTIVE");
+  }
+
   /* -------------------------------------------------------------
-   * Virtual Analog Joystick Module
+   * Virtual Analog Joystick Module (Player 1)
    * ------------------------------------------------------------- */
   function setupVirtualJoystick() {
     var zone = document.getElementById("touch-joystick-zone");
@@ -425,20 +492,20 @@
 
       updateTicks(newUp, newDown, newLeft, newRight);
 
-      if (newLeft !== activeDirs.left) {
-        activeDirs.left = newLeft;
+      if (newLeft !== activeDirsP1.left) {
+        activeDirsP1.left = newLeft;
         applyDirection("left", newLeft);
       }
-      if (newRight !== activeDirs.right) {
-        activeDirs.right = newRight;
+      if (newRight !== activeDirsP1.right) {
+        activeDirsP1.right = newRight;
         applyDirection("right", newRight);
       }
-      if (newUp !== activeDirs.up) {
-        activeDirs.up = newUp;
+      if (newUp !== activeDirsP1.up) {
+        activeDirsP1.up = newUp;
         applyDirection("up", newUp);
       }
-      if (newDown !== activeDirs.down) {
-        activeDirs.down = newDown;
+      if (newDown !== activeDirsP1.down) {
+        activeDirsP1.down = newDown;
         applyDirection("down", newDown);
       }
     }
@@ -449,20 +516,20 @@
       knob.style.transform = "translate3d(0, 0, 0)";
       updateTicks(false, false, false, false);
 
-      if (activeDirs.left) {
-        activeDirs.left = false;
+      if (activeDirsP1.left) {
+        activeDirsP1.left = false;
         applyDirection("left", false);
       }
-      if (activeDirs.right) {
-        activeDirs.right = false;
+      if (activeDirsP1.right) {
+        activeDirsP1.right = false;
         applyDirection("right", false);
       }
-      if (activeDirs.up) {
-        activeDirs.up = false;
+      if (activeDirsP1.up) {
+        activeDirsP1.up = false;
         applyDirection("up", false);
       }
-      if (activeDirs.down) {
-        activeDirs.down = false;
+      if (activeDirsP1.down) {
+        activeDirsP1.down = false;
         applyDirection("down", false);
       }
     }
@@ -502,41 +569,69 @@
   /* -------------------------------------------------------------
    * Touch Buttons and Auto-Fire
    * ------------------------------------------------------------- */
-  function toggleAutoFire() {
-    autoFireActive = !autoFireActive;
-    var btn = document.getElementById("touch-autofire-btn");
-    var label = document.getElementById("touch-autofire-label");
-    if (btn) {
-      btn.setAttribute("data-autofire", autoFireActive ? "true" : "false");
-      btn.classList.toggle("active", autoFireActive);
-    }
-    if (label) {
-      label.textContent = autoFireActive ? "AUTO: ON" : "AUTO: OFF";
-    }
+  function toggleAutoFire(player) {
+    player = player || 1;
+    if (player === 1) {
+      autoFireP1Active = !autoFireP1Active;
+      var btn = document.getElementById("touch-autofire-btn");
+      var label = document.getElementById("touch-autofire-label");
+      if (btn) {
+        btn.setAttribute("data-autofire", autoFireP1Active ? "true" : "false");
+        btn.classList.toggle("active", autoFireP1Active);
+      }
+      if (label) {
+        label.textContent = autoFireP1Active ? "AUTO: ON" : "AUTO: OFF";
+      }
 
-    if (autoFireInterval) {
-      clearInterval(autoFireInterval);
-      autoFireInterval = null;
-    }
+      if (autoFireP1Interval) {
+        clearInterval(autoFireP1Interval);
+        autoFireP1Interval = null;
+      }
 
-    if (autoFireActive && snesInstance) {
-      autoFireInterval = setInterval(function () {
-        if (!snesInstance) return;
+      if (autoFireP1Active && snesInstance) {
+        autoFireP1Interval = setInterval(function () {
+          if (!snesInstance) return;
+          try {
+            snesInstance.pressDown("y");
+            setTimeout(function () {
+              if (snesInstance) {
+                try {
+                  snesInstance.pressUp("y");
+                } catch (_) {}
+              }
+            }, 40);
+          } catch (_) {}
+        }, 90);
+      } else if (!autoFireP1Active && snesInstance) {
         try {
-          snesInstance.pressDown("y");
-          setTimeout(function () {
-            if (snesInstance) {
-              try {
-                snesInstance.pressUp("y");
-              } catch (_) {}
-            }
-          }, 40);
+          snesInstance.pressUp("y");
         } catch (_) {}
-      }, 90);
-    } else if (!autoFireActive && snesInstance) {
-      try {
-        snesInstance.pressUp("y");
-      } catch (_) {}
+      }
+    } else {
+      autoFireP2Active = !autoFireP2Active;
+      if (autoFireP2Interval) {
+        clearInterval(autoFireP2Interval);
+        autoFireP2Interval = null;
+      }
+      if (autoFireP2Active && snesInstance) {
+        autoFireP2Interval = setInterval(function () {
+          if (!snesInstance) return;
+          try {
+            snesInstance.pressDown({ button: "y", player: 2 });
+            setTimeout(function () {
+              if (snesInstance) {
+                try {
+                  snesInstance.pressUp({ button: "y", player: 2 });
+                } catch (_) {}
+              }
+            }, 40);
+          } catch (_) {}
+        }, 90);
+      } else if (!autoFireP2Active && snesInstance) {
+        try {
+          snesInstance.pressUp({ button: "y", player: 2 });
+        } catch (_) {}
+      }
     }
   }
 
@@ -548,7 +643,7 @@
     if (autoBtn) {
       autoBtn.addEventListener("pointerdown", function (e) {
         e.preventDefault();
-        toggleAutoFire();
+        toggleAutoFire(1);
       });
     }
 
@@ -559,6 +654,8 @@
 
       // Resolve button mapping for Aero Fighters
       var snesKey = null;
+      var targetPlayer = 1;
+
       if (action === "shoot" || code === 27) {
         snesKey = "y"; // Fire / Shoot (Button B)
       } else if (action === "bomb" || code === 29) {
@@ -567,14 +664,20 @@
         snesKey = "start";
       } else if (action === "select" || code === 4) {
         snesKey = "select";
+      } else if (action === "p2-join") {
+        snesKey = "p2-join";
       }
 
       function handlePress(pressed) {
         if (pressed) btn.classList.add("active");
         else btn.classList.remove("active");
 
-        if (snesKey) {
-          sendPress(snesKey, pressed);
+        if (snesKey === "p2-join") {
+          if (pressed) {
+            joinPlayer2();
+          }
+        } else if (snesKey) {
+          sendPress(snesKey, pressed, targetPlayer);
         }
       }
 
@@ -600,7 +703,7 @@
   }
 
   /* -------------------------------------------------------------
-   * Keyboard Controls for Aero Fighters
+   * Keyboard Controls for Aero Fighters (1P & 2P Co-op)
    * ------------------------------------------------------------- */
   function setupAeroFightersKeyboard() {
     document.addEventListener("keydown", function (e) {
@@ -614,23 +717,53 @@
 
       if (e.repeat) return;
 
-      if (k === "ArrowUp" || k === "w" || k === "W") snesInstance.pressDown("up");
-      else if (k === "ArrowDown" || k === "s" || k === "S") snesInstance.pressDown("down");
-      else if (k === "ArrowLeft" || k === "a" || k === "A") snesInstance.pressDown("left");
-      else if (k === "ArrowRight" || k === "d" || k === "D") snesInstance.pressDown("right");
-      // Shoot (SNES Y)
-      else if (k === "z" || k === "Z" || k === "b" || k === "B" || k === "j" || k === "J" || k === " ") {
-        sendPress("y", true);
+      // --- PLAYER 1 CONTROLS ---
+      if (k === "w" || k === "W") sendPress("up", true, 1);
+      else if (k === "s" || k === "S") sendPress("down", true, 1);
+      else if (k === "a" || k === "A") sendPress("left", true, 1);
+      else if (k === "d" || k === "D") sendPress("right", true, 1);
+      // P1 Button B (Fire - SNES Y)
+      else if (k === "j" || k === "J" || k === "z" || k === "Z" || k === " ") {
+        sendPress("y", true, 1);
       }
-      // Special Bomb (SNES B)
-      else if (k === "x" || k === "X" || k === "k" || k === "K") {
-        sendPress("b", true);
+      // P1 Button A (Special - SNES B)
+      else if (k === "k" || k === "K" || k === "x" || k === "X") {
+        sendPress("b", true, 1);
       } else if (k === "Enter") {
-        sendPress("start", true);
-      } else if (k === "Shift") {
-        sendPress("select", true);
+        sendPress("start", true, 1);
+      } else if (k === "Shift" || k === "Tab") {
+        sendPress("select", true, 1);
       } else if (k === "c" || k === "C") {
-        toggleAutoFire();
+        toggleAutoFire(1);
+      }
+
+      // --- PLAYER 2 CONTROLS (CO-OP) ---
+      else if (k === "ArrowUp" || k === "8") {
+        sendPress("up", true, 2);
+      } else if (k === "ArrowDown" || k === "5") {
+        sendPress("down", true, 2);
+      } else if (k === "ArrowLeft" || k === "4") {
+        sendPress("left", true, 2);
+      } else if (k === "ArrowRight" || k === "6") {
+        sendPress("right", true, 2);
+      }
+      // P2 Button B (Fire - SNES Y)
+      else if (k === "1" || k === "[" || k === "o" || k === "O") {
+        sendPress("y", true, 2);
+      }
+      // P2 Button A (Special - SNES B)
+      else if (k === "2" || k === "]" || k === "p" || k === "P") {
+        sendPress("b", true, 2);
+      }
+      // P2 Start / Join
+      else if (k === "3" || k === "\\" || k === "'" || k === "NumpadEnter") {
+        sendPress("start", true, 2);
+      }
+      // P2 Select
+      else if (k === "0" || k === ";") {
+        sendPress("select", true, 2);
+      } else if (k === "v" || k === "V") {
+        toggleAutoFire(2);
       }
     });
 
@@ -639,21 +772,39 @@
       if (!modal || !modal.open || !snesInstance) return;
 
       var k = e.key;
-      if (k === "ArrowUp" || k === "w" || k === "W") snesInstance.pressUp("up");
-      else if (k === "ArrowDown" || k === "s" || k === "S") snesInstance.pressUp("down");
-      else if (k === "ArrowLeft" || k === "a" || k === "A") snesInstance.pressUp("left");
-      else if (k === "ArrowRight" || k === "d" || k === "D") snesInstance.pressUp("right");
-      // Shoot (SNES Y)
-      else if (k === "z" || k === "Z" || k === "b" || k === "B" || k === "j" || k === "J" || k === " ") {
-        sendPress("y", false);
-      }
-      // Special Bomb (SNES B)
-      else if (k === "x" || k === "X" || k === "k" || k === "K") {
-        sendPress("b", false);
+
+      // --- PLAYER 1 KEY RELEASES ---
+      if (k === "w" || k === "W") sendPress("up", false, 1);
+      else if (k === "s" || k === "S") sendPress("down", false, 1);
+      else if (k === "a" || k === "A") sendPress("left", false, 1);
+      else if (k === "d" || k === "D") sendPress("right", false, 1);
+      else if (k === "j" || k === "J" || k === "z" || k === "Z" || k === " ") {
+        sendPress("y", false, 1);
+      } else if (k === "k" || k === "K" || k === "x" || k === "X") {
+        sendPress("b", false, 1);
       } else if (k === "Enter") {
-        sendPress("start", false);
-      } else if (k === "Shift") {
-        sendPress("select", false);
+        sendPress("start", false, 1);
+      } else if (k === "Shift" || k === "Tab") {
+        sendPress("select", false, 1);
+      }
+
+      // --- PLAYER 2 KEY RELEASES ---
+      else if (k === "ArrowUp" || k === "8") {
+        sendPress("up", false, 2);
+      } else if (k === "ArrowDown" || k === "5") {
+        sendPress("down", false, 2);
+      } else if (k === "ArrowLeft" || k === "4") {
+        sendPress("left", false, 2);
+      } else if (k === "ArrowRight" || k === "6") {
+        sendPress("right", false, 2);
+      } else if (k === "1" || k === "[" || k === "o" || k === "O") {
+        sendPress("y", false, 2);
+      } else if (k === "2" || k === "]" || k === "p" || k === "P") {
+        sendPress("b", false, 2);
+      } else if (k === "3" || k === "\\" || k === "'" || k === "NumpadEnter") {
+        sendPress("start", false, 2);
+      } else if (k === "0" || k === ";") {
+        sendPress("select", false, 2);
       }
     });
   }
@@ -678,6 +829,14 @@
       errCloseBtn.addEventListener("click", function (e) {
         e.preventDefault();
         closeEasterEgg();
+      });
+    }
+
+    var p2Btn = modal.querySelector("[data-wipeout-p2]");
+    if (p2Btn) {
+      p2Btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        joinPlayer2();
       });
     }
 
@@ -902,9 +1061,13 @@
     var modal = document.getElementById("wipeout-modal");
     if (!modal) return;
 
-    if (autoFireInterval) {
-      clearInterval(autoFireInterval);
-      autoFireInterval = null;
+    if (autoFireP1Interval) {
+      clearInterval(autoFireP1Interval);
+      autoFireP1Interval = null;
+    }
+    if (autoFireP2Interval) {
+      clearInterval(autoFireP2Interval);
+      autoFireP2Interval = null;
     }
 
     if (snesInstance) {
@@ -940,61 +1103,66 @@
   }
 
   /* -------------------------------------------------------------
-   * Gamepad Support
+   * Dual Gamepad Support (1P & 2P Co-op)
    * ------------------------------------------------------------- */
+  function pollSingleGamepad(gp, player, state) {
+    if (!gp || !snesInstance) return;
+
+    var aPressed = (gp.buttons[0] && gp.buttons[0].pressed) || (gp.buttons[2] && gp.buttons[2].pressed);
+    var bPressed = (gp.buttons[1] && gp.buttons[1].pressed) || (gp.buttons[3] && gp.buttons[3].pressed);
+    var startPressed = gp.buttons[9] && gp.buttons[9].pressed;
+    var selectPressed = gp.buttons[8] && gp.buttons[8].pressed;
+
+    var dpadUp = (gp.buttons[12] && gp.buttons[12].pressed) || gp.axes[1] < -0.4;
+    var dpadDown = (gp.buttons[13] && gp.buttons[13].pressed) || gp.axes[1] > 0.4;
+    var dpadLeft = (gp.buttons[14] && gp.buttons[14].pressed) || gp.axes[0] < -0.4;
+    var dpadRight = (gp.buttons[15] && gp.buttons[15].pressed) || gp.axes[0] > 0.4;
+
+    if (aPressed !== state.a) {
+      state.a = aPressed;
+      sendPress("y", aPressed, player);
+    }
+    if (bPressed !== state.b) {
+      state.b = bPressed;
+      sendPress("b", bPressed, player);
+    }
+    if (startPressed !== state.start) {
+      state.start = startPressed;
+      sendPress("start", startPressed, player);
+    }
+    if (selectPressed !== state.select) {
+      state.select = selectPressed;
+      sendPress("select", selectPressed, player);
+    }
+
+    if (dpadUp !== state.up) {
+      state.up = dpadUp;
+      sendPress("up", dpadUp, player);
+    }
+    if (dpadDown !== state.down) {
+      state.down = dpadDown;
+      sendPress("down", dpadDown, player);
+    }
+    if (dpadLeft !== state.left) {
+      state.left = dpadLeft;
+      sendPress("left", dpadLeft, player);
+    }
+    if (dpadRight !== state.right) {
+      state.right = dpadRight;
+      sendPress("right", dpadRight, player);
+    }
+  }
+
   function startGamepadPolling() {
     if (gamepadLoopId) return;
 
     function poll() {
       var gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
-      var gp = gamepads[0];
-      if (gp && snesInstance) {
-        var aPressed = (gp.buttons[0] && gp.buttons[0].pressed) || (gp.buttons[2] && gp.buttons[2].pressed);
-        var bPressed = (gp.buttons[1] && gp.buttons[1].pressed) || (gp.buttons[3] && gp.buttons[3].pressed);
-        var startPressed = gp.buttons[9] && gp.buttons[9].pressed;
-        var selectPressed = gp.buttons[8] && gp.buttons[8].pressed;
-
-        var dpadUp = (gp.buttons[12] && gp.buttons[12].pressed) || gp.axes[1] < -0.4;
-        var dpadDown = (gp.buttons[13] && gp.buttons[13].pressed) || gp.axes[1] > 0.4;
-        var dpadLeft = (gp.buttons[14] && gp.buttons[14].pressed) || gp.axes[0] < -0.4;
-        var dpadRight = (gp.buttons[15] && gp.buttons[15].pressed) || gp.axes[0] > 0.4;
-
-        if (aPressed !== activeGamepadState.a) {
-          activeGamepadState.a = aPressed;
-          sendPress("y", aPressed);
-        }
-        if (bPressed !== activeGamepadState.b) {
-          activeGamepadState.b = bPressed;
-          sendPress("b", bPressed);
-        }
-        if (startPressed !== activeGamepadState.start) {
-          activeGamepadState.start = startPressed;
-          sendPress("start", startPressed);
-        }
-        if (selectPressed !== activeGamepadState.select) {
-          activeGamepadState.select = selectPressed;
-          sendPress("select", selectPressed);
-        }
-        if (dpadUp !== activeGamepadState.up) {
-          activeGamepadState.up = dpadUp;
-          if (dpadUp) snesInstance.pressDown("up");
-          else snesInstance.pressUp("up");
-        }
-        if (dpadDown !== activeGamepadState.down) {
-          activeGamepadState.down = dpadDown;
-          if (dpadDown) snesInstance.pressDown("down");
-          else snesInstance.pressUp("down");
-        }
-        if (dpadLeft !== activeGamepadState.left) {
-          activeGamepadState.left = dpadLeft;
-          if (dpadLeft) snesInstance.pressDown("left");
-          else snesInstance.pressUp("left");
-        }
-        if (dpadRight !== activeGamepadState.right) {
-          activeGamepadState.right = dpadRight;
-          if (dpadRight) snesInstance.pressDown("right");
-          else snesInstance.pressUp("right");
-        }
+      if (gamepads[0]) {
+        pollSingleGamepad(gamepads[0], 1, activeGamepadStateP1);
+      }
+      if (gamepads[1]) {
+        pollSingleGamepad(gamepads[1], 2, activeGamepadStateP2);
       }
       gamepadLoopId = requestAnimationFrame(poll);
     }

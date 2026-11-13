@@ -1047,6 +1047,18 @@
   border-color: #ffffff;
 }
 
+.touch-pill.touch-p2 {
+  border-color: rgba(0, 240, 255, 0.4);
+  color: #00f0ff;
+}
+
+.touch-pill.touch-p2:active,
+.touch-pill.touch-p2.active {
+  background: rgba(0, 240, 255, 0.3);
+  border-color: #00f0ff;
+  color: #ffffff;
+}
+
 /* Fullscreen mode adjustments (Desktop & Mobile) */
 .wipeout-modal.is-fullscreen,
 :fullscreen,
